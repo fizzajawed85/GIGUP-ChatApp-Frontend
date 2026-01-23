@@ -1,0 +1,161 @@
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { FaGoogle, FaFacebookF, FaSkype, FaPhoneAlt } from "react-icons/fa";
+import { loginUser, socialLogin } from "../../services/authService";
+
+const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    try {
+      const data = await loginUser({ email, password });
+
+      // SAVE AUTH
+      localStorage.setItem(
+        "auth",
+        JSON.stringify({
+          user: data.user,
+          token: data.token,
+        })
+      );
+
+      alert("Login Successful");
+      navigate("/chat");
+    } catch (error) {
+      alert(error.response?.data?.message || "Login Failed");
+    }
+  };
+
+  const handleSocialLogin = async (provider) => {
+    try {
+      const data = await socialLogin(provider);
+
+      // SAVE AUTH
+      localStorage.setItem(
+        "auth",
+        JSON.stringify({
+          user: data.user,
+          token: data.token,
+        })
+      );
+
+      alert(`${provider} login successful`);
+      navigate("/chat");
+    } catch (error) {
+      console.error(error);
+      alert(`${provider} login failed`);
+    }
+  };
+
+
+  return (
+    <div className="min-h-screen flex overflow-hidden">
+      {/* LEFT SECTION */}
+      <div className="md:w-1/2 flex flex-col justify-start items-start bg-gradient-to-b from-[#000000] to-[#080e1b] text-[#fdf7f0] p-12 md:p-24">
+        <img
+          src="/images/logo9.png"
+          alt="Gigup Logo"
+          className="mb-10"
+          style={{ width: "350px", height: "auto" }}
+        />
+        <h1 className="text-4xl font-extrabold mb-4 tracking-tight">
+          Connect Seamlessly
+        </h1>
+        <p className="text-lg md:text-xl text-[#dcd8d8] max-w-md">
+          Gigup brings you closer to your friends and colleagues. Share messages, files, and experiences instantly.
+        </p>
+      </div>
+
+      {/* RIGHT SECTION */}
+      <div className="md:w-1/2 flex justify-center items-center bg-cream dark:bg-[#111827] p-12">
+        <div className="w-full max-w-md bg-white dark:bg-[#111827] rounded-3xl shadow-2xl border border-gray-200 dark:border-gray-700 p-10 space-y-6">
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-[#fdf7f0] text-center">
+            Welcome Back
+          </h2>
+          <p className="text-gray-500 dark:text-[#dcd8d8] text-center">
+            Login to access your Gigup account.
+          </p>
+
+          {/* FORM */}
+          <form className="space-y-4" onSubmit={handleLogin}>
+            <input
+              type="email"
+              placeholder="Email address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="input-base"
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="input-base"
+            />
+
+            <div className="flex items-center justify-between text-sm">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" className="accent-[#46a4de]" />
+                <span>Remember me</span>
+              </label>
+              <Link to="/forgot-password" className="text-[#46a4de] hover:underline">
+                Forgot password?
+              </Link>
+            </div>
+
+            <button type="submit" className="w-full btn-primary">
+              Login
+            </button>
+          </form>
+
+          <div className="my-6 text-center text-sm text-[#fdf7f0]">Or sign in using</div>
+
+          {/* SOCIAL BUTTONS */}
+          <div className="flex justify-center gap-4 mb-4">
+            <button
+              className="p-3 rounded-full border border-gray-300 dark:border-gray-600 hover:bg-gray-500 dark:hover:bg-[#1982c4] transition"
+              onClick={() => handleSocialLogin("google")}
+            >
+              <FaGoogle className="text-[#fdf7f0]" />
+            </button>
+            <button
+              className="p-3 rounded-full border border-gray-300 dark:border-gray-600 hover:bg-gray-500 dark:hover:bg-[#1982c4] transition"
+              onClick={() => handleSocialLogin("skype")}
+            >
+              <FaSkype className="text-[#fdf7f0]" />
+            </button>
+            <button
+              className="p-3 rounded-full border border-gray-300 dark:border-gray-600 hover:bg-blue-500 dark:hover:bg-[#1982c4] transition"
+              onClick={() => handleSocialLogin("facebook")}
+            >
+              <FaFacebookF className="text-[#fdf7f0]" />
+            </button>
+            <button
+              className="p-3 rounded-full border border-gray-300 dark:border-gray-600 hover:bg-blue-500 dark:hover:bg-[#1982c4] transition"
+              onClick={() => handleSocialLogin("phone")}
+            >
+              <FaPhoneAlt className="text-[#fdf7f0]" />
+            </button>
+          </div>
+
+          <p className="text-center text-sm">
+            Don&apos;t have an account?{" "}
+            <Link to="/register" className="text-[#49a2d8] font-medium">
+              Register
+            </Link>
+          </p>
+
+          <p className="text-xs text-center text-gray-400 mt-6">
+            © 2026 Gigup. All rights reserved
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Login;
