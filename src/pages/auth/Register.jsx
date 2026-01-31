@@ -37,7 +37,21 @@ const Register = () => {
   const handleSocialRegister = async (provider) => {
     try {
       const data = await socialLogin(provider);
-      localStorage.setItem("auth", JSON.stringify(data));
+
+      const authData = {
+        user: data.user,
+        token: data.token,
+      };
+      localStorage.setItem("auth", JSON.stringify(authData));
+
+      // SAVE TO ACCOUNTS LIST (for switching)
+      const accounts = JSON.parse(localStorage.getItem("gigup_accounts") || "[]");
+      const exists = accounts.find(acc => acc.user.email === data.user.email);
+      if (!exists) {
+        accounts.push(authData);
+        localStorage.setItem("gigup_accounts", JSON.stringify(accounts));
+      }
+
       alert(`${provider} login successful`);
       navigate("/chat");
     } catch (error) {

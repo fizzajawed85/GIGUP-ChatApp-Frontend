@@ -1,15 +1,18 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchMessages, addMessage } from "../redux/slices/messageSlice";
+import { fetchMessages, addMessage, updateMessage } from "../redux/slices/messageSlice";
 import { socket } from "../utils/socket";
-import { sendMessage } from "../services/chat.services";
+import { sendMessage, editMessage, deleteMessage } from "../services/chat.services";
 import MessageItem from "./MessageItem";
 import useTheme from "../hooks/useTheme";
+import { CallingContext } from "../context/CallingContext";
+import useVoiceRecorder from "../hooks/useVoiceRecorder";
 
 import {
   FiSearch,
   FiMoreVertical,
-  FiSend
+  FiSend,
+  FiImage
 } from "react-icons/fi";
 import { MdCall, MdVideocam, MdMic } from "react-icons/md";
 import { BsEmojiSmile, BsThreeDots } from "react-icons/bs";
@@ -17,182 +20,476 @@ import { BsEmojiSmile, BsThreeDots } from "react-icons/bs";
 const ChatWindow = () => {
   const dispatch = useDispatch();
   const bottomRef = useRef(null);
+  const typingTimeoutRef = useRef(null);
+  const fileInputRef = useRef(null);
+
   const [text, setText] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+  const [otherUser, setOtherUser] = useState(null);
+  const [editingMessage, setEditingMessage] = useState(null);
+  const [deletingMessage, setDeletingMessage] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
 
   const { theme } = useTheme();
+  const { callUser } = useContext(CallingContext);
+  const {
+    isRecording,
+    isProcessing,
+    recordingTime,
+    audioBlob,
+    startRecording,
+    stopRecording,
+    cancelRecording,
+    resetRecording,
+    formattedTime
+  } = useVoiceRecorder();
   const { selectedChat } = useSelector((state) => state.chat);
   const { messages } = useSelector((state) => state.message);
 
   const auth = JSON.parse(localStorage.getItem("auth"));
   const userId = auth?.user?._id;
 
-  const otherUser =
-    selectedChat?.participants?.find((p) => p._id !== userId) || null;
+  useEffect(() => {
+    if (selectedChat) {
+      const found = selectedChat.participants?.find((p) => p._id !== userId) || null;
+      setOtherUser(found);
+    }
+  }, [selectedChat, userId]);
+
+  const nicknameObj = selectedChat?.nicknames?.find(n => n.user === userId || n.user?._id === userId);
+  const displayName = nicknameObj?.name || otherUser?.username || "Unknown";
 
   const formatLastSeen = (dateStr) => {
     if (!dateStr) return "Offline";
     const d = new Date(dateStr);
-    return `Last seen ${d.toLocaleString([], {
-      hour: "2-digit",
-      minute: "2-digit",
+    const now = new Date();
+    const diff = (now - d) / 1000; // seconds
+
+    if (diff < 60) return "just now";
+    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+    if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+
+    return d.toLocaleString([], {
       day: "2-digit",
       month: "short",
-    })}`;
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   };
 
   /* SOCKET */
   useEffect(() => {
     if (!userId) return;
 
-    socket.auth = { userId };
-    socket.connect();
-
-    socket.off("receiveMessage");
-    socket.on("receiveMessage", (msg) => {
+    const handleReceive = (msg) => {
       dispatch(addMessage(msg));
+
+      // Emit delivered/seen if message is for this active chat
+      const senderIdStr = msg.sender?._id || msg.sender;
+      if (msg.chat === selectedChat?._id && senderIdStr !== userId) {
+        socket.emit("messageDelivered", msg._id);
+        socket.emit("messageSeen", { chatId: selectedChat._id, userId });
+      }
+    };
+
+    socket.on("receiveMessage", handleReceive);
+
+    socket.on("messageUpdated", (updatedMsg) => {
+      dispatch(updateMessage(updatedMsg));
+    });
+    socket.on("messagesSeen", ({ chatId }) => {
+      // No need to re-fetch all messages, just handle ticks via messageUpdated
+    });
+
+    socket.on("statusChange", ({ userId: changedUserId, isOnline, lastSeen }) => {
+      setOtherUser(prev => {
+        if (prev?._id === changedUserId) {
+          return { ...prev, isOnline, lastSeen };
+        }
+        return prev;
+      });
+    });
+
+    socket.on("userTyping", ({ userId: typingUserId }) => {
+      if (typingUserId === otherUser?._id) {
+        setIsTyping(true);
+      }
+    });
+
+    socket.on("userStopTyping", () => {
+      setIsTyping(false);
     });
 
     return () => {
-      socket.off("receiveMessage");
-      socket.disconnect();
+      socket.off("receiveMessage", handleReceive);
+      socket.off("messageUpdated");
+      socket.off("statusChange");
+      socket.off("messagesSeen");
+      socket.off("userTyping");
+      socket.off("userStopTyping");
     };
-  }, [dispatch, userId]);
+  }, [dispatch, userId, selectedChat?._id, otherUser?._id]);
 
   /* FETCH */
   useEffect(() => {
-    if (!selectedChat) return;
+    if (!selectedChat?._id) return;
 
     socket.emit("joinChat", selectedChat._id);
     dispatch(fetchMessages(selectedChat._id));
 
+    if (userId) {
+      socket.emit("messageSeen", { chatId: selectedChat._id, userId });
+    }
+
     return () => {
       socket.emit("leaveChat", selectedChat._id);
     };
-  }, [selectedChat, dispatch]);
+  }, [selectedChat?._id, dispatch, userId]);
 
   /* AUTO SCROLL */
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  /* SEND */
-  const handleSend = async () => {
-    if (!text.trim()) return;
+  /* HANDLERS */
+  const handleTextChange = (e) => {
+    setText(e.target.value);
 
-    const payload = {
-      chat: selectedChat._id,
-      sender: userId,
-      text,
-    };
+    if (selectedChat) {
+      socket.emit("typing", { chatId: selectedChat._id, userId });
 
-    dispatch(addMessage({
-      ...payload,
-      _id: Date.now().toString(),
-      createdAt: new Date().toISOString(),
-      status: "sent",
-    }));
-
-    if (socket.connected) {
-      socket.emit("sendMessage", payload);
-    } else {
-      await sendMessage(selectedChat._id, text);
+      if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
+      typingTimeoutRef.current = setTimeout(() => {
+        socket.emit("stopTyping", { chatId: selectedChat._id, userId });
+      }, 2000);
     }
+  };
 
+  const handleFileSelect = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+      setPreviewUrl(URL.createObjectURL(file));
+    }
+  };
+
+  const clearFile = () => {
+    setSelectedFile(null);
+    setPreviewUrl(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
+  const handleSend = async () => {
+    if ((!text.trim() && !selectedFile) || !selectedChat) return;
+
+    try {
+      if (editingMessage) {
+        // Edit Mode (Text only for now)
+        const updated = await editMessage(editingMessage._id, text);
+        dispatch(updateMessage(updated));
+        socket.emit("editMessage", updated);
+        setEditingMessage(null);
+      } else {
+        // Normal Send (Text or File)
+        if (selectedFile) {
+          const formData = new FormData();
+          formData.append("chatId", selectedChat._id);
+          formData.append("text", text.trim());
+          formData.append("file", selectedFile);
+
+          const newMessage = await sendMessage(selectedChat._id, formData);
+          dispatch(addMessage(newMessage));
+          clearFile();
+        } else {
+          const newMessage = await sendMessage(selectedChat._id, text.trim());
+          dispatch(addMessage(newMessage));
+        }
+      }
+
+      setText("");
+      // Stop typing status
+      socket.emit("stopTyping", { chatId: selectedChat._id, userId });
+      if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
+    } catch (err) {
+      console.error("Failed to process message action:", err);
+    }
+  };
+
+  const handleSendVoice = async () => {
+    if (!audioBlob || !selectedChat) return;
+
+    try {
+      const formData = new FormData();
+      formData.append("chatId", selectedChat._id);
+      formData.append("file", audioBlob, "voice_message.webm");
+      // Text is optional for voice messages
+
+      const newMessage = await sendMessage(selectedChat._id, formData);
+      dispatch(addMessage(newMessage));
+
+      resetRecording();
+    } catch (err) {
+      console.error("Failed to send voice message:", err);
+    }
+  };
+
+  const handleEditInit = (msg) => {
+    setEditingMessage(msg);
+    setText(msg.text);
+  };
+
+  const cancelEdit = () => {
+    setEditingMessage(null);
     setText("");
+  };
+
+  const handleProcessDelete = async (type) => {
+    if (!deletingMessage) return;
+
+    try {
+      const updated = await deleteMessage(deletingMessage._id, type);
+
+      if (type === "forMe") {
+        // Just remove from local state
+        dispatch(fetchMessages(selectedChat._id)); // Re-fetch or filter out
+      } else {
+        // forEveryone
+        dispatch(updateMessage(updated));
+        socket.emit("deleteMessage", updated);
+      }
+
+      setDeletingMessage(null);
+    } catch (err) {
+      console.error("Failed to delete message:", err);
+    }
   };
 
   if (!selectedChat) {
     return (
-      <div
-        className={`flex items-center justify-center text-gray-500
-          ${theme === "dark" ? "bg-[#111827]" : "bg-white"}`}
-        style={{ height: "calc(100vh - 50px)", width: "80%" }}
-      >
+      <div className={`flex flex-1 items-center justify-center text-gray-500 h-full ${theme === "dark" ? "bg-[#111827]" : "bg-white"}`}>
         <div className="text-center flex flex-col items-center justify-center">
-          <p className="text-xl font-semibold">
-            Pick a chat to start
-          </p>
-          <p className="text-sm text-gray-400">
-            Your messages will appear here
-          </p>
+          <p className="text-xl font-semibold">Pick a chat to start</p>
+          <p className="text-sm text-gray-400">Your messages will appear here</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div
-      className="flex flex-col flex-1 min-w-0"
-      style={{ height: "calc(100vh - 50px)" }}
-    >
+    <div className="flex flex-col flex-1 min-w-0 h-full">
       {/* HEADER */}
-      <div className="h-16 px-4 flex items-center justify-between border-b
-        dark:border-zinc-700 bg-white dark:bg-[#202c33] shrink-0"
-      >
+      <div className="h-16 px-4 flex items-center justify-between border-b dark:border-zinc-700 bg-white dark:bg-[#0b1220] shrink-0">
         <div className="flex items-center gap-3">
-          <img
-            src={otherUser?.avatar || "/avatar.png"}
-            className="w-10 h-10 rounded-full"
-          />
+          <div className="relative">
+            <img
+              src={otherUser?.avatar ? `http://localhost:5000${otherUser.avatar}` : "/avatar.png"}
+              alt={otherUser?.username || "User"}
+              className="w-10 h-10 rounded-full object-cover border border-gray-200 dark:border-zinc-700 shadow-sm"
+            />
+            {otherUser?.isOnline && (
+              <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white dark:border-gray-900 rounded-full"></span>
+            )}
+          </div>
           <div>
-            <p className="text-sm font-semibold text-gray-900 dark:text-white">
-              {otherUser?.username || "Unknown"}
-            </p>
-            <p className="text-xs text-gray-500 dark:text-gray-300">
-              {otherUser?.isOnline ? "Active" : formatLastSeen(otherUser?.lastSeen)}
+            <p className="text-sm font-semibold text-gray-900 dark:text-white">{displayName}</p>
+            <p className={`text-[11px] ${otherUser?.isOnline || isTyping ? "text-green-500 font-medium" : "text-gray-500 dark:text-gray-400"}`}>
+              {isTyping ? "typing..." : (otherUser?.isOnline ? "Online" : formatLastSeen(otherUser?.lastSeen))}
             </p>
           </div>
         </div>
 
         <div className="flex items-center gap-5 text-xl text-gray-600 dark:text-gray-300">
           <FiSearch />
-          <MdCall />
-          <MdVideocam />
+          <button onClick={() => callUser(otherUser?._id, 'audio', otherUser?.username)}>
+            <MdCall />
+          </button>
+          <button onClick={() => callUser(otherUser?._id, 'video', otherUser?.username)}>
+            <MdVideocam />
+          </button>
           <FiMoreVertical />
         </div>
       </div>
 
       {/* MESSAGES */}
-      <div className="flex-1 overflow-y-auto px-4 py-3 space-y-2
-  bg-[url('/chat-bg.png')] dark:bg-[#0b141a]"
->
+      <div className="flex-1 overflow-y-auto px-4 py-3 space-y-2 bg-[url('/chat-bg.png')] dark:bg-[#0b141a]">
         {messages.map((msg) => (
           <MessageItem
             key={msg._id}
             message={msg}
             isOwnMessage={msg.sender === userId || msg.sender?._id === userId}
+            onEdit={handleEditInit}
+            onDelete={(msg) => setDeletingMessage(msg)}
           />
         ))}
         <div ref={bottomRef} />
       </div>
 
+      {/* EDITING INDICATOR */}
+      {editingMessage && (
+        <div className="px-4 py-2 bg-zinc-100 dark:bg-[#1f2c33] border-t dark:border-zinc-700 flex items-center justify-between animate-in slide-in-from-bottom-2 duration-200">
+          <div className="flex items-center gap-3 overflow-hidden">
+            <div className="w-1 h-8 bg-sky-500 rounded-full shrink-0"></div>
+            <div className="flex flex-col overflow-hidden">
+              <span className="text-[11px] font-bold text-sky-500 uppercase tracking-wider">Edit message</span>
+              <span className="text-xs text-zinc-500 dark:text-zinc-400 truncate italic">"{editingMessage.text}"</span>
+            </div>
+          </div>
+          <button
+            onClick={cancelEdit}
+            className="p-1 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-400 transition-colors"
+          >
+            <span className="text-xl">×</span>
+          </button>
+        </div>
+      )}
+
+      {/* FILE PREVIEW */}
+      {previewUrl && (
+        <div className="px-4 py-2 bg-zinc-100 dark:bg-[#1f2c33] border-t dark:border-zinc-700 flex items-center justify-between animate-in slide-in-from-bottom-2 duration-200">
+          <div className="flex items-center gap-3 overflow-hidden">
+            <div className="w-12 h-12 rounded overflow-hidden bg-black/10">
+              {selectedFile?.type.startsWith("image") ? (
+                <img src={previewUrl} alt="Preview" className="w-full h-full object-cover" />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-xs">Video</div>
+              )}
+            </div>
+            <div className="flex flex-col overflow-hidden">
+              <span className="text-[11px] font-bold text-sky-500 uppercase tracking-wider">Sending File</span>
+              <span className="text-xs text-zinc-500 dark:text-zinc-400 truncate">{selectedFile.name}</span>
+            </div>
+          </div>
+          <button
+            onClick={clearFile}
+            className="p-1 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-400 transition-colors"
+          >
+            <span className="text-xl">×</span>
+          </button>
+        </div>
+      )}
+
       {/* INPUT */}
-      <div className="h-16 px-4 flex items-center gap-3 border-t
-        dark:border-zinc-700 bg-white dark:bg-[#202c33] shrink-0"
-      >
+      <div className="h-16 px-4 flex items-center gap-3 border-t dark:border-zinc-700 bg-white dark:bg-[#0b1220] shrink-0">
         <BsThreeDots className="text-xl" />
         <BsEmojiSmile className="text-xl" />
 
+        {/* Gallery Option */}
+        <input
+          type="file"
+          ref={fileInputRef}
+          onChange={handleFileSelect}
+          hidden
+          accept="image/*,video/*"
+        />
+        <button
+          onClick={() => fileInputRef.current.click()}
+          className="hover:text-sky-500 transition-colors"
+          title="Attach Image/Video"
+        >
+          <FiImage className="text-xl" />
+        </button>
+
         <input
           value={text}
-          onChange={(e) => setText(e.target.value)}
+          onChange={handleTextChange}
           onKeyDown={(e) => e.key === "Enter" && handleSend()}
-          placeholder="Type your message..."
-          className="flex-1 px-4 py-2 rounded-full bg-gray-100 dark:bg-[#111b21]
-            outline-none text-sm text-gray-900 dark:text-white"
+          placeholder={editingMessage ? "Edit message..." : "Type your message..."}
+          className="flex-1 px-4 py-2 rounded-full bg-[#f3f4f6] dark:bg-[#1f2937] outline-none text-sm text-gray-900 dark:text-white"
+          autoFocus={!!editingMessage}
         />
 
-        <MdMic className="text-2xl" />
+        {/* Voice Recording UI */}
+        {/* Voice Recording UI */}
+        <div
+          className="flex items-center select-none touch-none"
+          onMouseDown={!audioBlob && !isRecording && !isProcessing ? startRecording : undefined}
+          onMouseUp={stopRecording}
+          onMouseLeave={stopRecording}
+          onTouchStart={!audioBlob && !isRecording && !isProcessing ? startRecording : undefined}
+          onTouchEnd={stopRecording}
+        >
+          {isRecording ? (
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20">
+              <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+              <span className="text-xs font-mono text-red-600 dark:text-red-400 font-bold">{formattedTime}</span>
+              <span className="text-[10px] text-red-600 dark:text-red-400 opacity-70">Release to send</span>
+            </div>
+          ) : isProcessing ? (
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-gray-50 dark:bg-gray-800 rounded-full">
+              <div className="w-3 h-3 border-2 border-zinc-300 border-t-zinc-600 rounded-full animate-spin"></div>
+              <span className="text-xs text-zinc-500">Processing...</span>
+            </div>
+          ) : audioBlob ? (
+            <div className="flex items-center gap-2 px-2" onMouseDown={(e) => e.stopPropagation()}>
+              <button
+                onClick={resetRecording}
+                className="p-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 transition-colors"
+                title="Discard"
+              >
+                <span className="text-xl">✕</span>
+              </button>
+              <div className="px-3 py-1.5 text-xs text-sky-500 font-medium">
+                Voice ready
+              </div>
+            </div>
+          ) : (
+            <button
+              className="hover:text-sky-500 transition-colors p-2 active:scale-95 transform transition-transform cursor-pointer"
+              title="Hold to record voice message"
+            >
+              <MdMic className="text-2xl" />
+            </button>
+          )}
+        </div>
 
         <button
-          onClick={handleSend}
-          className="w-10 h-10 flex items-center justify-center rounded-full
-            bg-sky-400 dark:bg-sky-500 text-white"
+          onClick={audioBlob ? handleSendVoice : handleSend}
+          disabled={(!text.trim() && !selectedFile && !audioBlob) || isProcessing}
+          className={`w-10 h-10 flex items-center justify-center rounded-full text-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors
+            bg-sky-400 dark:bg-sky-500 hover:bg-sky-500 dark:hover:bg-sky-600
+          `}
+          title={audioBlob ? "Send Voice Message" : "Send Message"}
         >
           <FiSend />
         </button>
       </div>
-    </div>
+
+      {/* DELETE CONFIRMATION MODAL */}
+      {deletingMessage && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="w-full max-w-[320px] bg-white dark:bg-[#233138] rounded-xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
+            <div className="p-6">
+              <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-2">Delete message?</h3>
+              <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-6">
+                Are you sure you want to delete this message?
+              </p>
+
+              <div className="flex flex-col gap-2">
+                <button
+                  onClick={() => handleProcessDelete("forEveryone")}
+                  className="w-full py-2.5 px-4 text-sm font-medium text-sky-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 rounded-lg transition-colors border border-zinc-100 dark:border-zinc-700/50"
+                >
+                  Delete for Everyone
+                </button>
+                <button
+                  onClick={() => handleProcessDelete("forMe")}
+                  className="w-full py-2.5 px-4 text-sm font-medium text-sky-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 rounded-lg transition-colors border border-zinc-100 dark:border-zinc-700/50"
+                >
+                  Delete for Me
+                </button>
+                <button
+                  onClick={() => setDeletingMessage(null)}
+                  className="w-full py-2.5 px-4 text-sm font-medium text-zinc-500 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 rounded-lg transition-colors"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div >
   );
 };
 

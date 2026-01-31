@@ -1,0 +1,74 @@
+import React, { useEffect } from 'react';
+import { Outlet } from 'react-router-dom';
+import ChatNavbar from './ChatNavbar';
+import ChatSidebar from './ChatSidebar';
+import { socket } from '../utils/socket';
+import { useDispatch } from 'react-redux';
+import { updateChatLatestMessage, updateChat } from '../redux/slices/chatSlice';
+import { CallingProvider } from '../context/CallingContext';
+import { NotificationProvider } from '../context/NotificationContext';
+import IncomingCallModal from './IncomingCallModal';
+import CallOverlay from './CallOverlay';
+import NotificationSidebar from './NotificationSidebar';
+import GroupCallOverlay from './GroupCallOverlay';
+
+const MainLayout = () => {
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        const auth = JSON.parse(localStorage.getItem("auth"));
+        const userId = auth?.user?._id;
+
+        if (userId) {
+            socket.auth = { userId };
+            socket.connect();
+            socket.emit("addUser", userId);
+
+            socket.on("receiveMessage", (msg) => {
+                dispatch(updateChatLatestMessage({ chatId: msg.chat, message: msg }));
+                if (msg.sender?._id !== userId) {
+                    socket.emit("messageDelivered", msg._id);
+                }
+            });
+
+            socket.on("chatUpdated", (chat) => {
+                dispatch(updateChat(chat));
+            });
+        }
+
+        return () => {
+            if (userId) {
+                socket.emit("goOffline", userId);
+                socket.off("receiveMessage");
+                socket.off("chatUpdated");
+                socket.disconnect();
+            }
+        };
+    }, []);
+
+    return (
+        <NotificationProvider>
+            <CallingProvider>
+                <div className="h-screen w-full bg-white dark:bg-[#111727] grid grid-rows-[auto,1fr] overflow-hidden">
+                    <header className="z-50 border-b border-zinc-200 dark:border-zinc-700 bg-white dark:bg-[#111727]">
+                        <ChatNavbar />
+                    </header>
+
+                    <div className="flex overflow-hidden min-h-0">
+                        <ChatSidebar />
+                        <main className="flex-1 flex flex-col overflow-hidden bg-white dark:bg-[#111727]">
+                            <Outlet />
+                        </main>
+                    </div>
+
+                    <IncomingCallModal />
+                    <CallOverlay />
+                    <NotificationSidebar />
+                    <GroupCallOverlay />
+                </div>
+            </CallingProvider>
+        </NotificationProvider>
+    );
+};
+
+export default MainLayout;

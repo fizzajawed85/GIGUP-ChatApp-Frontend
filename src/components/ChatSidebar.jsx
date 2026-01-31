@@ -7,25 +7,30 @@ import {
   MdGroups, MdCall, MdContactPage, MdSettings, MdLogout
 } from "react-icons/md";
 import useTheme from "../hooks/useTheme";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const ChatSidebar = () => {
   const { theme } = useTheme();
   const { pathname } = useLocation();
   const [hovered, setHovered] = useState(null);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("auth");
+    navigate("/login");
+  };
 
   const topIcons = [
     { icon: AiOutlineComment, label: "Chat", link: "/chat" },
-    { icon: TbCircleDot, label: "Status", link: "#" },
-    { icon: MdGroups, label: "Group", link: "#" },
-    { icon: MdCall, label: "Call", link: "#" },
-    { icon: MdContactPage, label: "Contacts", link: "#" },
-    { icon: FaRobot, label: "AI Chat", link: "#" }
+    { icon: TbCircleDot, label: "Updates", link: "/updates" },
+    { icon: MdGroups, label: "Group", link: "/groups" },
+    { icon: MdCall, label: "Call", link: "/calls" },
+    { icon: MdContactPage, label: "Contacts", link: "/contacts" },
+    { icon: FaRobot, label: "AI Chat", link: "/ai-chat" }
   ];
 
   const bottomIcons = [
-    { icon: MdSettings, label: "Settings", link: "#" },
-    { icon: MdLogout, label: "Logout", link: "#" }
+    { icon: MdSettings, label: "Settings", link: "/settings" }
   ];
 
   const baseIconClass = `w-8 h-8 transition-all duration-300
@@ -43,11 +48,10 @@ const ChatSidebar = () => {
     <>
       {/* Desktop Sidebar */}
       <aside
-        className="hidden md:flex flex-col justify-between items-center w-20 bg-white dark:bg-[#111827] border-r border-zinc-300 dark:border-zinc-600 py-4"
-        style={{ height: "calc(100vh - 50px)" }}
+        className="hidden md:flex flex-col justify-between items-center w-20 bg-white dark:bg-[#111827] border-r border-zinc-300 dark:border-zinc-600 pt-4 pb-4 h-full overflow-y-auto no-scrollbar"
       >
         {/* Top Icons */}
-        <div className="flex flex-col items-center  w-full">
+        <div className="flex flex-col items-center w-full">
           {topIcons.map((item, idx) => {
             const IconComp = item.icon;
             const active = isActive(item.link);
@@ -56,16 +60,15 @@ const ChatSidebar = () => {
               <Link
                 key={idx}
                 to={item.link}
-                className={`relative group w-full flex justify-center py-4 transition
+                className={`relative group w-full flex justify-center py-3 transition
                   ${active ? activeBg : ""}
                 `}
                 onMouseEnter={() => setHovered(item.label)}
                 onMouseLeave={() => setHovered(null)}
               >
                 <IconComp
-                  className={`${baseIconClass} ${
-                    !active ? hoverIconClass : ""
-                  }`}
+                  className={`${baseIconClass} ${!active ? hoverIconClass : ""
+                    }`}
                 />
 
                 {hovered === item.label && !active && (
@@ -95,9 +98,8 @@ const ChatSidebar = () => {
                 onMouseLeave={() => setHovered(null)}
               >
                 <IconComp
-                  className={`${baseIconClass} ${
-                    !active ? hoverIconClass : ""
-                  }`}
+                  className={`${baseIconClass} ${!active ? hoverIconClass : ""
+                    }`}
                 />
 
                 {hovered === item.label && !active && (
@@ -108,6 +110,25 @@ const ChatSidebar = () => {
               </Link>
             );
           })}
+
+          {/* Custom Logout Button */}
+          <button
+            onClick={handleLogout}
+            className="relative group w-full flex justify-center py-3 transition hover:bg-red-500 hover:text-white rounded-lg"
+            onMouseEnter={() => setHovered("Logout")}
+            onMouseLeave={() => setHovered(null)}
+          >
+            <MdLogout
+              className={`w-8 h-8 transition-all duration-300 ${theme === "light" ? "text-gray-800" : "text-[#fdf7f0]"
+                } group-hover:text-white`}
+            />
+
+            {hovered === "Logout" && (
+              <span className="absolute left-full top-1/2 -translate-y-1/2 ml-2 px-2 py-1 rounded-md bg-red-600 text-white text-sm whitespace-nowrap z-50">
+                Logout
+              </span>
+            )}
+          </button>
         </div>
       </aside>
 
@@ -137,6 +158,20 @@ const ChatSidebar = () => {
             </Link>
           );
         })}
+
+        {/* Mobile Custom Logout */}
+        <button
+          onClick={handleLogout}
+          className="flex flex-col items-center shrink-0 w-1/4 py-1 rounded-lg hover:bg-red-500 group"
+        >
+          <MdLogout
+            className={`w-7 h-7 transition-all duration-300 ${theme === "light" ? "text-gray-800" : "text-[#fdf7f0]"
+              } group-hover:text-white`}
+          />
+          <span className="text-xs text-gray-700 dark:text-gray-200 mt-1 group-hover:text-white">
+            Logout
+          </span>
+        </button>
       </nav>
     </>
   );

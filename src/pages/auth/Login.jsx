@@ -15,13 +15,24 @@ const Login = () => {
       const data = await loginUser({ email, password });
 
       // SAVE AUTH
-      localStorage.setItem(
-        "auth",
-        JSON.stringify({
-          user: data.user,
-          token: data.token,
-        })
-      );
+      const authData = {
+        user: data.user,
+        token: data.token,
+      };
+      localStorage.setItem("auth", JSON.stringify(authData));
+
+      // SAVE TO ACCOUNTS LIST (for switching)
+      const accounts = JSON.parse(localStorage.getItem("gigup_accounts") || "[]");
+      const exists = accounts.find(acc => acc.user.email === data.user.email);
+      if (!exists) {
+        accounts.push(authData);
+        localStorage.setItem("gigup_accounts", JSON.stringify(accounts));
+      } else {
+        // Update token if already exists
+        const index = accounts.findIndex(acc => acc.user.email === data.user.email);
+        accounts[index] = authData;
+        localStorage.setItem("gigup_accounts", JSON.stringify(accounts));
+      }
 
       alert("Login Successful");
       navigate("/chat");
@@ -35,13 +46,23 @@ const Login = () => {
       const data = await socialLogin(provider);
 
       // SAVE AUTH
-      localStorage.setItem(
-        "auth",
-        JSON.stringify({
-          user: data.user,
-          token: data.token,
-        })
-      );
+      const authData = {
+        user: data.user,
+        token: data.token,
+      };
+      localStorage.setItem("auth", JSON.stringify(authData));
+
+      // SAVE TO ACCOUNTS LIST (for switching)
+      const accounts = JSON.parse(localStorage.getItem("gigup_accounts") || "[]");
+      const exists = accounts.find(acc => acc.user.email === data.user.email);
+      if (!exists) {
+        accounts.push(authData);
+        localStorage.setItem("gigup_accounts", JSON.stringify(accounts));
+      } else {
+        const index = accounts.findIndex(acc => acc.user.email === data.user.email);
+        accounts[index] = authData;
+        localStorage.setItem("gigup_accounts", JSON.stringify(accounts));
+      }
 
       alert(`${provider} login successful`);
       navigate("/chat");

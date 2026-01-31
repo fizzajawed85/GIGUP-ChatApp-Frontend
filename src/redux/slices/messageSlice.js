@@ -18,6 +18,15 @@ const messageSlice = createSlice({
         state.messages.push(action.payload);
       }
     },
+    updateMessage: (state, action) => {
+      const index = state.messages.findIndex(m => m._id === action.payload._id);
+      if (index !== -1) {
+        state.messages[index] = action.payload;
+      }
+    },
+    removeMessage: (state, action) => {
+      state.messages = state.messages.filter(m => m._id !== action.payload);
+    },
     clearMessages: (state) => {
       state.messages = [];
     },
@@ -29,5 +38,5 @@ const messageSlice = createSlice({
   },
 });
 
-export const { addMessage, clearMessages } = messageSlice.actions;
+export const { addMessage, updateMessage, removeMessage, clearMessages } = messageSlice.actions;
 export default messageSlice.reducer;

@@ -3,12 +3,13 @@ import { createChat } from "../services/chat.services";
 
 const AddContactModal = ({ onClose, onChatCreated }) => {
   const [email, setEmail] = useState("");
+  const [nickname, setNickname] = useState("");
   const [username, setUsername] = useState("");
   const [message, setMessage] = useState("");
 
   const handleInvite = async () => {
     try {
-      await createChat(email);
+      await createChat(email, nickname);
       onChatCreated();
       onClose();
     } catch (err) {
@@ -28,14 +29,14 @@ const AddContactModal = ({ onClose, onChatCreated }) => {
         {/* Body */}
         <div className="p-6 space-y-4">
 
-          {/* Email */}
+          {/* Search Query */}
           <div>
             <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              Email
+              Email or Username
             </label>
             <input
-              type="email"
-              placeholder="Enter Email"
+              type="text"
+              placeholder="Enter Email or Username"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full mt-2 p-3 rounded-xl bg-gray-100 dark:bg-[#1f2937]
@@ -44,16 +45,16 @@ const AddContactModal = ({ onClose, onChatCreated }) => {
             />
           </div>
 
-          {/* Username */}
+          {/* Nickname */}
           <div>
             <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              Username
+              Nickname (Optional)
             </label>
             <input
               type="text"
-              placeholder="Enter Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Enter Nickname"
+              value={nickname}
+              onChange={(e) => setNickname(e.target.value)}
               className="w-full mt-2 p-3 rounded-xl bg-gray-100 dark:bg-[#1f2937]
                 focus:outline-none focus:ring-2 focus:ring-sky-400
                 placeholder:text-gray-400 dark:placeholder:text-gray-500"
