@@ -9,7 +9,7 @@ import VoiceMessagePlayer from "./VoiceMessagePlayer";
 import useVoiceRecorder from "../hooks/useVoiceRecorder";
 import { BASE_URL } from "../config";
 
-const AIChatWindow = () => {
+const AIChatWindow = ({ onBack }) => {
     const dispatch = useDispatch();
     const { selectedConversation, messages, sending, error } = useSelector((state) => state.ai);
     const auth = JSON.parse(localStorage.getItem("auth"));
@@ -80,7 +80,10 @@ const AIChatWindow = () => {
                 <div className="flex items-center gap-2">
                     {/* Back Button for Mobile */}
                     <button
-                        onClick={() => dispatch(setSelectedConversation(null))}
+                        onClick={() => {
+                            dispatch(setSelectedConversation(null));
+                            if (onBack) onBack();
+                        }}
                         className="md:hidden p-2 -ml-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors"
                     >
                         <FiArrowLeft className="text-xl text-gray-600 dark:text-gray-300" />

@@ -5,7 +5,7 @@ import { FiPlus, FiMessageSquare, FiTrash2, FiMoreVertical, FiEdit3, FiCheck, Fi
 import { RiRobot2Line } from "react-icons/ri";
 import { deleteAIConversation } from "../services/ai.services";
 
-const AIChatSidebar = () => {
+const AIChatSidebar = ({ onNewChat }) => {
     const dispatch = useDispatch();
     const { conversations, selectedConversation, loading, error } = useSelector((state) => state.ai);
 
@@ -33,6 +33,7 @@ const AIChatSidebar = () => {
     const handleNewChat = () => {
         dispatch(setSelectedConversation(null));
         dispatch(clearAIMessages());
+        if (onNewChat) onNewChat();
     };
 
     const handleSelectConversation = (conv) => {
