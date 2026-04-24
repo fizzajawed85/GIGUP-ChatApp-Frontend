@@ -35,6 +35,10 @@ const Register = () => {
   };
 
   const handleSocialRegister = async (provider) => {
+    alert("Coming Soon! Social login will be available in the next update.");
+    return;
+
+    /*
     try {
       const data = await socialLogin(provider);
 
@@ -58,6 +62,7 @@ const Register = () => {
       console.error(error);
       alert(`${provider} login failed`);
     }
+    */
   };
 
   return (
