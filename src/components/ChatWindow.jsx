@@ -494,8 +494,8 @@ const ChatWindow = () => {
 
       {/* DELETE CONFIRMATION MODAL */}
       {deletingMessage && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="w-full max-w-[320px] bg-white dark:bg-[#233138] rounded-xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
+        <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="w-full sm:max-w-[320px] bg-white dark:bg-[#233138] rounded-t-2xl sm:rounded-xl shadow-2xl overflow-hidden animate-in slide-in-from-bottom sm:zoom-in-95 duration-200">
             <div className="p-6">
               <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-2">Delete message?</h3>
               <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-6">

@@ -18,7 +18,7 @@ const CallOverlay = () => {
     return (
         <div className="fixed inset-0 z-[110] bg-[#0b141a] flex flex-col items-center justify-center p-4 md:p-8">
             {/* REMOTE VIDEO (Fullscreen) */}
-            <div className="relative w-full h-full max-w-5xl aspect-video rounded-3xl overflow-hidden bg-zinc-900 border dark:border-white/5 shadow-2xl">
+            <div className="relative w-full h-full rounded-none md:rounded-3xl overflow-hidden bg-zinc-900 border-0 md:border dark:border-white/5 shadow-2xl">
                 {callAccepted ? (
                     <video playsInline ref={userVideo} autoPlay className="w-full h-full object-cover" />
                 ) : (
@@ -37,13 +37,13 @@ const CallOverlay = () => {
 
                 {/* LOCAL VIDEO (PIP) */}
                 {stream && (
-                    <div className="absolute top-6 right-6 w-32 md:w-48 aspect-video rounded-2xl overflow-hidden bg-black border-2 border-white/20 shadow-xl">
+                    <div className="absolute top-4 right-4 w-24 md:w-48 aspect-video rounded-xl md:rounded-2xl overflow-hidden bg-black border-2 border-white/20 shadow-xl">
                         <video playsInline muted ref={myVideo} autoPlay className="w-full h-full object-cover -scale-x-100" />
                     </div>
                 )}
 
                 {/* CONTROLS */}
-                <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-6 px-8 py-4 bg-white/10 backdrop-blur-md rounded-full border border-white/10 shadow-2xl">
+                <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-4 md:gap-6 px-6 md:px-8 py-3 md:py-4 bg-white/10 backdrop-blur-md rounded-full border border-white/10 shadow-2xl">
                     <button className="p-4 rounded-full bg-white/5 text-white hover:bg-white/20 transition-all">
                         <FiMic className="text-xl" />
                     </button>

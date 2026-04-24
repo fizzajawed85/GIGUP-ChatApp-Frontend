@@ -10,8 +10,8 @@ const IncomingCallModal = () => {
     const isGroup = call.isGroup;
 
     return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
-            <div className="bg-white dark:bg-[#1f2c33] w-full max-w-sm rounded-[32px] overflow-hidden shadow-2xl border dark:border-white/10 p-8 flex flex-col items-center text-center">
+        <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
+            <div className="bg-white dark:bg-[#1f2c33] w-full sm:max-w-sm rounded-t-[32px] sm:rounded-[32px] overflow-hidden shadow-2xl border dark:border-white/10 p-8 flex flex-col items-center text-center animate-in slide-in-from-bottom sm:zoom-in-95 duration-300">
                 <div className="relative mb-6">
                     <div className="w-24 h-24 rounded-full bg-sky-500/10 flex items-center justify-center animate-pulse">
                         <div className="w-20 h-20 rounded-full bg-sky-500 flex items-center justify-center shadow-lg shadow-sky-500/30">

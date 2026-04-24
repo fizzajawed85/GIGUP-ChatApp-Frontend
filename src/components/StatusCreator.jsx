@@ -49,8 +49,8 @@ const StatusCreator = ({ onCancel, onPosted }) => {
     };
 
     return (
-        <div className="flex-1 flex flex-col items-center justify-center bg-zinc-50 dark:bg-[#0b141a] p-6 animate-in slide-in-from-right duration-300">
-            <div className="w-full max-w-xl bg-white dark:bg-[#1f2c33] rounded-3xl shadow-2xl overflow-hidden border dark:border-zinc-700/50">
+        <div className="flex-1 flex flex-col items-center justify-center bg-zinc-50 dark:bg-[#0b141a] p-3 sm:p-6 animate-in slide-in-from-right duration-300">
+            <div className="w-full max-w-xl bg-white dark:bg-[#1f2c33] rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden border dark:border-zinc-700/50">
                 {/* HEADER */}
                 <div className="px-6 py-4 border-b dark:border-zinc-700/50 flex justify-between items-center">
                     <h2 className="text-lg font-bold text-gray-900 dark:text-zinc-100 italic">Create Update</h2>
@@ -64,12 +64,11 @@ const StatusCreator = ({ onCancel, onPosted }) => {
                     className="aspect-video relative flex flex-col items-center justify-center transition-all duration-500 overflow-hidden"
                     style={{ backgroundColor: type === "text" ? bgColor : "#000" }}
                 >
-                    {type === "text" ? (
                         <textarea
                             value={content}
                             onChange={(e) => setContent(e.target.value)}
                             placeholder="Type an update..."
-                            className="w-full h-full bg-transparent text-white text-3xl font-bold text-center p-12 outline-none placeholder:text-white/50 resize-none flex items-center justify-center leading-relaxed"
+                            className="w-full h-full bg-transparent text-white text-xl sm:text-3xl font-bold text-center p-6 sm:p-12 outline-none placeholder:text-white/50 resize-none flex items-center justify-center leading-relaxed"
                         />
                     ) : (
                         <div className="w-full h-full flex flex-col relative group">
@@ -99,8 +98,8 @@ const StatusCreator = ({ onCancel, onPosted }) => {
                 </div>
 
                 {/* TOOLBAR */}
-                <div className="px-6 py-4 flex justify-between items-center bg-white dark:bg-[#1f2c33]">
-                    <div className="flex gap-4">
+                <div className="px-4 sm:px-6 py-3 sm:py-4 flex flex-wrap gap-2 justify-between items-center bg-white dark:bg-[#1f2c33]">
+                    <div className="flex flex-wrap gap-2 items-center">
                         {type === "text" ? (
                             <>
                                 <button
