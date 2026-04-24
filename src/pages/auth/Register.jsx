@@ -63,12 +63,11 @@ const Register = () => {
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
       {/* LEFT SECTION */}
-      <div className="md:w-1/2 flex flex-col justify-start items-start bg-gradient-to-b from-[#000000] to-[#080e1b] text-[#fdf7f0] p-12 md:p-24">
+      <div className="md:w-1/2 flex flex-col justify-center items-start bg-gradient-to-b from-[#000000] to-[#080e1b] text-[#fdf7f0] p-8 md:p-24">
         <img
           src="/images/logo9.png"
           alt="Gigup Logo"
-          className="mb-10"
-          style={{ width: "350px", height: "auto" }}
+          className="mb-6 md:mb-10 w-48 md:w-[350px] h-auto"
         />
         <h1 className="text-4xl font-extrabold mb-4 tracking-tight">
           Connect Seamlessly

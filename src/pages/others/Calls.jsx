@@ -122,9 +122,9 @@ const Calls = () => {
     return (
         <div className="flex flex-col h-full w-full bg-white dark:bg-[#0b1220] overflow-hidden">
             {/* HUB HEADER */}
-            <div className="p-8 border-b dark:border-zinc-800 flex flex-col md:flex-row md:items-center justify-between gap-6 bg-zinc-50/30 dark:bg-black/20">
+            <div className="px-4 md:px-8 py-5 md:py-8 border-b dark:border-zinc-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-zinc-50/30 dark:bg-black/20">
                 <div>
-                    <h2 className="text-3xl font-black text-gray-900 dark:text-white uppercase tracking-tighter leading-none mb-2">Calls Hub</h2>
+                    <h2 className="text-2xl md:text-3xl font-black text-gray-900 dark:text-white uppercase tracking-tighter leading-none mb-1 md:mb-2">Calls Hub</h2>
                     <p className="text-xs font-bold text-sky-500 uppercase tracking-[0.3em]">Communication Network Active</p>
                 </div>
 
@@ -150,7 +150,7 @@ const Calls = () => {
             </div>
 
             {/* FILTERS */}
-            <div className="px-8 py-4 border-b dark:border-zinc-800 flex items-center gap-3 overflow-x-auto custom-scrollbar no-scrollbar">
+            <div className="px-4 md:px-8 py-3 md:py-4 border-b dark:border-zinc-800 flex items-center gap-2 overflow-x-auto custom-scrollbar no-scrollbar">
                 {[
                     { id: "all", label: "All Logs", icon: FiFilter },
                     { id: "missed", label: "Missed", icon: FiPhoneMissed },
@@ -172,7 +172,7 @@ const Calls = () => {
             </div>
 
             {/* CALLS LIST */}
-            <div className="flex-1 overflow-y-auto p-8 space-y-4 custom-scrollbar">
+            <div className="flex-1 overflow-y-auto px-4 md:px-8 py-4 md:py-8 space-y-3 md:space-y-4 custom-scrollbar">
                 {filteredCalls.length === 0 ? (
                     <div className="h-full flex flex-col items-center justify-center text-zinc-300 dark:text-zinc-600">
                         <BsTelephone className="text-8xl mb-6 opacity-20" />

@@ -43,8 +43,8 @@ const ChannelCreator = ({ isOpen, onClose, onCreated }) => {
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-in fade-in duration-300">
-            <div className="w-full max-w-md bg-white dark:bg-[#1f2c33] rounded-3xl shadow-2xl overflow-hidden border dark:border-zinc-700/50 animate-in zoom-in-95 duration-300">
+        <div className="fixed inset-0 z-[110] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-md animate-in fade-in duration-300">
+            <div className="w-full sm:max-w-md bg-white dark:bg-[#1f2c33] rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-hidden border dark:border-zinc-700/50 animate-in slide-in-from-bottom sm:zoom-in-95 duration-300">
                 <div className="px-6 py-4 border-b dark:border-zinc-700/50 flex justify-between items-center">
                     <h2 className="text-xl font-bold text-gray-900 dark:text-zinc-100 italic">Create Channel</h2>
                     <button onClick={onClose} className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors">

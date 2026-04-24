@@ -148,7 +148,7 @@ const Profile = () => {
 
     return (
         <div className="flex-1 overflow-y-auto h-full p-4 md:p-6 bg-white dark:bg-[#111727]">  {/* Matched dark theme bg */}
-            <div className="max-w-4xl mx-auto rounded-2xl shadow-xl overflow-hidden border border-gray-200 dark:border-gray-700">
+        <div className="max-w-4xl mx-auto rounded-2xl shadow-xl overflow-hidden border border-gray-200 dark:border-gray-700">
 
                 {/* Cover Image Area */}
                 <div className="h-48 md:h-64 relative bg-gray-300 dark:bg-gray-700 group">
@@ -163,11 +163,11 @@ const Profile = () => {
                     </label>
                 </div>
 
-                <div className="px-8 pb-8 bg-white dark:bg-[#1f2937]"> {/* Card content bg */}
-                    <div className="relative flex justify-between items-end -mt-16 mb-6">
+                <div className="px-4 md:px-8 pb-8 bg-white dark:bg-[#1f2937]">
+                    <div className="relative flex flex-col sm:flex-row sm:items-end sm:justify-between -mt-12 sm:-mt-16 mb-6 gap-4">
                         {/* Avatar Section */}
                         <div className="relative group">
-                            <div className="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-white dark:border-[#1f2937] overflow-hidden bg-gray-300">
+                            <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 rounded-full border-4 border-white dark:border-[#1f2937] overflow-hidden bg-gray-300">
                                 <img
                                     src={avatarPreview || (user.avatar ? `${BASE_URL}${user.avatar}` : "https://via.placeholder.com/150")}
                                     alt="Profile"
@@ -180,14 +180,14 @@ const Profile = () => {
                             </label>
                         </div>
 
-                        <div className="flex-1 ml-6 text-gray-800 dark:text-white pb-2">
-                            <h1 className="text-3xl font-bold">{user.username}</h1>
-                            <p className="text-gray-500 dark:text-gray-400">{user.email}</p>
+                        <div className="flex-1 sm:ml-6 text-gray-800 dark:text-white sm:pb-2">
+                            <h1 className="text-xl sm:text-3xl font-bold truncate">{user.username}</h1>
+                            <p className="text-gray-500 dark:text-gray-400 text-sm truncate">{user.email}</p>
                         </div>
 
                         <button
                             onClick={handleSubmit}
-                            className="px-6 py-2 bg-sky-500 hover:bg-sky-600 dark:bg-sky-600 dark:hover:bg-sky-700 text-white rounded-lg shadow-md transition flex items-center gap-2 mb-2"
+                            className="w-full sm:w-auto px-6 py-3 sm:py-2 bg-sky-500 hover:bg-sky-600 dark:bg-sky-600 dark:hover:bg-sky-700 text-white rounded-lg shadow-md transition flex items-center justify-center gap-2 sm:mb-2"
                         >
                             <FaSave /> Save
                         </button>

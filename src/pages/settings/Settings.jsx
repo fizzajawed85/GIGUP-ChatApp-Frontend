@@ -46,7 +46,7 @@ const Settings = () => {
     return (
         <div className="flex flex-col h-full w-full bg-white dark:bg-[#0b1220] overflow-hidden">
             {/* HEADER */}
-            <div className="p-8 border-b dark:border-zinc-800 bg-zinc-50/30 dark:bg-black/20 flex items-center gap-4">
+            <div className="px-4 md:px-8 py-5 md:py-8 border-b dark:border-zinc-800 bg-zinc-50/30 dark:bg-black/20 flex items-center gap-3 md:gap-4">
                 <button
                     onClick={() => navigate(-1)}
                     className="p-3 rounded-2xl bg-white dark:bg-[#111727] text-sky-500 shadow-sm border border-zinc-100 dark:border-white/5 active:scale-95 transition-all"
@@ -54,7 +54,7 @@ const Settings = () => {
                     <BsArrowLeft className="text-xl" />
                 </button>
                 <div>
-                    <h2 className="text-3xl font-black text-gray-900 dark:text-white uppercase tracking-tighter leading-none mb-1">Preferences</h2>
+                    <h2 className="text-xl md:text-3xl font-black text-gray-900 dark:text-white uppercase tracking-tighter leading-none mb-1">Preferences</h2>
                     <p className="text-[10px] font-bold text-sky-500 uppercase tracking-[0.3em]">Configure System Identity</p>
                 </div>
             </div>
@@ -64,7 +64,7 @@ const Settings = () => {
                 <div className="p-6">
                     <div
                         onClick={() => navigate("/profile")}
-                        className="bg-white dark:bg-[#1f2937]/30 border border-zinc-100 dark:border-white/5 rounded-[32px] p-6 flex items-center justify-between cursor-pointer hover:border-sky-500/30 transition-all shadow-sm group"
+                        className="bg-white dark:bg-[#1f2937]/30 border border-zinc-100 dark:border-white/5 rounded-[24px] md:rounded-[32px] p-4 md:p-6 flex items-center justify-between cursor-pointer hover:border-sky-500/30 transition-all shadow-sm group"
                     >
                         <div className="flex items-center gap-5">
                             <div className="relative">

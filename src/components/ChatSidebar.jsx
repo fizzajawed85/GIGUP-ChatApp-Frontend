@@ -132,8 +132,8 @@ const ChatSidebar = () => {
         </div>
       </aside>
 
-      {/* Mobile Bottom Bar */}
-      <nav className="fixed bottom-0 left-0 w-full bg-white dark:bg-[#111827] border-t border-zinc-300 dark:border-zinc-600 flex md:hidden overflow-x-auto py-2 px-2 gap-2">
+      {/* Mobile Bottom Bar — WhatsApp-style */}
+      <nav className="fixed bottom-0 left-0 right-0 z-50 flex md:hidden bg-white dark:bg-[#111827] border-t border-zinc-200 dark:border-zinc-700 safe-area-pb">
         {topIcons.concat(bottomIcons).map((item, idx) => {
           const IconComp = item.icon;
           const active = isActive(item.link);
@@ -142,35 +142,32 @@ const ChatSidebar = () => {
             <Link
               key={idx}
               to={item.link}
-              className={`flex flex-col items-center shrink-0 w-1/4 py-1 rounded-lg
-                ${active ? activeBg : ""}
-              `}
+              className="flex flex-col items-center justify-center flex-1 py-2 relative transition-all active:scale-95"
             >
+              {active && (
+                <span className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 rounded-full bg-sky-500" />
+              )}
               <IconComp
-                className={`w-7 h-7 transition-all duration-300
-                  ${theme === "light" ? "text-gray-800" : "text-[#fdf7f0]"}
-                  ${!active ? "hover:text-sky-400 dark:hover:text-sky-500 hover:scale-110" : ""}
+                className={`w-6 h-6 transition-all duration-200
+                  ${active ? "text-sky-500 scale-110" : theme === "light" ? "text-gray-500" : "text-gray-400"}
                 `}
               />
-              <span className="text-xs text-gray-700 dark:text-gray-200 mt-1">
+              <span className={`text-[10px] mt-1 font-medium transition-colors
+                ${active ? "text-sky-500" : "text-gray-400 dark:text-gray-500"}
+              `}>
                 {item.label}
               </span>
             </Link>
           );
         })}
 
-        {/* Mobile Custom Logout */}
+        {/* Logout */}
         <button
           onClick={handleLogout}
-          className="flex flex-col items-center shrink-0 w-1/4 py-1 rounded-lg hover:bg-red-500 group"
+          className="flex flex-col items-center justify-center flex-1 py-2 active:scale-95 transition-all"
         >
-          <MdLogout
-            className={`w-7 h-7 transition-all duration-300 ${theme === "light" ? "text-gray-800" : "text-[#fdf7f0]"
-              } group-hover:text-white`}
-          />
-          <span className="text-xs text-gray-700 dark:text-gray-200 mt-1 group-hover:text-white">
-            Logout
-          </span>
+          <MdLogout className={`w-6 h-6 ${theme === "light" ? "text-gray-500" : "text-gray-400"} hover:text-red-500`} />
+          <span className="text-[10px] mt-1 font-medium text-gray-400 dark:text-gray-500">Logout</span>
         </button>
       </nav>
     </>

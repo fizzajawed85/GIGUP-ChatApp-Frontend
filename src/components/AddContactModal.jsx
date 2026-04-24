@@ -18,8 +18,8 @@ const AddContactModal = ({ onClose, onChatCreated }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-      <div className="w-[520px] max-w-[95%] bg-white dark:bg-[#111827] rounded-3xl shadow-lg overflow-hidden">
+    <div className="fixed inset-0 bg-black/50 flex items-end sm:items-center justify-center z-50 p-0 sm:p-4">
+      <div className="w-full sm:w-[520px] sm:max-w-[95%] bg-white dark:bg-[#111827] rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-hidden">
 
         {/* Header */}
         <div className="bg-[#1982c4] dark:bg-[#1982c4] p-4">
