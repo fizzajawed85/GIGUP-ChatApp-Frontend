@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import { FaGoogle, FaFacebookF, FaSkype, FaPhoneAlt } from "react-icons/fa";
 import { loginUser, socialLogin } from "../../services/authService";
 
@@ -34,15 +35,17 @@ const Login = () => {
         localStorage.setItem("gigup_accounts", JSON.stringify(accounts));
       }
 
-      alert("Login Successful");
+      toast.success("Login Successful");
       navigate("/chat");
     } catch (error) {
-      alert(error.response?.data?.message || "Login Failed");
+      toast.error(error.response?.data?.message || "Login Failed");
     }
   };
 
   const handleSocialLogin = async (provider) => {
-    alert("Coming Soon! Social login will be available in the next update.");
+    toast("Coming Soon! Social login will be available in the next update.", {
+      icon: '⏳',
+    });
     return;
 
     /*
@@ -68,11 +71,11 @@ const Login = () => {
         localStorage.setItem("gigup_accounts", JSON.stringify(accounts));
       }
 
-      alert(`${provider} login successful`);
+      toast.success(`${provider} login successful`);
       navigate("/chat");
     } catch (error) {
       console.error(error);
-      alert(`${provider} login failed`);
+      toast.error(`${provider} login failed`);
     }
     */
   };

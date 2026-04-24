@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import toast from "react-hot-toast";
 import { FaCamera, FaSave, FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaMapMarkerAlt } from "react-icons/fa";
 import { getProfile, updateProfile, uploadAvatar, uploadCover } from "../../services/userService";
 import { BASE_URL } from "../../config";
@@ -88,10 +89,10 @@ const Profile = () => {
                         localStorage.setItem("gigup_accounts", JSON.stringify(accounts));
                     }
                 }
-                alert("Avatar updated!");
+                toast.success("Avatar updated!");
             } catch (error) {
                 console.error(error);
-                alert("Failed to upload avatar");
+                toast.error("Failed to upload avatar");
             } finally {
                 setUploading(false);
             }
@@ -108,10 +109,10 @@ const Profile = () => {
             try {
                 const res = await uploadCover(formData);
                 setUser(prev => ({ ...prev, coverImage: res.coverImage }));
-                alert("Cover image updated!");
+                toast.success("Cover image updated!");
             } catch (error) {
                 console.error(error);
-                alert("Failed to upload cover image");
+                toast.error("Failed to upload cover image");
             } finally {
                 setUploading(false);
             }
@@ -137,10 +138,10 @@ const Profile = () => {
                     localStorage.setItem("gigup_accounts", JSON.stringify(accounts));
                 }
             }
-            alert("Profile updated successfully!");
+            toast.success("Profile updated successfully!");
         } catch (error) {
             console.error(error);
-            alert("Failed to update profile");
+            toast.error("Failed to update profile");
         }
     };
 

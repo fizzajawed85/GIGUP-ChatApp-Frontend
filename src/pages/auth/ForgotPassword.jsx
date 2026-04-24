@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
 import { forgotPassword } from "../../services/authService";
 import { useNavigate } from "react-router-dom";
 
@@ -24,7 +25,7 @@ const ForgotPassword = () => {
       const data = await forgotPassword({ email });
 
       // backend response
-      alert(data.message);
+      toast.success(data.message);
       
       //  redirect to OTP verify page
       navigate("/verify-otp", {
@@ -34,7 +35,7 @@ const ForgotPassword = () => {
       setEmail("");
     } catch (error) {
         console.error("Forgot Password Error:", error);
-      alert(error.response?.data?.message || "Something went wrong");
+      toast.error(error.response?.data?.message || "Something went wrong");
     } finally {
       setLoading(false);
     }

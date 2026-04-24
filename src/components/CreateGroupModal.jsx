@@ -3,6 +3,7 @@ import { IoClose } from "react-icons/io5";
 import { createGroup } from "../services/group.services";
 import { useSelector } from "react-redux";
 import { BASE_URL } from "../config";
+import toast from "react-hot-toast";
 
 const CreateGroupModal = ({ onClose, onGroupCreated }) => {
     const { chats } = useSelector((state) => state.chat);
@@ -43,7 +44,7 @@ const CreateGroupModal = ({ onClose, onGroupCreated }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!formData.name.trim() || selectedMembers.length === 0) {
-            alert("Please enter a group name and select at least one member");
+            toast.error("Please enter a group name and select at least one member");
             return;
         }
 
@@ -60,11 +61,12 @@ const CreateGroupModal = ({ onClose, onGroupCreated }) => {
             });
 
             await createGroup(data);
+            toast.success("Group created successfully!");
             onGroupCreated();
             onClose();
         } catch (err) {
             console.error("Failed to create group:", err);
-            alert("Failed to create group.");
+            toast.error("Failed to create group.");
         } finally {
             setLoading(false);
         }

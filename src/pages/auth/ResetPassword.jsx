@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import { resetPassword } from "../../services/authService";
 
 const ResetPassword = () => {
@@ -12,17 +13,17 @@ const ResetPassword = () => {
     e.preventDefault();
 
     if (!password) {
-      alert("Password is required");
+      toast.error("Password is required");
       return;
     }
 
     try {
       setLoading(true);
       const data = await resetPassword(token, { password });
-      alert(data.message);
+      toast.success(data.message);
       navigate("/login");
     } catch (error) {
-      alert(error.response?.data?.message || "Reset failed");
+      toast.error(error.response?.data?.message || "Reset failed");
     } finally {
       setLoading(false);
     }

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { createChat } from "../services/chat.services";
+import toast from "react-hot-toast";
 
 const AddContactModal = ({ onClose, onChatCreated }) => {
   const [email, setEmail] = useState("");
@@ -10,10 +11,11 @@ const AddContactModal = ({ onClose, onChatCreated }) => {
   const handleInvite = async () => {
     try {
       await createChat(email, nickname);
+      toast.success("Contact added successfully!");
       onChatCreated();
       onClose();
     } catch (err) {
-      alert(err.response?.data?.message || "User not found");
+      toast.error(err.response?.data?.message || "User not found");
     }
   };
 

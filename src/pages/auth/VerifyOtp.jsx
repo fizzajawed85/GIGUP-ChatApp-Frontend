@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
+import toast from "react-hot-toast";
 import axios from "axios";
 import { API_BASE_URL } from "../../config";
 
@@ -37,8 +38,8 @@ const VerifyOtp = () => {
     e.preventDefault();
     const otpString = otp.join("");
 
-    if (otpString.length < 6) {
-      alert("Please enter full 6-digit OTP");
+    if (otp.some((v) => v === "")) {
+      toast.error("Please enter full 6-digit OTP");
       return;
     }
 
@@ -50,10 +51,12 @@ const VerifyOtp = () => {
         { email, otp: otpString }
       );
 
-      alert(res.data.message);
-      navigate(`/reset-password/${res.data.resetToken}`);
+      if (res.data.success) {
+        toast.success(res.data.message);
+        navigate(`/reset-password/${res.data.resetToken}`);
+      }
     } catch (error) {
-      alert(error.response?.data?.message || "OTP verification failed");
+      toast.error(error.response?.data?.message || "OTP verification failed");
     } finally {
       setLoading(false);
     }

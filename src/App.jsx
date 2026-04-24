@@ -19,9 +19,13 @@ import Calls from "./pages/others/Calls";
 import Contacts from "./pages/others/Contacts";
 import AIChat from "./pages/others/AIChat";
 
+import { Toaster } from "react-hot-toast";
+
 function App() {
   return (
-    <Routes>
+    <>
+      <Toaster position="top-center" reverseOrder={false} />
+      <Routes>
       <Route path="/" element={<Navigate to="/login" />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
@@ -44,7 +48,8 @@ function App() {
       </Route>
 
       <Route path="/chat-navbar" element={<ChatNavbar />} />
-    </Routes>
+      </Routes>
+    </>
   );
 }
 

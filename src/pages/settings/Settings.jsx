@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import useTheme from "../../hooks/useTheme";
 import {
     FiChevronRight,
@@ -96,14 +97,14 @@ const Settings = () => {
                         icon={FiUser}
                         title="Account"
                         subtitle="Security notifications, change number"
-                        onClick={() => alert("GIGUP Account Settings: Feature coming soon")}
+                        onClick={() => toast("Feature coming soon! 🚀", { icon: '⏳' })}
                     />
 
                     <SettingItem
                         icon={FiShield}
                         title="Privacy"
                         subtitle="Block contacts, disappearing messages"
-                        onClick={() => alert("GIGUP Privacy Center: Feature coming soon")}
+                        onClick={() => toast("Feature coming soon! 🚀", { icon: '⏳' })}
                     />
 
                     <SettingItem
@@ -121,21 +122,21 @@ const Settings = () => {
                         icon={FiMessageSquare}
                         title="Chats"
                         subtitle="Theme, wallpapers, chat history"
-                        onClick={() => alert("Chat Configuration: Feature coming soon")}
+                        onClick={() => toast("Feature coming soon! 🚀", { icon: '⏳' })}
                     />
 
                     <SettingItem
                         icon={FiBell}
                         title="Notifications"
                         subtitle="Message, group & call tones"
-                        onClick={() => alert("Sync Alerts: Feature coming soon")}
+                        onClick={() => toast("Feature coming soon! 🚀", { icon: '⏳' })}
                     />
 
                     <SettingItem
                         icon={FiDatabase}
                         title="Storage and Data"
                         subtitle="Network usage, auto-download"
-                        onClick={() => alert("Signal Data: Feature coming soon")}
+                        onClick={() => toast("Feature coming soon! 🚀", { icon: '⏳' })}
                     />
 
                     <div className="px-8 py-4">
@@ -146,7 +147,7 @@ const Settings = () => {
                         icon={FiHelpCircle}
                         title="Help"
                         subtitle="Help center, contact us, privacy policy"
-                        onClick={() => alert("GIGUP Support: Feature coming soon")}
+                        onClick={() => toast("Feature coming soon! 🚀", { icon: '⏳' })}
                     />
                 </div>
 
