@@ -99,20 +99,13 @@ const ChatNavbar = () => {
           <img
             src={user?.avatar ? `${BASE_URL}${user.avatar}` : "/avatar.png"}
             alt="Profile"
-            className="hidden md:block w-10 h-10 rounded-full cursor-pointer border border-sky-400 dark:border-sky-500 object-cover hover:ring-2 ring-sky-300 transition-all"
+            className="w-10 h-10 rounded-full cursor-pointer border border-sky-400 dark:border-sky-500 object-cover hover:ring-2 ring-sky-300 transition-all"
             onClick={() => setIsDropdownOpen(prev => !prev)}
           />
           {/* Status Dot */}
           <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white dark:border-gray-900 rounded-full"></span>
         </div>
 
-        {/* Mobile Hamburger / Profile */}
-        <button
-          className="md:hidden p-2 sm:p-3 rounded-full border border-blue-300 dark:border-zinc-600 transition hover:bg-sky-400 dark:hover:bg-sky-500"
-          onClick={() => setIsDropdownOpen(prev => !prev)}
-        >
-          <FaBars className="text-gray-800 dark:text-[#fdf7f0]" />
-        </button>
 
         {/* Dropdown for Mobile Hamburger / Desktop Profile */}
         {isDropdownOpen && (
