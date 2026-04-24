@@ -74,30 +74,29 @@ const Login = () => {
 
 
   return (
-    <div className="min-h-screen w-full flex flex-col md:flex-row bg-[#0b1220]">
-      {/* LEFT SECTION - Branding */}
-      <div className="hidden md:flex md:w-1/2 flex-col justify-start items-start bg-gradient-to-b from-black via-[#040914] to-[#0c1a30] text-[#fdf7f0] p-12 md:p-24 border-r border-white/5">
+    <div className="min-h-screen w-full flex flex-row md:flex-row bg-[#0b1220] overflow-x-auto md:overflow-hidden snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+      {/* LEFT SECTION - Branding (Page 1 on mobile) */}
+      <div className="w-full md:w-1/2 shrink-0 flex flex-col justify-center items-center md:items-start text-center md:text-left bg-gradient-to-b from-black via-[#040914] to-[#0c1a30] text-[#fdf7f0] p-8 md:p-24 border-r border-white/5 snap-start min-h-screen md:min-h-0">
         <img
           src="/images/logo9.png"
           alt="Gigup Logo"
-          className="mb-10 w-[350px] h-auto drop-shadow-[0_0_15px_rgba(255,255,255,0.05)]"
+          className="mb-8 md:mb-10 w-[250px] md:w-[350px] h-auto drop-shadow-[0_0_15px_rgba(255,255,255,0.05)]"
         />
-        <h1 className="text-4xl font-extrabold mb-4 tracking-tight">
+        <h1 className="text-3xl md:text-4xl font-extrabold mb-4 tracking-tight">
           Connect Seamlessly
         </h1>
-        <p className="text-xl text-[#dcd8d8] max-w-md">
+        <p className="text-base md:text-xl text-[#dcd8d8] max-w-md mx-auto md:mx-0">
           Gigup brings you closer to your friends and colleagues. Share messages, files, and experiences instantly.
         </p>
+        <div className="mt-10 md:hidden flex flex-col items-center gap-2 animate-bounce opacity-60">
+           <span className="text-sm">Swipe to Login</span>
+           <div className="w-6 h-6 border-r-2 border-b-2 border-white rotate-[-45deg]"></div>
+        </div>
       </div>
 
-      {/* RIGHT SECTION - Form container */}
-      <div className="flex-1 md:w-1/2 flex flex-col items-center justify-center p-4 md:p-8 min-h-screen">
-        <div className="w-full max-w-md bg-[#161d2f]/60 backdrop-blur-3xl rounded-3xl shadow-[0_0_60px_rgba(0,0,0,0.4)] border border-white/10 p-6 md:p-10 space-y-5 my-6">
-          {/* Mobile Logo - shown only on mobile */}
-          <div className="flex justify-center mb-2 md:hidden">
-            <img src="/images/logo9.png" alt="Gigup" className="w-36 h-auto" />
-          </div>
-
+      {/* RIGHT SECTION - Form (Page 2 on mobile) */}
+      <div className="w-full md:w-1/2 shrink-0 flex flex-col items-center justify-center p-4 md:p-8 snap-start min-h-screen md:min-h-0">
+        <div className="w-full max-w-md bg-[#161d2f]/60 backdrop-blur-3xl rounded-3xl shadow-[0_0_60px_rgba(0,0,0,0.4)] border border-white/10 p-6 md:p-10 space-y-5">
           <h2 className="text-2xl md:text-3xl font-bold text-white text-center">
             Welcome Back
           </h2>
