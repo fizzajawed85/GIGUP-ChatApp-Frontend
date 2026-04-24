@@ -80,19 +80,16 @@ const Register = () => {
 
       {/* RIGHT SECTION */}
       <div className="flex-1 md:w-1/2 flex justify-center items-center bg-[#0b1220] p-4 md:p-12 min-h-screen md:min-h-0">
-        <div className="w-full max-w-md bg-white/10 backdrop-blur-2xl rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.5)] border border-white/20 p-6 md:p-10 space-y-5 relative overflow-hidden">
-          {/* Subtle whitish shine overlay */}
-          <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none"></div>
-
+        <div className="w-full max-w-md bg-[#161d2f]/60 backdrop-blur-3xl rounded-3xl shadow-[0_0_60px_rgba(0,0,0,0.4)] border border-white/10 p-6 md:p-10 space-y-5">
           {/* Mobile Logo */}
-          <div className="flex justify-center mb-2 md:hidden relative z-10">
+          <div className="flex justify-center mb-2 md:hidden">
             <img src="/images/logo9.png" alt="Gigup" className="w-36 h-auto" />
           </div>
 
-          <h2 className="text-2xl md:text-3xl font-bold text-white text-center relative z-10">
+          <h2 className="text-2xl md:text-3xl font-bold text-white text-center">
             Register Account
           </h2>
-          <p className="text-[#dcd8d8] text-center text-sm opacity-80 relative z-10">
+          <p className="text-[#dcd8d8] text-center text-sm opacity-80">
             Get your free Gigup account now.
           </p>
 
