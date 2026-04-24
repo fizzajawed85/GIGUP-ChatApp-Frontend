@@ -108,7 +108,7 @@ const ChatNavbar = () => {
 
         {/* Mobile Hamburger / Profile */}
         <button
-          className="p-2 sm:p-3 rounded-full border border-blue-300 dark:border-zinc-600 transition hover:bg-sky-400 dark:hover:bg-sky-500"
+          className="md:hidden p-2 sm:p-3 rounded-full border border-blue-300 dark:border-zinc-600 transition hover:bg-sky-400 dark:hover:bg-sky-500"
           onClick={() => setIsDropdownOpen(prev => !prev)}
         >
           <FaBars className="text-gray-800 dark:text-[#fdf7f0]" />
