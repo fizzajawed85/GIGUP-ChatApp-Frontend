@@ -55,7 +55,7 @@ const aiSlice = createSlice({
             })
             .addCase(fetchAIConversations.fulfilled, (state, action) => {
                 state.loading = false;
-                state.conversations = Array.isArray(action.payload) ? action.payload : [];
+                state.conversations = action.payload;
             })
             .addCase(fetchAIConversations.rejected, (state, action) => {
                 state.loading = false;
@@ -63,7 +63,7 @@ const aiSlice = createSlice({
             })
             // Fetch Messages
             .addCase(fetchAIMessages.fulfilled, (state, action) => {
-                state.messages = Array.isArray(action.payload) ? action.payload : [];
+                state.messages = action.payload;
             })
             // Send Message
             .addCase(sendAIMessage.pending, (state) => {
