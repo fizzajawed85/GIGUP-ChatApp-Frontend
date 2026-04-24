@@ -100,6 +100,7 @@ const ChannelWindow = ({ channel, onBack }) => {
                         <p className="text-[11px] text-zinc-500 dark:text-zinc-400">{channel.followers?.length || 0} followers</p>
                     </div>
                 </div>
+                </div>
 
                 <div className="flex items-center gap-5 text-xl text-gray-600 dark:text-gray-300">
                     <FiSearch className="cursor-pointer hover:text-sky-500 transition-colors" />
