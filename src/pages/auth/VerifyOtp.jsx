@@ -9,14 +9,36 @@ const VerifyOtp = () => {
 
   const email = location.state?.email;
 
-  const [otp, setOtp] = useState("");
+  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [loading, setLoading] = useState(false);
+
+  const handleOtpChange = (element, index) => {
+    if (isNaN(element.value)) return false;
+
+    const newOtp = [...otp];
+    newOtp[index] = element.value;
+    setOtp(newOtp);
+
+    // Focus next input
+    if (element.nextSibling && element.value !== "") {
+      element.nextSibling.focus();
+    }
+  };
+
+  const handleKeyDown = (e, index) => {
+    if (e.key === "Backspace") {
+      if (otp[index] === "" && e.target.previousSibling) {
+        e.target.previousSibling.focus();
+      }
+    }
+  };
 
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
+    const otpString = otp.join("");
 
-    if (!otp) {
-      alert("OTP is required");
+    if (otpString.length < 6) {
+      alert("Please enter full 6-digit OTP");
       return;
     }
 
@@ -25,11 +47,10 @@ const VerifyOtp = () => {
 
       const res = await axios.post(
         `${API_BASE_URL}/auth/verify-otp`,
-        { email, otp }
+        { email, otp: otpString }
       );
 
       alert(res.data.message);
-
       navigate(`/reset-password/${res.data.resetToken}`);
     } catch (error) {
       alert(error.response?.data?.message || "OTP verification failed");
@@ -58,35 +79,43 @@ const VerifyOtp = () => {
 
       {/* RIGHT SECTION */}
       <div className="flex-1 md:w-1/2 flex justify-center items-center bg-black p-4 md:p-12 min-h-screen md:min-h-0">
-        <div className="w-full max-w-md bg-zinc-900/40 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/10 p-6 md:p-10 space-y-5">
+        <div className="w-full max-w-md bg-zinc-900/40 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/10 p-6 md:p-10 space-y-8">
           {/* Mobile Logo */}
           <div className="flex justify-center mb-2 md:hidden">
             <img src="/images/logo9.png" alt="Gigup" className="w-36 h-auto mix-blend-screen contrast-125" />
           </div>
 
-          <h2 className="text-2xl md:text-3xl font-bold text-white text-center">
-            OTP Verification
-          </h2>
+          <div className="text-center">
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
+              OTP Verification
+            </h2>
+            <p className="text-[#dcd8d8] text-sm opacity-60">
+              Enter 6-digit code sent to <span className="text-sky-400">{email}</span>
+            </p>
+          </div>
 
-          <p className="text-[#dcd8d8] text-center text-sm opacity-80">
-            Please enter the OTP we sent to your email.
-          </p>
-
-          <form className="space-y-4" onSubmit={handleVerifyOtp}>
-            <input
-              type="text"
-              placeholder="Enter 6-digit OTP"
-              value={otp}
-              onChange={(e) => setOtp(e.target.value)}
-              className="input-base"
-            />
+          <form className="space-y-8" onSubmit={handleVerifyOtp}>
+            <div className="flex justify-center gap-2 sm:gap-3">
+              {otp.map((data, index) => (
+                <input
+                  key={index}
+                  type="text"
+                  maxLength="1"
+                  value={data}
+                  onChange={(e) => handleOtpChange(e.target, index)}
+                  onKeyDown={(e) => handleKeyDown(e, index)}
+                  onFocus={(e) => e.target.select()}
+                  className="w-10 h-12 sm:w-12 sm:h-14 text-center text-xl font-bold bg-white/5 border border-white/10 rounded-xl text-white focus:border-sky-500 focus:ring-1 focus:ring-sky-500 outline-none transition-all"
+                />
+              ))}
+            </div>
 
             <button
               type="submit"
-              className="w-full btn-primary"
+              className="w-full py-4 rounded-2xl bg-sky-500 hover:bg-sky-600 text-white font-bold shadow-lg shadow-sky-500/20 transition-all disabled:opacity-50"
               disabled={loading}
             >
-              {loading ? "Verifying..." : "Verify OTP"}
+              {loading ? "Verifying..." : "Verify & Continue"}
             </button>
           </form>
 
