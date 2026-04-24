@@ -16,7 +16,9 @@ const MainLayout = () => {
     const dispatch = useDispatch();
     const { selectedChat } = useSelector((state) => state.chat);
     const { selectedGroup } = useSelector((state) => state.group);
-    const { selectedConversation, newChatActive } = useSelector((state) => state.ai);
+    const aiState = useSelector((state) => state.ai);
+    const selectedConversation = aiState?.selectedConversation;
+    const newChatActive = aiState?.newChatActive;
     const isWindowOpen = !!(selectedChat || selectedGroup || selectedConversation || newChatActive);
 
     useEffect(() => {

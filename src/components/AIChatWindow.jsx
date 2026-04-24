@@ -128,7 +128,7 @@ const AIChatWindow = ({ onBack }) => {
                     </div>
                 )}
                 {(!Array.isArray(messages) || messages.length === 0) ? (
-                    <div className="h-full flex flex-col items-center justify-center text-center space-y-4 px-6 opacity-60">
+                    <div className="flex-1 min-h-[400px] flex flex-col items-center justify-center text-center space-y-4 px-6 opacity-60">
                         <div className="w-20 h-20 rounded-full bg-sky-100 dark:bg-sky-900/20 flex items-center justify-center text-sky-500 mb-2 shadow-inner">
                             <RiRobot2Line className="text-5xl opacity-80" />
                         </div>
