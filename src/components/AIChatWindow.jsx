@@ -237,7 +237,7 @@ const AIChatWindow = () => {
                     </button>
                 </div>
 
-                <div className="flex-1 relative flex items-center gap-2">
+                <div className="flex-1 relative flex items-center min-w-0">
                     <input
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
@@ -246,8 +246,8 @@ const AIChatWindow = () => {
                                 handleSend();
                             }
                         }}
-                        placeholder="Message Giga..."
-                        className="flex-1 px-4 py-2 rounded-full bg-zinc-100 dark:bg-[#1f2937] outline-none text-sm text-gray-900 dark:text-white border-transparent focus:border-sky-500/50 border transition-all"
+                        placeholder="Message..."
+                        className="flex-1 min-w-0 px-3 py-2 rounded-full bg-zinc-100 dark:bg-[#1f2937] outline-none text-xs sm:text-sm text-gray-900 dark:text-white border-transparent focus:border-sky-500/50 border transition-all"
                     />
                 </div>
 

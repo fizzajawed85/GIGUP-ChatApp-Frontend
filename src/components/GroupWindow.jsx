@@ -384,13 +384,15 @@ const GroupWindow = () => {
                     <FiImage className="text-xl" />
                 </button>
 
-                <input
-                    value={text}
-                    onChange={handleTyping}
-                    onKeyDown={(e) => e.key === "Enter" && handleSend()}
-                    placeholder="Type a message..."
-                    className="flex-1 px-4 py-2 rounded-full bg-[#f3f4f6] dark:bg-[#1f2937] outline-none text-sm text-gray-900 dark:text-white"
-                />
+                <div className="flex-1 relative flex items-center min-w-0">
+                    <input
+                        value={text}
+                        onChange={handleTyping}
+                        onKeyDown={(e) => e.key === "Enter" && handleSend()}
+                        placeholder="Type a message..."
+                        className="flex-1 min-w-0 px-4 py-2 rounded-full bg-[#f3f4f6] dark:bg-[#1f2937] outline-none text-sm text-gray-900 dark:text-white"
+                    />
+                </div>
 
                 {/* Voice Recording UI */}
                 <div

@@ -427,16 +427,17 @@ const ChatWindow = () => {
           <FiImage className="text-xl" />
         </button>
 
-        <input
-          value={text}
-          onChange={handleTextChange}
-          onKeyDown={(e) => e.key === "Enter" && handleSend()}
-          placeholder={editingMessage ? "Edit message..." : "Type your message..."}
-          className="flex-1 px-4 py-2 rounded-full bg-[#f3f4f6] dark:bg-[#1f2937] outline-none text-sm text-gray-900 dark:text-white"
-          autoFocus={!!editingMessage}
-        />
+        <div className="flex-1 relative flex items-center min-w-0">
+          <input
+            value={text}
+            onChange={handleTextChange}
+            onKeyDown={(e) => e.key === "Enter" && handleSend()}
+            placeholder={editingMessage ? "Edit..." : "Type message..."}
+            className="flex-1 min-w-0 px-3 py-2 rounded-full bg-[#f3f4f6] dark:bg-[#1f2937] outline-none text-xs sm:text-sm text-gray-900 dark:text-white border-transparent focus:border-sky-500/50 border transition-all"
+            autoFocus={!!editingMessage}
+          />
+        </div>
 
-        {/* Voice Recording UI */}
         {/* Voice Recording UI */}
         <div
           className="flex items-center select-none touch-none"
