@@ -248,7 +248,7 @@ const GroupWindow = () => {
     }
 
     return (
-        <div className="flex flex-col flex-1 h-full min-w-0 bg-white dark:bg-[#0b1220] overflow-hidden">
+        <div className="flex flex-col flex-1 w-full h-full min-w-0 bg-white dark:bg-[#0b1220] overflow-hidden">
             {/* HEADER */}
             <div className="h-16 px-4 flex items-center justify-between border-b dark:border-zinc-700 bg-white dark:bg-[#0b1220] shrink-0">
                 <div className="flex items-center gap-2">

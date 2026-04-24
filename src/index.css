@@ -8,15 +8,15 @@
     @apply font-sans;
     scroll-behavior: smooth;
     height: 100%;
-    overflow-x: hidden;
-    overflow-y: auto;
+    overflow: hidden; /* Prevent whole page scroll */
   }
 
   body {
     @apply bg-lightbg text-gray-900 dark:bg-darkbg dark:text-gray-100 transition-colors duration-300;
     height: 100%;
-    overflow-x: hidden;
-    overflow-y: auto;
+    overflow: hidden; /* Prevent whole page scroll */
+    position: fixed; /* Extra protection against rubber-banding on iOS */
+    width: 100%;
   }
 
   #root {

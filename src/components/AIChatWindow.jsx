@@ -74,7 +74,7 @@ const AIChatWindow = () => {
     };
 
     return (
-        <div className="flex-1 flex flex-col h-full bg-white dark:bg-[#0b1220] overflow-hidden">
+        <div className="flex-1 flex flex-col w-full h-full bg-white dark:bg-[#0b1220] overflow-hidden">
             {/* Header */}
             <div className="h-16 px-4 border-b dark:border-zinc-700 flex items-center justify-between bg-white dark:bg-[#0b1220] shrink-0">
                 <div className="flex items-center gap-2">
