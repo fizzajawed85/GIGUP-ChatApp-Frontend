@@ -32,11 +32,11 @@ const ResetPassword = () => {
     <div className="min-h-screen flex flex-col md:flex-row">
 
       {/* LEFT SECTION - hidden on mobile */}
-      <div className="hidden md:flex md:w-1/2 flex-col justify-start items-start bg-gradient-to-b from-black via-black/90 to-[#1e3a8a] text-[#fdf7f0] p-12 md:p-24 border-r border-white/5">
+      <div className="hidden md:flex md:w-1/2 flex-col justify-start items-start bg-gradient-to-b from-black via-black/95 to-[#050a15] text-[#fdf7f0] p-12 md:p-24 border-r border-white/5">
         <img
           src="/images/logo9.png"
           alt="Gigup Logo"
-          className="mb-10 w-[350px] h-auto drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]"
+          className="mb-10 w-[350px] h-auto drop-shadow-[0_0_15px_rgba(255,255,255,0.05)]"
         />
         <h1 className="text-4xl font-extrabold mb-4 tracking-tight">
           Create New Password
@@ -49,7 +49,7 @@ const ResetPassword = () => {
 
       {/* RIGHT SECTION */}
       <div className="flex-1 md:w-1/2 flex justify-center items-center bg-[#0b1220] p-4 md:p-12 min-h-screen md:min-h-0">
-        <div className="w-full max-w-md bg-[#161d2f]/60 backdrop-blur-3xl rounded-3xl shadow-[0_0_60px_rgba(0,0,0,0.4)] border border-white/10 p-6 md:p-10 space-y-5">
+        <div className="w-full max-w-md bg-white/[0.03] backdrop-blur-3xl rounded-3xl shadow-[0_0_60px_rgba(0,0,0,0.4)] border border-white/10 p-6 md:p-10 space-y-5">
           {/* Mobile Logo */}
           <div className="flex justify-center mb-2 md:hidden">
             <img src="/images/logo9.png" alt="Gigup" className="w-36 h-auto" />
