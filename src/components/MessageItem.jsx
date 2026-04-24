@@ -84,9 +84,9 @@ const MessageItem = ({ message, isOwnMessage, onEdit, onDelete }) => {
             isOwnMessage && !message.isDeleted && (
               <div className="flex items-center -mr-1">
                 {message.status === "sent" ? (
-                  <BsCheck className="text-zinc-400 dark:text-zinc-500 text-[20px]" />
+                  <BsCheck className="text-zinc-500 dark:text-zinc-400 text-[20px] stroke-[0.5]" />
                 ) : (
-                  <BsCheckAll className={`${message.status === "seen" ? "text-sky-400" : "text-zinc-400 dark:text-zinc-500"} text-[20px]`} />
+                  <BsCheckAll className={`${message.status === "seen" ? "text-sky-500" : "text-zinc-500 dark:text-zinc-400"} text-[20px] stroke-[0.5]`} />
                 )}
               </div>
             )

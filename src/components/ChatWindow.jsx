@@ -407,7 +407,7 @@ const ChatWindow = () => {
       )}
 
       {/* INPUT */}
-      <div className="sticky bottom-0 z-20 h-16 px-4 flex items-center gap-3 border-t dark:border-zinc-700 bg-white dark:bg-[#0b1220] shrink-0 w-full">
+      <div className="sticky bottom-0 z-20 h-16 px-2 sm:px-4 flex items-center gap-1.5 sm:gap-3 border-t dark:border-zinc-700 bg-white dark:bg-[#0b1220] shrink-0 w-full">
         <BsThreeDots className="text-xl hidden sm:block shrink-0" />
         <BsEmojiSmile className="text-xl hidden sm:block shrink-0" />
 
@@ -483,12 +483,12 @@ const ChatWindow = () => {
         <button
           onClick={audioBlob ? handleSendVoice : handleSend}
           disabled={(!text.trim() && !selectedFile && !audioBlob) || isProcessing}
-          className={`w-10 h-10 flex items-center justify-center rounded-full text-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors
+          className={`w-10 h-10 flex items-center justify-center rounded-full text-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors shrink-0
             bg-sky-400 dark:bg-sky-500 hover:bg-sky-500 dark:hover:bg-sky-600
           `}
           title={audioBlob ? "Send Voice Message" : "Send Message"}
         >
-          <FiSend />
+          <FiSend className="text-xl" />
         </button>
       </div>
 

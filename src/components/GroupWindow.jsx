@@ -364,7 +364,7 @@ const GroupWindow = () => {
             )}
 
             {/* Input Area Overhaul */}
-            <div className="sticky bottom-0 z-20 h-16 px-4 flex items-center gap-3 border-t dark:border-zinc-700 bg-white dark:bg-[#0b1220] shrink-0 w-full">
+            <div className="sticky bottom-0 z-20 h-16 px-2 sm:px-4 flex items-center gap-1.5 sm:gap-3 border-t dark:border-zinc-700 bg-white dark:bg-[#0b1220] shrink-0 w-full">
                 <BsThreeDots className="text-xl hidden sm:block" />
                 <BsEmojiSmile className="text-xl hidden sm:block" />
 
