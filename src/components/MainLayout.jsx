@@ -53,8 +53,8 @@ const MainLayout = () => {
     return (
         <NotificationProvider>
             <CallingProvider>
-                <div className="h-screen w-full bg-white dark:bg-[#111727] flex flex-col overflow-hidden">
-                    <header className="z-50 border-b border-zinc-200 dark:border-zinc-700 bg-white dark:bg-[#111727] hidden md:block">
+                <div className="h-[100dvh] w-full bg-white dark:bg-[#111727] flex flex-col overflow-hidden">
+                    <header className="z-50 border-b border-zinc-200 dark:border-zinc-700 bg-white dark:bg-[#111727]">
                         <ChatNavbar />
                     </header>
 

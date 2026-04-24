@@ -336,15 +336,15 @@ const ChatWindow = () => {
           </div>
         </div>
 
-        <div className="flex items-center gap-5 text-xl text-gray-600 dark:text-gray-300">
-          <FiSearch />
-          <button onClick={() => callUser(otherUser?._id, 'audio', otherUser?.username)}>
+        <div className="flex items-center gap-2 sm:gap-5 text-lg sm:text-xl text-gray-600 dark:text-gray-300">
+          <FiSearch className="hidden sm:block" />
+          <button onClick={() => callUser(otherUser?._id, 'audio', otherUser?.username)} className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors">
             <MdCall />
           </button>
-          <button onClick={() => callUser(otherUser?._id, 'video', otherUser?.username)}>
+          <button onClick={() => callUser(otherUser?._id, 'video', otherUser?.username)} className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors">
             <MdVideocam />
           </button>
-          <FiMoreVertical />
+          <FiMoreVertical className="cursor-pointer" />
         </div>
       </div>
 
@@ -408,8 +408,8 @@ const ChatWindow = () => {
 
       {/* INPUT */}
       <div className="h-16 px-4 flex items-center gap-3 border-t dark:border-zinc-700 bg-white dark:bg-[#0b1220] shrink-0">
-        <BsThreeDots className="text-xl" />
-        <BsEmojiSmile className="text-xl" />
+        <BsThreeDots className="text-xl hidden sm:block" />
+        <BsEmojiSmile className="text-xl hidden sm:block" />
 
         {/* Gallery Option */}
         <input

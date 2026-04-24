@@ -101,9 +101,9 @@ const AIChatWindow = () => {
                         </div>
                     </div>
                 </div>
-                <div className="flex items-center gap-4 text-zinc-400">
-                    <FiSearch className="hover:text-sky-500 cursor-pointer transition-colors" />
-                    <FiMoreVertical className="hover:text-sky-500 cursor-pointer transition-colors" />
+                <div className="flex items-center gap-3 text-zinc-400">
+                    <FiSearch className="hidden sm:block hover:text-sky-500 cursor-pointer transition-colors" />
+                    <FiMoreVertical className="hover:text-sky-500 cursor-pointer transition-colors p-2" />
                 </div>
             </div>
 
@@ -206,9 +206,9 @@ const AIChatWindow = () => {
 
             {/* Input Area Overhaul */}
             <div className="h-16 px-4 flex items-center gap-3 border-t dark:border-zinc-700 bg-white dark:bg-[#0b1220] shrink-0">
-                <div className="flex items-center gap-4 text-zinc-400 text-xl font-light">
-                    <BsThreeDots className="hover:text-sky-500 cursor-pointer transition-colors" />
-                    <BsEmojiSmile className="hover:text-sky-500 cursor-pointer transition-colors" />
+                <div className="flex items-center gap-2 sm:gap-4 text-zinc-400 text-xl font-light">
+                    <BsThreeDots className="hidden sm:block hover:text-sky-500 cursor-pointer transition-colors" />
+                    <BsEmojiSmile className="hidden sm:block hover:text-sky-500 cursor-pointer transition-colors" />
 
                     {/* Gallery Option */}
                     <input

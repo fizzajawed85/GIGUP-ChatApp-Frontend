@@ -46,11 +46,11 @@ const ChatNavbar = () => {
     <nav className="w-full flex items-center justify-between px-4 md:px-6 py-2 md:py-3 border-b border-zinc-400 dark:border-zinc-600 bg-white dark:bg-gradient-to-b from-[#111727] to-[#111727] relative">
 
       {/* LEFT: Logo */}
-      <div className="flex items-center">
+      <div className="flex items-center gap-2">
         <img
           src={theme === "light" ? logoLight : logoDark}
           alt="Gigup Logo"
-          className="w-28 md:w-36 h-auto cursor-pointer"
+          className="w-24 sm:w-36 h-auto cursor-pointer"
           onClick={() => navigate("/chat")}
         />
       </div>
@@ -106,9 +106,9 @@ const ChatNavbar = () => {
           <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white dark:border-gray-900 rounded-full"></span>
         </div>
 
-        {/* Mobile Hamburger */}
+        {/* Mobile Hamburger / Profile */}
         <button
-          className="md:hidden p-3 rounded-full border border-blue-300 dark:border-zinc-600 transition hover:bg-sky-400 dark:hover:bg-sky-500"
+          className="p-2 sm:p-3 rounded-full border border-blue-300 dark:border-zinc-600 transition hover:bg-sky-400 dark:hover:bg-sky-500"
           onClick={() => setIsDropdownOpen(prev => !prev)}
         >
           <FaBars className="text-gray-800 dark:text-[#fdf7f0]" />

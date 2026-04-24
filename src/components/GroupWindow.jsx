@@ -283,24 +283,24 @@ const GroupWindow = () => {
                 </div>
                 </div>
 
-                <div className="flex items-center gap-5 text-xl text-gray-600 dark:text-gray-300">
-                    <FiSearch className="hover:text-sky-500 cursor-pointer transition-colors" />
+                <div className="flex items-center gap-2 sm:gap-5 text-lg sm:text-xl text-gray-600 dark:text-gray-300">
+                    <FiSearch className="hidden sm:block" />
                     <button
                         onClick={() => callUser(selectedGroup?._id, 'audio', selectedGroup?.name)}
-                        className="hover:text-sky-500 transition-colors"
+                        className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors"
                     >
                         <MdCall />
                     </button>
                     <button
                         onClick={() => callUser(selectedGroup?._id, 'video', selectedGroup?.name)}
-                        className="hover:text-sky-500 transition-colors"
+                        className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors"
                     >
                         <MdVideocam />
                     </button>
                     <div className="relative">
                         <button
                             onClick={() => setShowMenu(!showMenu)}
-                            className="flex items-center justify-center hover:text-sky-500 transition-colors"
+                            className="flex items-center justify-center hover:text-sky-500 transition-colors p-2"
                         >
                             <FiMoreVertical />
                         </button>
@@ -365,8 +365,8 @@ const GroupWindow = () => {
 
             {/* INPUT */}
             <div className="h-16 px-4 flex items-center gap-3 border-t dark:border-zinc-700 bg-white dark:bg-[#0b1220] shrink-0">
-                <BsThreeDots className="text-xl hover:text-sky-500 cursor-pointer transition-colors" />
-                <BsEmojiSmile className="text-xl hover:text-sky-500 cursor-pointer transition-colors" />
+                <BsThreeDots className="text-xl hidden sm:block" />
+                <BsEmojiSmile className="text-xl hidden sm:block" />
 
                 {/* Gallery Option */}
                 <input
