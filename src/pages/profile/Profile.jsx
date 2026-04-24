@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaCamera, FaSave, FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaMapMarkerAlt } from "react-icons/fa";
 import { getProfile, updateProfile, uploadAvatar, uploadCover } from "../../services/userService";
+import { BASE_URL } from "../../config";
 
 const Profile = () => {
     const [loading, setLoading] = useState(true);
@@ -152,7 +153,7 @@ const Profile = () => {
                 {/* Cover Image Area */}
                 <div className="h-48 md:h-64 relative bg-gray-300 dark:bg-gray-700 group">
                     <img
-                        src={coverPreview || (user.coverImage ? `http://localhost:5000${user.coverImage}` : "https://via.placeholder.com/800x300")}
+                        src={coverPreview || (user.coverImage ? `${BASE_URL}${user.coverImage}` : "https://via.placeholder.com/800x300")}
                         alt="Cover"
                         className="w-full h-full object-cover"
                     />
@@ -168,7 +169,7 @@ const Profile = () => {
                         <div className="relative group">
                             <div className="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-white dark:border-[#1f2937] overflow-hidden bg-gray-300">
                                 <img
-                                    src={avatarPreview || (user.avatar ? `http://localhost:5000${user.avatar}` : "https://via.placeholder.com/150")}
+                                    src={avatarPreview || (user.avatar ? `${BASE_URL}${user.avatar}` : "https://via.placeholder.com/150")}
                                     alt="Profile"
                                     className="w-full h-full object-cover"
                                 />

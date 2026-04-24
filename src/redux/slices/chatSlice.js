@@ -55,6 +55,32 @@ const chatSlice = createSlice({
         state.selectedChat = updatedChat;
       }
     },
+    resetChatUnreadCount: (state, action) => {
+      const { chatId, userId } = action.payload;
+      const targetUserId = userId?.toString()?.toLowerCase();
+      const index = state.chats.findIndex(c => c._id === chatId);
+
+      if (index !== -1) {
+        const chat = state.chats[index];
+        if (chat.unreadCounts) {
+          chat.unreadCounts.forEach(uc => {
+            const uId = (uc.user?._id || uc.user)?.toString()?.toLowerCase();
+            if (uId === targetUserId) {
+              uc.count = 0;
+            }
+          });
+        }
+      }
+
+      if (state.selectedChat?._id === chatId && state.selectedChat.unreadCounts) {
+        state.selectedChat.unreadCounts.forEach(uc => {
+          const uId = (uc.user?._id || uc.user)?.toString()?.toLowerCase();
+          if (uId === targetUserId) {
+            uc.count = 0;
+          }
+        });
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -71,5 +97,5 @@ const chatSlice = createSlice({
   },
 });
 
-export const { setSelectedChat, updateChatLatestMessage, updateChat } = chatSlice.actions;
+export const { setSelectedChat, updateChatLatestMessage, updateChat, resetChatUnreadCount } = chatSlice.actions;
 export default chatSlice.reducer;

@@ -4,6 +4,7 @@ import { FiPlus } from "react-icons/fi";
 import useTheme from "../hooks/useTheme";
 import { getStatusFeed } from "../services/status.services";
 import { getChannels } from "../services/channel.services";
+import { BASE_URL } from "../config";
 
 const UpdatesSidebar = ({ onStatusSelect, onChannelSelect, onPostStatus, onCreateChannel, activeChannel }) => {
     const { theme } = useTheme();
@@ -46,7 +47,7 @@ const UpdatesSidebar = ({ onStatusSelect, onChannelSelect, onPostStatus, onCreat
     const getAvatar = (user) => {
         if (!user?.avatar) return "https://i.pravatar.cc/150";
         if (user.avatar.startsWith("http")) return user.avatar;
-        return `http://localhost:5000${user.avatar}`;
+        return `${BASE_URL}${user.avatar}`;
     };
 
     return (
@@ -65,10 +66,10 @@ const UpdatesSidebar = ({ onStatusSelect, onChannelSelect, onPostStatus, onCreat
 
                     {/* MY STATUS */}
                     <div className="flex items-center gap-4 py-2 cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition-colors rounded-lg group">
-                        <div className="relative" onClick={() => myStatuses.length > 0 ? onStatusSelect(myStatuses[0]) : onPostStatus()}>
+                        <div className="relative" onClick={() => myStatuses.length > 0 ? onStatusSelect(myStatuses) : onPostStatus()}>
                             <img
                                 src={getAvatar(currentUser)}
-                                className="w-12 h-12 rounded-full object-cover border-2 border-zinc-200 dark:border-zinc-700"
+                                className={`w-12 h-12 rounded-full object-cover border-2 ${myStatuses.length > 0 ? "border-sky-500 p-[2px]" : "border-zinc-200 dark:border-zinc-700"}`}
                                 alt="Me"
                             />
                             <div
@@ -78,7 +79,7 @@ const UpdatesSidebar = ({ onStatusSelect, onChannelSelect, onPostStatus, onCreat
                                 <FiPlus className="text-white text-[10px]" />
                             </div>
                         </div>
-                        <div className="flex-1" onClick={() => myStatuses.length > 0 ? onStatusSelect(myStatuses[0]) : onPostStatus()}>
+                        <div className="flex-1" onClick={() => myStatuses.length > 0 ? onStatusSelect(myStatuses) : onPostStatus()}>
                             <p className="text-sm font-bold text-gray-900 dark:text-zinc-100">My updates</p>
                             <p className="text-xs text-gray-500 dark:text-zinc-400">
                                 {myStatuses.length > 0 ? "Tap to view update" : "Tap to add an update"}
@@ -97,7 +98,7 @@ const UpdatesSidebar = ({ onStatusSelect, onChannelSelect, onPostStatus, onCreat
                             otherUserStatuses.map((user) => (
                                 <div
                                     key={user._id}
-                                    onClick={() => onStatusSelect(user.status[0])}
+                                    onClick={() => onStatusSelect(user.status)}
                                     className="flex items-center gap-4 cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800/30 transition-colors rounded-lg py-1"
                                 >
                                     <div className="p-[2px] rounded-full border-2 border-sky-500">
@@ -148,7 +149,7 @@ const UpdatesSidebar = ({ onStatusSelect, onChannelSelect, onPostStatus, onCreat
                                     <div className="w-12 h-12 rounded-xl bg-sky-100 dark:bg-sky-900/30 flex items-center justify-center text-sky-600 dark:text-sky-400 font-bold text-lg border dark:border-sky-500/20 shadow-sm overflow-hidden">
                                         {channel.avatar ? (
                                             <img
-                                                src={channel.avatar.startsWith("http") ? channel.avatar : `http://localhost:5000${channel.avatar}`}
+                                                src={channel.avatar.startsWith("http") ? channel.avatar : `${BASE_URL}${channel.avatar}`}
                                                 alt=""
                                                 className="w-full h-full object-cover"
                                             />

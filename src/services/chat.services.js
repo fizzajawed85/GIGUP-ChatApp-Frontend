@@ -1,7 +1,8 @@
 import axios from "axios";
+import { API_BASE_URL } from "../config";
 
-const CHAT_URL = "http://localhost:5000/api/chat";
-const MESSAGE_URL = "http://localhost:5000/api/message";
+const CHAT_URL = `${API_BASE_URL}/chat`;
+const MESSAGE_URL = `${API_BASE_URL}/message`;
 
 const getAuthConfig = () => {
   const auth = JSON.parse(localStorage.getItem("auth"));
@@ -54,5 +55,10 @@ export const editMessage = async (messageId, text) => {
 
 export const deleteMessage = async (messageId, deleteType = "forMe") => {
   const res = await axios.post(`${MESSAGE_URL}/${messageId}/delete`, { deleteType }, getAuthConfig());
+  return res.data;
+};
+
+export const markChatAsRead = async (chatId) => {
+  const res = await axios.post(`${CHAT_URL}/${chatId}/read`, {}, getAuthConfig());
   return res.data;
 };

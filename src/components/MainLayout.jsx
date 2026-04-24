@@ -20,9 +20,10 @@ const MainLayout = () => {
         const userId = auth?.user?._id;
 
         if (userId) {
-            socket.auth = { userId };
+            const normalizedUserId = userId.toString().toLowerCase();
+            socket.auth = { userId: normalizedUserId };
             socket.connect();
-            socket.emit("addUser", userId);
+            socket.emit("addUser", normalizedUserId);
 
             socket.on("receiveMessage", (msg) => {
                 dispatch(updateChatLatestMessage({ chatId: msg.chat, message: msg }));

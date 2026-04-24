@@ -3,6 +3,7 @@ import { FiSearch, FiMoreVertical, FiSend, FiImage } from "react-icons/fi";
 import { IoClose } from "react-icons/io5";
 import { getChannelUpdates, postChannelUpdate } from "../services/channel.services";
 import useTheme from "../hooks/useTheme";
+import { BASE_URL } from "../config";
 
 const ChannelWindow = ({ channel }) => {
     const { theme } = useTheme();
@@ -76,7 +77,6 @@ const ChannelWindow = ({ channel }) => {
     }
 
     // BASE URL
-    const BASE_URL = "http://localhost:5000";
 
     return (
         <div className="flex flex-col flex-1 min-w-0 h-full bg-[#fdf7f0] dark:bg-[#0b141a]">

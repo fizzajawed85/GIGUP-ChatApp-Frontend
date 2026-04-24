@@ -36,12 +36,23 @@ const groupSlice = createSlice({
         },
         resetGroupUnreadCount: (state, action) => {
             const { groupId, userId } = action.payload;
+            const targetUserId = userId?.toString()?.toLowerCase();
             const group = state.groups.find(g => g._id === groupId);
-            if (group) {
-                const userCount = group.unreadCounts.find(uc => uc.user === userId);
-                if (userCount) {
-                    userCount.count = 0;
-                }
+            if (group && group.unreadCounts) {
+                group.unreadCounts.forEach(uc => {
+                    const uId = (uc.user?._id || uc.user)?.toString()?.toLowerCase();
+                    if (uId === targetUserId) {
+                        uc.count = 0;
+                    }
+                });
+            }
+            if (state.selectedGroup?._id === groupId && state.selectedGroup.unreadCounts) {
+                state.selectedGroup.unreadCounts.forEach(uc => {
+                    const uId = (uc.user?._id || uc.user)?.toString()?.toLowerCase();
+                    if (uId === targetUserId) {
+                        uc.count = 0;
+                    }
+                });
             }
         },
     },

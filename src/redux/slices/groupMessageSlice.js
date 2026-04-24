@@ -19,7 +19,16 @@ const groupMessageSlice = createSlice({
     },
     reducers: {
         addGroupMessage: (state, action) => {
-            state.messages.push(action.payload);
+            const exists = state.messages.some(m => m._id === action.payload._id || m.tempId === action.payload.tempId);
+            if (!exists) {
+                state.messages.push(action.payload);
+            } else if (action.payload._id) {
+                // If it exists but was optimistic (tempId), update it with real server data
+                const index = state.messages.findIndex(m => m.tempId === action.payload.tempId);
+                if (index !== -1) {
+                    state.messages[index] = action.payload;
+                }
+            }
         },
         updateGroupMessage: (state, action) => {
             const index = state.messages.findIndex(m => m._id === action.payload._id);

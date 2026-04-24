@@ -60,8 +60,11 @@ export const NotificationProvider = ({ children }) => {
     useEffect(() => {
         const handleNewMessage = (msg) => {
             console.log(">>> Live Socket Signal: receiveMessage", msg);
-            const auth = JSON.parse(localStorage.getItem("auth"));
-            if (msg.sender?._id !== auth?.user?._id) {
+            const auth = JSON.parse(localStorage.getItem("auth") || "{}");
+            const currentUserId = auth?.user?._id?.toString()?.toLowerCase();
+            const senderId = (msg.sender?._id || msg.sender)?.toString()?.toLowerCase();
+
+            if (senderId && currentUserId && senderId !== currentUserId) {
                 addNotification({
                     id: `msg_${msg._id}`,
                     type: 'message',
@@ -94,8 +97,11 @@ export const NotificationProvider = ({ children }) => {
         };
 
         const handleGroupMessage = (msg) => {
-            const auth = JSON.parse(localStorage.getItem("auth"));
-            if (msg.sender?._id !== auth?.user?._id) {
+            const auth = JSON.parse(localStorage.getItem("auth") || "{}");
+            const currentUserId = auth?.user?._id?.toString()?.toLowerCase();
+            const senderId = (msg.sender?._id || msg.sender)?.toString()?.toLowerCase();
+
+            if (senderId && currentUserId && senderId !== currentUserId) {
                 addNotification({
                     id: `gmsg_${msg._id}`,
                     type: 'group',

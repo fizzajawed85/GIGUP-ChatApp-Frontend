@@ -3,6 +3,7 @@ import { FaSun, FaMoon, FaGoogle, FaFacebookF, FaSkype, FaPhoneAlt, FaBars, FaBe
 import { Link, useNavigate } from "react-router-dom";
 import useTheme from "../hooks/useTheme";
 import { NotificationContext } from "../context/NotificationContext";
+import { BASE_URL } from "../config";
 
 const ChatNavbar = () => {
   const { theme, toggleTheme } = useTheme();
@@ -96,7 +97,7 @@ const ChatNavbar = () => {
         {/* Desktop Profile */}
         <div className="relative">
           <img
-            src={user?.avatar ? `http://localhost:5000${user.avatar}` : "/avatar.png"}
+            src={user?.avatar ? `${BASE_URL}${user.avatar}` : "/avatar.png"}
             alt="Profile"
             className="hidden md:block w-10 h-10 rounded-full cursor-pointer border border-sky-400 dark:border-sky-500 object-cover hover:ring-2 ring-sky-300 transition-all"
             onClick={() => setIsDropdownOpen(prev => !prev)}
@@ -143,7 +144,7 @@ const ChatNavbar = () => {
                     className="flex items-center gap-3 px-5 py-2 hover:bg-white dark:hover:bg-[#2d3748] cursor-pointer group transition-all"
                   >
                     <img
-                      src={acc.user.avatar ? `http://localhost:5000${acc.user.avatar}` : "/avatar.png"}
+                      src={acc.user.avatar ? `${BASE_URL}${acc.user.avatar}` : "/avatar.png"}
                       className="w-7 h-7 rounded-full object-cover border border-gray-200 dark:border-gray-600"
                       alt="Acc"
                     />
@@ -169,7 +170,7 @@ const ChatNavbar = () => {
             <div className="border-t border-gray-100 dark:border-gray-700 mt-1">
               <div
                 onClick={handleLogout}
-                className="px-5 py-3 hover:bg-red-50 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 cursor-pointer transition-colors text-sm font-bold flex items-center gap-2"
+                className="px-5 py-3 text-red-700 dark:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 cursor-pointer transition-colors text-sm font-bold flex items-center gap-2"
               >
                 Logout
               </div>

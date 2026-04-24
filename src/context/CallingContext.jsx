@@ -28,21 +28,23 @@ export const CallingProvider = ({ children }) => {
 
     // --- SOCKET HANDLERS ---
     useEffect(() => {
-        // 1-on-1 Handlers
+        // Stable Listeners (don't need stream immediately)
         socket.on('incomingCall', ({ from, callerName, signal, type }) => {
+            console.log(`[CallingContext] >>> Socket: incomingCall from ${from} (${callerName})`);
             setCall({ isReceivedCall: true, from, name: callerName, signal, type, isGroup: false });
         });
 
         socket.on('callEnded', () => {
-            leaveCall();
+            console.log(`[CallingContext] >>> Socket: callEnded received`);
+            leaveCall("callEnded socket event");
         });
 
         socket.on('callDeclined', () => {
+            console.log(`[CallingContext] >>> Socket: callDeclined received`);
             alert("Call declined");
-            leaveCall();
+            leaveCall("callDeclined socket event");
         });
 
-        // Group Call Handlers
         socket.on('incomingGroupCall', ({ groupId, groupName, callerName, type }) => {
             setCall({
                 isReceivedCall: true,
@@ -54,47 +56,15 @@ export const CallingProvider = ({ children }) => {
             });
         });
 
-        socket.on('userJoinedGroupCall', ({ userId, username, socketId }) => {
-            console.log(`[GroupCall] User ${username} joined. Initiating peer connection...`);
-            // Only the existing members receive this. They initiate connection to the new guy.
-            if (stream) {
-                const peer = createPeer(userId, socket.id, stream);
-                groupPeersRef.current.push({
-                    peerId: userId,
-                    peer,
-                });
-            }
-        });
-
-        socket.on('groupSignalRelay', ({ from, signal }) => {
-            console.log(`[GroupCall] Received signal from ${from}`);
-            const item = groupPeersRef.current.find(p => p.peerId === from);
-            if (item) {
-                item.peer.signal(signal);
-            } else {
-                // If peer doesn't exist, this means we are the "joiner" 
-                // and an existing member is signaling US.
-                const peer = addPeer(signal, from, stream);
-                groupPeersRef.current.push({
-                    peerId: from,
-                    peer,
-                });
-            }
-        });
-
-        socket.on('userLeftGroupCall', ({ userId }) => {
-            console.log(`[GroupCall] User ${userId} left.`);
-            const item = groupPeersRef.current.find(p => p.peerId === userId);
-            if (item) {
-                item.peer.destroy();
-            }
-            const remaining = groupPeersRef.current.filter(p => p.peerId !== userId);
-            groupPeersRef.current = remaining;
-            setGroupPeers([...remaining]);
-        });
-
         socket.on('groupCallEnded', () => {
-            leaveCall();
+            console.log(`[CallingContext] >>> Socket: groupCallEnded received`);
+            leaveCall("groupCallEnded socket event");
+        });
+
+        socket.on('callError', ({ message }) => {
+            console.error(`[CallingContext] >>> Socket ERROR: ${message}`);
+            alert(message);
+            leaveCall("signaling error");
         });
 
         return () => {
@@ -102,10 +72,48 @@ export const CallingProvider = ({ children }) => {
             socket.off('callEnded');
             socket.off('callDeclined');
             socket.off('incomingGroupCall');
-            socket.off('userJoinedGroupCall');
-            socket.off('groupSignalRelay');
-            socket.off('userLeftGroupCall');
             socket.off('groupCallEnded');
+        };
+    }, []);
+
+    // Stream-Dependent Listeners
+    useEffect(() => {
+        if (!stream) return;
+
+        const handleJoined = ({ userId, username, socketId }) => {
+            console.log(`[GroupCall] User ${username} joined. Initiating peer connection...`);
+            const peer = createPeer(userId, socket.id, stream);
+            groupPeersRef.current.push({ peerId: userId, peer });
+        };
+
+        const handleRelay = ({ from, signal }) => {
+            console.log(`[GroupCall] Received signal from ${from}`);
+            const item = groupPeersRef.current.find(p => p.peerId === from);
+            if (item) {
+                item.peer.signal(signal);
+            } else {
+                const peer = addPeer(signal, from, stream);
+                groupPeersRef.current.push({ peerId: from, peer });
+            }
+        };
+
+        const handleLeft = ({ userId }) => {
+            console.log(`[GroupCall] User ${userId} left.`);
+            const item = groupPeersRef.current.find(p => p.peerId === userId);
+            if (item) item.peer.destroy();
+            const remaining = groupPeersRef.current.filter(p => p.peerId !== userId);
+            groupPeersRef.current = remaining;
+            setGroupPeers([...remaining]);
+        };
+
+        socket.on('userJoinedGroupCall', handleJoined);
+        socket.on('groupSignalRelay', handleRelay);
+        socket.on('userLeftGroupCall', handleLeft);
+
+        return () => {
+            socket.off('userJoinedGroupCall', handleJoined);
+            socket.off('groupSignalRelay', handleRelay);
+            socket.off('userLeftGroupCall', handleLeft);
         };
     }, [stream]);
 
@@ -208,6 +216,7 @@ export const CallingProvider = ({ children }) => {
 
     const callUser = async (id, type, targetName) => {
         setIsCalling(true);
+        console.log(`[CallingContext] >>> INIT CALL to ${targetName} (${id}) type: ${type}`);
         setCall({ isReceivedCall: false, from: id, name: targetName, type, isGroup: false });
 
         // Track for logging
@@ -219,20 +228,36 @@ export const CallingProvider = ({ children }) => {
         };
 
         const mediaStream = await getMedia(type);
+        if (!mediaStream) {
+            console.error("[CallingContext] >>> Failed to get media stream");
+            setIsCalling(false);
+            return;
+        }
 
+        console.log(`[CallingContext] >>> Creating Peer (initiator)`);
         const peer = new Peer({ initiator: true, trickle: false, stream: mediaStream });
+
         peer.on('signal', (data) => {
+            const targetId = id?.toString()?.toLowerCase();
+            const senderId = currentUserId?.toString()?.toLowerCase();
+            console.log(`[CallingContext] >>> PEER SIGNAL generated, emitting callUser to backend for ${targetId}`);
             socket.emit('callUser', {
-                userToCall: id,
+                userToCall: targetId,
                 signalData: data,
-                from: currentUserId,
+                from: senderId,
                 callerName: auth.user.username,
                 type
             });
         });
 
         peer.on('stream', (remoteStream) => {
+            console.log(`[CallingContext] >>> RECEIVED remote stream`);
             if (userVideo.current) userVideo.current.srcObject = remoteStream;
+        });
+
+        peer.on('error', (err) => {
+            console.error("[CallingContext] >>> PEER ERROR:", err);
+            leaveCall("peer error");
         });
 
         // Ensure clean state for listeners
@@ -240,7 +265,7 @@ export const CallingProvider = ({ children }) => {
         socket.off('callDeclined');
 
         socket.on('callAccepted', (signal) => {
-            console.log(">>> Call Accepted by receiver");
+            console.log("[CallingContext] >>> Socket: callAccepted received from backend");
             setCallAccepted(true);
             peer.signal(signal);
 
@@ -252,7 +277,7 @@ export const CallingProvider = ({ children }) => {
         });
 
         socket.on('callDeclined', () => {
-            console.log(">>> Call Declined by receiver");
+            console.log("[CallingContext] >>> Socket: callDeclined received from backend");
             if (activeCallRef.current) {
                 activeCallRef.current.status = 'declined';
                 // Trigger log immediately for decline
@@ -282,7 +307,7 @@ export const CallingProvider = ({ children }) => {
         connectionRef.current = peer;
     };
 
-    const saveCallLog = async () => {
+    const saveCallLog = async (reason = "unknown") => {
         if (!activeCallRef.current) return;
 
         const { receiverId, type, status } = activeCallRef.current;
@@ -292,7 +317,7 @@ export const CallingProvider = ({ children }) => {
         }
 
         try {
-            console.log(">>> Saving Call Log:", { receiverId, type, status, duration });
+            console.log(">>> Saving Call Log:", { receiverId, type, status, duration, reason });
             await createCallLog({ receiverId, type, status, duration });
         } catch (err) {
             console.error(">>> Failed to save call log:", err);
@@ -302,10 +327,13 @@ export const CallingProvider = ({ children }) => {
         }
     };
 
-    const leaveCall = () => {
+    const leaveCall = (reason = "manual") => {
+        const reasonStr = (reason && typeof reason === 'object') ? (reason.type || "Event") : reason;
+        console.warn(`[CallingContext] >>> leaveCall triggered. Reason: ${reasonStr}`);
+        console.trace();
         // If we are the caller, save the log before cleaning up
         if (activeCallRef.current) {
-            saveCallLog();
+            saveCallLog(reasonStr);
         }
 
         // Cleanup 1-on-1

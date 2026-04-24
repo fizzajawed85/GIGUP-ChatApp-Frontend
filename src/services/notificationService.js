@@ -1,6 +1,7 @@
 import axios from "axios";
+import { API_BASE_URL } from "../config";
 
-const API_URL = "http://localhost:5000/api/notifications";
+const API_URL = `${API_BASE_URL}/notifications`;
 
 const getAuthConfig = () => {
     const auth = JSON.parse(localStorage.getItem("auth"));

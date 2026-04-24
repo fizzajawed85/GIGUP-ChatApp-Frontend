@@ -13,6 +13,7 @@ import {
     FiRefreshCcw
 } from "react-icons/fi";
 import { BsTelephone, BsCameraVideo } from "react-icons/bs";
+import { BASE_URL } from "../../config";
 
 const Calls = () => {
     const { callUser } = useContext(CallingContext);
@@ -70,7 +71,7 @@ const Calls = () => {
                 <div className="flex items-center gap-4">
                     <div className="relative">
                         <img
-                            src={otherParty?.avatar ? `http://localhost:5000${otherParty.avatar}` : "/avatar.png"}
+                            src={otherParty?.avatar ? `${BASE_URL}${otherParty.avatar}` : "/avatar.png"}
                             alt="User"
                             className="w-12 h-12 rounded-full object-cover border-2 border-white dark:border-zinc-700"
                         />

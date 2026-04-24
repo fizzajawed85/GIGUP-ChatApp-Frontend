@@ -8,6 +8,7 @@ import GroupMessageItem from "./GroupMessageItem";
 import useTheme from "../hooks/useTheme";
 import { CallingContext } from "../context/CallingContext";
 import useVoiceRecorder from "../hooks/useVoiceRecorder";
+import { BASE_URL } from "../config";
 
 import {
     FiSearch,
@@ -47,33 +48,42 @@ const GroupWindow = () => {
     const { selectedGroup } = useSelector((state) => state.group);
     const { messages } = useSelector((state) => state.groupMessage);
 
-    const auth = JSON.parse(localStorage.getItem("auth"));
-    const userId = auth?.user?._id;
+    const auth = JSON.parse(localStorage.getItem("auth") || "{}");
+    const userId = auth?.user?._id?.toString()?.toLowerCase();
     const username = auth?.user?.username;
 
-    const BASE_URL = "http://localhost:5000";
 
     useEffect(() => {
-        if (selectedGroup) {
+        if (selectedGroup?._id) {
+            console.log("Joining group room:", selectedGroup._id);
             socket.emit("joinGroup", selectedGroup._id);
 
-            // Mark messages as read when entering group
-            if (messages.length > 0) {
-                const latestMsg = messages[messages.length - 1];
-                console.log("Triggering markMessageAsRead for group:", selectedGroup._id);
-                markMessageAsRead(selectedGroup._id, latestMsg._id)
-                    .then(() => {
-                        console.log("Marked as read successfully");
-                        dispatch(resetGroupUnreadCount({ groupId: selectedGroup._id, userId }));
-                    })
-                    .catch(err => console.error("Failed to mark as read:", err));
-            }
-
             return () => {
+                console.log("Leaving group room:", selectedGroup._id);
                 socket.emit("leaveGroup", selectedGroup._id);
             };
         }
-    }, [selectedGroup, messages, dispatch, userId]);
+    }, [selectedGroup?._id]);
+
+    // Separate effect for marking as read
+    useEffect(() => {
+        if (selectedGroup?._id) {
+            console.log(">>> GroupWindow: Resetting unread count local for:", selectedGroup._id);
+            // Always reset local unread count when opening a group
+            dispatch(resetGroupUnreadCount({ groupId: selectedGroup._id, userId }));
+
+            if (messages.length > 0) {
+                const latestMsg = messages[messages.length - 1];
+                const hasRead = latestMsg.readBy?.some(id => id.toString().toLowerCase() === userId);
+                console.log(">>> GroupWindow: Latest message read state:", hasRead);
+                if (!hasRead) {
+                    console.log(">>> GroupWindow: Calling markMessageAsRead API for group:", selectedGroup._id);
+                    markMessageAsRead(selectedGroup._id, latestMsg._id)
+                        .catch(err => console.error("Failed to mark as read:", err));
+                }
+            }
+        }
+    }, [selectedGroup?._id, messages, userId, dispatch]);
 
     useEffect(() => {
         const handleGroupMessage = (message) => {
@@ -171,29 +181,41 @@ const GroupWindow = () => {
         if ((!text.trim() && !selectedFile) || !selectedGroup) return;
 
         const messageContent = text.trim();
-
-        // Optimistic UI updates could be added here, but for now we wait for server
+        const tempId = Date.now().toString();
+        const optimisticMessage = {
+            _id: tempId,
+            tempId,
+            text: messageContent,
+            sender: { _id: userId, username, avatar: auth?.user?.avatar },
+            group: selectedGroup._id,
+            status: "sending",
+            createdAt: new Date().toISOString(),
+            readBy: [userId]
+        };
 
         try {
             if (selectedFile) {
+                // For files, we might not show optimistic text immediately or show a placeholder
                 const formData = new FormData();
                 formData.append("text", messageContent);
                 formData.append("file", selectedFile);
 
-                // Response will be broadcasted via socket, but we also get it here
-                await sendGroupMessage(selectedGroup._id, formData);
+                dispatch(addGroupMessage({ ...optimisticMessage, text: messageContent || "Sending file..." }));
+                const response = await sendGroupMessage(selectedGroup._id, formData);
+                dispatch(addGroupMessage({ ...response, tempId }));
                 clearFile();
             } else {
-                await sendGroupMessage(selectedGroup._id, messageContent);
+                dispatch(addGroupMessage(optimisticMessage));
+                const response = await sendGroupMessage(selectedGroup._id, messageContent);
+                dispatch(addGroupMessage({ ...response, tempId }));
             }
 
             setText("");
-            // Initial socket emission for text is handled by the service/controller broadcast
-            // But for typing status:
             socket.emit("groupStopTyping", { groupId: selectedGroup._id, userId });
 
         } catch (error) {
             console.error("Failed to send message:", error);
+            // Could add logic to mark optimistic message as "failed"
         }
     };
 

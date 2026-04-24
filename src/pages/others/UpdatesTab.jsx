@@ -7,15 +7,15 @@ import ChannelCreator from "../../components/ChannelCreator";
 
 const UpdatesTab = () => {
     const [viewMode, setViewMode] = useState("EMPTY"); // EMPTY, STATUS_VIEWER, STATUS_CREATOR, CHANNEL_WINDOW
-    const [selectedStatus, setSelectedStatus] = useState(null);
+    const [selectedStatuses, setSelectedStatuses] = useState([]);
     const [selectedChannel, setSelectedChannel] = useState(null);
     const [isChannelModalOpen, setIsChannelModalOpen] = useState(false);
     const [refreshKey, setRefreshKey] = useState(0);
 
     const handleRefresh = () => setRefreshKey(prev => prev + 1);
 
-    const handleStatusSelect = (status) => {
-        setSelectedStatus(status);
+    const handleStatusSelect = (statuses) => {
+        setSelectedStatuses(statuses);
         setViewMode("STATUS_VIEWER");
     };
 
@@ -58,9 +58,9 @@ const UpdatesTab = () => {
                     />
                 )}
 
-                {viewMode === "STATUS_VIEWER" && selectedStatus && (
+                {viewMode === "STATUS_VIEWER" && selectedStatuses.length > 0 && (
                     <StatusViewer
-                        status={selectedStatus}
+                        statuses={selectedStatuses}
                         onClose={() => setViewMode("EMPTY")}
                     />
                 )}

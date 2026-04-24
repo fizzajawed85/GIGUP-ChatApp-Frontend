@@ -15,6 +15,8 @@ import {
 } from "react-icons/fi";
 import { BsArrowLeft } from "react-icons/bs";
 
+import { BASE_URL } from "../../config";
+
 const Settings = () => {
     const { theme, toggleTheme } = useTheme();
     const navigate = useNavigate();
@@ -67,7 +69,7 @@ const Settings = () => {
                         <div className="flex items-center gap-5">
                             <div className="relative">
                                 <img
-                                    src={user?.avatar ? `http://localhost:5000${user.avatar}` : "/avatar.png"}
+                                    src={user?.avatar ? `${BASE_URL}${user.avatar}` : "/avatar.png"}
                                     alt="Profile"
                                     className="w-16 h-16 rounded-full object-cover border-4 border-white dark:border-zinc-700 shadow-xl"
                                 />

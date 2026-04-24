@@ -1,6 +1,7 @@
 import axios from "axios";
+import { API_BASE_URL } from "../config";
 
-const API_URL = "http://localhost:5000/api/group";
+const API_URL = `${API_BASE_URL}/group`;
 
 const getAuthHeader = () => {
     const auth = JSON.parse(localStorage.getItem("auth"));

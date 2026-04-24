@@ -74,7 +74,7 @@ const Login = () => {
 
 
   return (
-    <div className="min-h-screen flex overflow-hidden">
+    <div className="min-h-screen flex flex-col md:flex-row">
       {/* LEFT SECTION */}
       <div className="md:w-1/2 flex flex-col justify-start items-start bg-gradient-to-b from-[#000000] to-[#080e1b] text-[#fdf7f0] p-12 md:p-24">
         <img

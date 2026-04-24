@@ -1,4 +1,5 @@
 import axios from "axios";
+import { API_BASE_URL } from "../config";
 
 // Helper to get token
 const getAuthHeaders = () => {
@@ -11,7 +12,7 @@ const getAuthHeaders = () => {
     };
 };
 
-const API_URL = "http://localhost:5000/api/user";
+const API_URL = `${API_BASE_URL}/user`;
 
 export const getProfile = async () => {
     const response = await axios.get(`${API_URL}/profile`, getAuthHeaders());

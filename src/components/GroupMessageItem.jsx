@@ -1,13 +1,12 @@
 import React from "react";
 import { BsCheckAll, BsCheck } from "react-icons/bs";
 import VoiceMessagePlayer from "./VoiceMessagePlayer";
-
 import useTheme from "../hooks/useTheme";
+import { BASE_URL } from "../config";
 
 const GroupMessageItem = ({ message, currentUserId, membersCount }) => {
     const { theme } = useTheme();
     const isOwnMessage = message.sender?._id === currentUserId;
-    const BASE_URL = "http://localhost:5000";
 
     const renderContent = () => {
         if (message.isDeleted) {

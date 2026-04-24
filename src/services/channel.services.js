@@ -1,6 +1,7 @@
 import axios from "axios";
+import { API_BASE_URL } from "../config";
 
-const CHANNEL_URL = "http://localhost:5000/api/channel";
+const CHANNEL_URL = `${API_BASE_URL}/channel`;
 
 const getAuthConfig = () => {
     const auth = JSON.parse(localStorage.getItem("auth"));

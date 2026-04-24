@@ -7,6 +7,7 @@ import { deleteMessage, editMessage } from "../services/chat.services";
 import { useDispatch } from "react-redux";
 import { updateMessage } from "../redux/slices/messageSlice";
 import { socket } from "../utils/socket";
+import { BASE_URL } from "../config";
 
 const MessageItem = ({ message, isOwnMessage, onEdit, onDelete }) => {
   const { theme } = useTheme();
@@ -37,19 +38,19 @@ const MessageItem = ({ message, isOwnMessage, onEdit, onDelete }) => {
             <div className={message.text ? "mb-2" : ""}>
               {message.fileUrl.endsWith(".webm") || message.fileUrl.endsWith(".mp3") || message.fileUrl.endsWith(".wav") ? (
                 <VoiceMessagePlayer
-                  audioUrl={message.fileUrl.startsWith("http") ? message.fileUrl : `http://localhost:5000${message.fileUrl}`}
+                  audioUrl={message.fileUrl.startsWith("http") ? message.fileUrl : `${BASE_URL}${message.fileUrl}`}
                   isOwnMessage={isOwnMessage}
                 />
               ) : message.fileUrl.match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
                 <img
-                  src={message.fileUrl.startsWith("http") ? message.fileUrl : `http://localhost:5000${message.fileUrl}`}
+                   src={message.fileUrl.startsWith("http") ? message.fileUrl : `${BASE_URL}${message.fileUrl}`}
                   alt="Attachment"
                   className="max-w-full rounded-lg object-cover max-h-[300px] cursor-pointer hover:opacity-90 transition-opacity"
-                  onClick={() => window.open(message.fileUrl.startsWith("http") ? message.fileUrl : `http://localhost:5000${message.fileUrl}`, "_blank")}
+                  onClick={() => window.open(message.fileUrl.startsWith("http") ? message.fileUrl : `${BASE_URL}${message.fileUrl}`, "_blank")}
                 />
               ) : (
                 <video controls className="max-w-full rounded-lg max-h-[300px]">
-                  <source src={message.fileUrl.startsWith("http") ? message.fileUrl : `http://localhost:5000${message.fileUrl}`} type="video/mp4" />
+                  <source src={message.fileUrl.startsWith("http") ? message.fileUrl : `${BASE_URL}${message.fileUrl}`} type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
               )}

@@ -107,7 +107,7 @@ const StatusCreator = ({ onCancel, onPosted }) => {
                                     onClick={() => setType("image")}
                                     className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-sky-500"
                                 >
-                                    <FaImage /> Media Update
+                                    <FaImage /> Photo / Video
                                 </button>
                                 <div className="flex gap-2 items-center">
                                     <FaPalette className="text-zinc-400 mr-1" />

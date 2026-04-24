@@ -4,6 +4,7 @@ import { fetchGroups, setSelectedGroup } from "../redux/slices/groupSlice";
 import { fetchGroupMessages } from "../redux/slices/groupMessageSlice";
 import CreateGroupModal from "./CreateGroupModal";
 import { FaPlus, FaSearch } from "react-icons/fa";
+import { BASE_URL } from "../config";
 
 const GroupList = () => {
     const dispatch = useDispatch();
@@ -21,6 +22,15 @@ const GroupList = () => {
         dispatch(fetchGroupMessages(group._id));
     };
 
+    const auth = JSON.parse(localStorage.getItem("auth") || "{}");
+    const authUserId = auth?.user?._id?.toString()?.toLowerCase();
+
+    const getUserId = (u) => {
+        if (!u) return "";
+        let id = u._id ? u._id.toString() : u.toString();
+        return id.toLowerCase();
+    };
+
     const filteredGroups = groups.filter((group) =>
         group.name?.toLowerCase().includes(search.toLowerCase())
     );
@@ -29,7 +39,6 @@ const GroupList = () => {
         dispatch(fetchGroups());
     };
 
-    const BASE_URL = "http://localhost:5000";
 
     if (loading) return <div className="p-4">Loading groups...</div>;
 
@@ -95,9 +104,9 @@ const GroupList = () => {
                                     {group.members?.length || 0} members
                                 </p>
                             </div>
-                            {group.unreadCounts?.find(uc => uc.user === JSON.parse(localStorage.getItem("auth"))?.user?._id)?.count > 0 && (
-                                <div className="bg-sky-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center shrink-0">
-                                    {group.unreadCounts.find(uc => uc.user === JSON.parse(localStorage.getItem("auth"))?.user?._id)?.count}
+                            {group.unreadCounts?.find(uc => getUserId(uc.user) === authUserId)?.count > 0 && (
+                                <div className="bg-sky-500 text-white text-xs font-bold rounded-full min-w-[20px] h-5 px-1 flex items-center justify-center shrink-0">
+                                    {group.unreadCounts.find(uc => getUserId(uc.user) === authUserId)?.count}
                                 </div>
                             )}
                         </div>

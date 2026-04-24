@@ -24,9 +24,13 @@ const ChatList = () => {
 
   const filteredChats = chats.filter((chat) => {
     const auth = JSON.parse(localStorage.getItem("auth") || "{}");
-    const authUserId = auth?.user?._id;
+    const authUserId = auth?.user?._id?.toString()?.toLowerCase();
 
-    const getUserId = (u) => u?._id ? u._id.toString() : u?.toString();
+    const getUserId = (u) => {
+      if (!u) return "";
+      let id = u._id ? u._id.toString() : u.toString();
+      return id.toLowerCase();
+    };
 
     const otherUser = chat.participants?.find(
       (p) => getUserId(p) !== authUserId

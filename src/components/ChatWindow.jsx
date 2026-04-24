@@ -2,11 +2,13 @@ import { useEffect, useRef, useState, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchMessages, addMessage, updateMessage } from "../redux/slices/messageSlice";
 import { socket } from "../utils/socket";
-import { sendMessage, editMessage, deleteMessage } from "../services/chat.services";
+import { sendMessage, editMessage, markChatAsRead } from "../services/chat.services";
+import { resetChatUnreadCount } from "../redux/slices/chatSlice";
 import MessageItem from "./MessageItem";
 import useTheme from "../hooks/useTheme";
 import { CallingContext } from "../context/CallingContext";
 import useVoiceRecorder from "../hooks/useVoiceRecorder";
+import { BASE_URL } from "../config";
 
 import {
   FiSearch,
@@ -47,17 +49,25 @@ const ChatWindow = () => {
   const { selectedChat } = useSelector((state) => state.chat);
   const { messages } = useSelector((state) => state.message);
 
-  const auth = JSON.parse(localStorage.getItem("auth"));
-  const userId = auth?.user?._id;
+  const auth = JSON.parse(localStorage.getItem("auth") || "{}");
+  const userId = auth?.user?._id?.toString()?.toLowerCase();
 
   useEffect(() => {
     if (selectedChat) {
-      const found = selectedChat.participants?.find((p) => p._id !== userId) || null;
+      const auth = JSON.parse(localStorage.getItem("auth"));
+      const currentUserId = auth?.user?._id?.toString()?.toLowerCase();
+      const found = selectedChat.participants?.find((p) => {
+        const pId = (p._id || p).toString().toLowerCase();
+        return pId !== currentUserId;
+      }) || null;
       setOtherUser(found);
     }
   }, [selectedChat, userId]);
 
-  const nicknameObj = selectedChat?.nicknames?.find(n => n.user === userId || n.user?._id === userId);
+  const nicknameObj = selectedChat?.nicknames?.find(n => {
+    const nUserId = n.user?._id ? n.user._id.toString() : n.user?.toString();
+    return nUserId?.toLowerCase() === userId;
+  });
   const displayName = nicknameObj?.name || otherUser?.username || "Unknown";
 
   const formatLastSeen = (dateStr) => {
@@ -83,13 +93,21 @@ const ChatWindow = () => {
     if (!userId) return;
 
     const handleReceive = (msg) => {
+      const senderIdStr = (msg.sender?._id || msg.sender)?.toString()?.toLowerCase();
+      const currentUserIdStr = userId?.toLowerCase();
+
       dispatch(addMessage(msg));
 
-      // Emit delivered/seen if message is for this active chat
-      const senderIdStr = msg.sender?._id || msg.sender;
-      if (msg.chat === selectedChat?._id && senderIdStr !== userId) {
+      // Emit delivered/seen if message is for this active chat and NOT from us
+      const selectedChatIdStr = selectedChat?._id?.toString()?.toLowerCase();
+      const msgChatIdStr = (msg.chat?._id || msg.chat)?.toString()?.toLowerCase();
+
+      if (msgChatIdStr === selectedChatIdStr && senderIdStr && currentUserIdStr && senderIdStr !== currentUserIdStr) {
         socket.emit("messageDelivered", msg._id);
         socket.emit("messageSeen", { chatId: selectedChat._id, userId });
+        dispatch(resetChatUnreadCount({ chatId: selectedChat._id, userId }));
+        // API fallback
+        markChatAsRead(selectedChat._id).catch(err => console.error("REST MarkAsRead Error:", err));
       }
     };
 
@@ -139,10 +157,15 @@ const ChatWindow = () => {
     dispatch(fetchMessages(selectedChat._id));
 
     if (userId) {
+      console.log(">>> ChatWindow: Opened chat, emitting messageSeen for:", selectedChat._id);
       socket.emit("messageSeen", { chatId: selectedChat._id, userId });
+      dispatch(resetChatUnreadCount({ chatId: selectedChat._id, userId }));
+      // API Fallback
+      markChatAsRead(selectedChat._id).catch(err => console.error("REST MarkAsRead Error:", err));
     }
 
     return () => {
+      console.log(">>> ChatWindow: Leaving chat:", selectedChat._id);
       socket.emit("leaveChat", selectedChat._id);
     };
   }, [selectedChat?._id, dispatch, userId]);
@@ -208,6 +231,9 @@ const ChatWindow = () => {
       }
 
       setText("");
+      // Optimistically reset our unread count for this chat
+      dispatch(resetChatUnreadCount({ chatId: selectedChat._id, userId }));
+
       // Stop typing status
       socket.emit("stopTyping", { chatId: selectedChat._id, userId });
       if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
@@ -283,7 +309,7 @@ const ChatWindow = () => {
         <div className="flex items-center gap-3">
           <div className="relative">
             <img
-              src={otherUser?.avatar ? `http://localhost:5000${otherUser.avatar}` : "/avatar.png"}
+              src={otherUser?.avatar ? `${BASE_URL}${otherUser.avatar}` : "/avatar.png"}
               alt={otherUser?.username || "User"}
               className="w-10 h-10 rounded-full object-cover border border-gray-200 dark:border-zinc-700 shadow-sm"
             />
@@ -317,7 +343,7 @@ const ChatWindow = () => {
           <MessageItem
             key={msg._id}
             message={msg}
-            isOwnMessage={msg.sender === userId || msg.sender?._id === userId}
+            isOwnMessage={(msg.sender?._id ? msg.sender._id.toString() : msg.sender?.toString())?.toLowerCase() === userId}
             onEdit={handleEditInit}
             onDelete={(msg) => setDeletingMessage(msg)}
           />

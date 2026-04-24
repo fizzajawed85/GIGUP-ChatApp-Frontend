@@ -1,6 +1,7 @@
 import axios from "axios";
+import { API_BASE_URL } from "../config";
 
-const CALL_URL = "http://localhost:5000/api/call";
+const CALL_URL = `${API_BASE_URL}/call`;
 
 const getAuthConfig = () => {
     const auth = JSON.parse(localStorage.getItem("auth"));

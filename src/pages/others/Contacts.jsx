@@ -8,6 +8,7 @@ import { setSelectedChat } from "../../redux/slices/chatSlice";
 import { CallingContext } from "../../context/CallingContext";
 import { FiSearch, FiMessageSquare, FiPhone, FiVideo, FiPlus, FiClock, FiVideoOff, FiPhoneMissed } from "react-icons/fi";
 import { BsPersonPlus, BsTelephone, BsCameraVideo } from "react-icons/bs";
+import { BASE_URL } from "../../config";
 
 const Contacts = () => {
     const { callUser } = useContext(CallingContext);
@@ -68,7 +69,7 @@ const Contacts = () => {
             <div className="flex items-center justify-between p-3 rounded-xl bg-zinc-50 dark:bg-white/5 border border-zinc-100 dark:border-white/5 hover:border-sky-500/30 transition-all group">
                 <div className="flex items-center gap-3">
                     <img
-                        src={otherParty?.avatar ? `http://localhost:5000${otherParty.avatar}` : "/avatar.png"}
+                        src={otherParty?.avatar ? `${BASE_URL}${otherParty.avatar}` : "/avatar.png"}
                         alt="User"
                         className="w-10 h-10 rounded-full object-cover"
                     />
@@ -136,7 +137,7 @@ const Contacts = () => {
                             <div className="flex items-center gap-3">
                                 <div className="relative">
                                     <img
-                                        src={u.avatar ? `http://localhost:5000${u.avatar}` : "/avatar.png"}
+                                        src={u.avatar ? `${BASE_URL}${u.avatar}` : "/avatar.png"}
                                         alt={u.username}
                                         className="w-10 h-10 rounded-full object-cover border-2 border-white dark:border-zinc-700"
                                     />

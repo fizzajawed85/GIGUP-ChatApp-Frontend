@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { IoClose } from "react-icons/io5";
 import { createGroup } from "../services/group.services";
 import { useSelector } from "react-redux";
+import { BASE_URL } from "../config";
 
 const CreateGroupModal = ({ onClose, onGroupCreated }) => {
     const { chats } = useSelector((state) => state.chat);
@@ -142,7 +143,7 @@ const CreateGroupModal = ({ onClose, onGroupCreated }) => {
                                         <div className="w-8 h-8 rounded-full bg-sky-100 dark:bg-sky-900/30 flex items-center justify-center text-sky-600 dark:text-sky-400 font-bold text-sm overflow-hidden shrink-0">
                                             {contact.avatar ? (
                                                 <img
-                                                    src={contact.avatar.startsWith("http") ? contact.avatar : `http://localhost:5000${contact.avatar}`}
+                                                    src={contact.avatar.startsWith("http") ? contact.avatar : `${BASE_URL}${contact.avatar}`}
                                                     alt=""
                                                     className="w-full h-full object-cover"
                                                 />

@@ -7,6 +7,7 @@ import { MdCall, MdVideocam, MdMic } from "react-icons/md";
 import { RiRobot2Line } from "react-icons/ri";
 import VoiceMessagePlayer from "./VoiceMessagePlayer";
 import useVoiceRecorder from "../hooks/useVoiceRecorder";
+import { BASE_URL } from "../config";
 
 const AIChatWindow = () => {
     const dispatch = useDispatch();
@@ -126,7 +127,7 @@ const AIChatWindow = () => {
                                 {msg.fileType === "audio" && msg.fileUrl ? (
                                     <div className={`mb-2 ${msg.role === 'user' ? 'text-white' : 'text-gray-900 dark:text-gray-100'}`}>
                                         <VoiceMessagePlayer
-                                            audioUrl={msg.fileUrl.startsWith("http") ? msg.fileUrl : `http://localhost:5000${msg.fileUrl}`}
+                                            audioUrl={msg.fileUrl.startsWith("http") ? msg.fileUrl : `${BASE_URL}${msg.fileUrl}`}
                                             duration={0} // Duration fallback
                                             isOwnMessage={msg.role === 'user'}
                                         />
@@ -135,14 +136,14 @@ const AIChatWindow = () => {
                                     <div className="mb-2 rounded-lg overflow-hidden border border-black/5 dark:border-white/5 shadow-sm">
                                         {msg.fileType === "image" ? (
                                             <img
-                                                src={msg.fileUrl.startsWith("http") ? msg.fileUrl : `http://localhost:5000${msg.fileUrl}`}
+                                                src={msg.fileUrl.startsWith("http") ? msg.fileUrl : `${BASE_URL}${msg.fileUrl}`}
                                                 alt="Attachment"
                                                 className="max-w-full max-h-[250px] object-cover cursor-pointer hover:opacity-95 transition-opacity"
-                                                onClick={() => window.open(msg.fileUrl.startsWith("http") ? msg.fileUrl : `http://localhost:5000${msg.fileUrl}`, "_blank")}
+                                                onClick={() => window.open(msg.fileUrl.startsWith("http") ? msg.fileUrl : `${BASE_URL}${msg.fileUrl}`, "_blank")}
                                             />
                                         ) : (
                                             <video controls className="max-w-full max-h-[250px] rounded-lg">
-                                                <source src={msg.fileUrl.startsWith("http") ? msg.fileUrl : `http://localhost:5000${msg.fileUrl}`} type="video/mp4" />
+                                                <source src={msg.fileUrl.startsWith("http") ? msg.fileUrl : `${BASE_URL}${msg.fileUrl}`} type="video/mp4" />
                                             </video>
                                         )}
                                     </div>

@@ -1,19 +1,27 @@
 import React from "react";
 import useTheme from "../hooks/useTheme";
+import { BASE_URL } from "../config";
 
 const ChatListItem = ({ chat, isActive, onSelect }) => {
   const { theme } = useTheme();
   const auth = JSON.parse(localStorage.getItem("auth") || "{}");
-  const authUserId = auth?.user?._id;
+  const authUserId = auth?.user?._id?.toString()?.toLowerCase();
+
+  const getUserId = (u) => {
+    if (!u) return "";
+    let id = "";
+    if (typeof u === "string") id = u;
+    else if (u._id) id = u._id.toString();
+    else id = u.toString();
+    return id.toLowerCase();
+  };
 
   const otherUser = chat.participants.find(
-    (p) => p._id.toString() !== authUserId
+    (p) => getUserId(p) !== authUserId
   );
 
-  const getUserId = (u) => u?._id ? u._id.toString() : u?.toString();
-
   const nicknameObj = chat.nicknames?.find(n => getUserId(n.user) === authUserId);
-  const displayName = nicknameObj?.name || otherUser?.username;
+  const displayName = nicknameObj?.name || otherUser?.username || "Unknown";
 
   const myUnread = chat.unreadCounts?.find(uc => getUserId(uc.user) === authUserId);
   const myUnreadCount = myUnread?.count || 0;
@@ -31,7 +39,7 @@ const ChatListItem = ({ chat, isActive, onSelect }) => {
         `}>
           {otherUser?.avatar ? (
             <img
-              src={`http://localhost:5000${otherUser.avatar}`}
+              src={`${BASE_URL}${otherUser.avatar}`}
               alt={displayName}
               className="w-full h-full object-cover"
             />
