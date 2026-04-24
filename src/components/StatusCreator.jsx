@@ -64,6 +64,7 @@ const StatusCreator = ({ onCancel, onPosted }) => {
                     className="aspect-video relative flex flex-col items-center justify-center transition-all duration-500 overflow-hidden"
                     style={{ backgroundColor: type === "text" ? bgColor : "#000" }}
                 >
+                    {type === "text" ? (
                         <textarea
                             value={content}
                             onChange={(e) => setContent(e.target.value)}
