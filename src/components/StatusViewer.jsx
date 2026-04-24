@@ -110,7 +110,7 @@ const StatusViewer = ({ statuses = [], onClose }) => {
                         className="relative z-10 w-full h-full flex items-center justify-center p-12 text-center"
                         style={{ backgroundColor: currentStatus.backgroundColor }}
                     >
-                        <p className="text-white text-4xl md:text-5xl font-black leading-tight drop-shadow-xl max-w-2xl animate-in zoom-in-90 duration-500">
+                        <p className="text-white text-3xl sm:text-4xl md:text-5xl font-black leading-tight drop-shadow-xl max-w-2xl animate-in zoom-in-90 duration-500 px-6">
                             {currentStatus.content}
                         </p>
                     </div>

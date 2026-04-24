@@ -109,7 +109,7 @@ const ChannelWindow = ({ channel, onBack }) => {
             </div>
 
             {/* FEED CONTENT */}
-            <div className="flex-1 overflow-y-auto px-4 py-8 space-y-6 no-scrollbar">
+            <div className="flex-1 overflow-y-auto px-2 sm:px-4 py-4 sm:py-8 space-y-4 sm:space-y-6 no-scrollbar">
                 {loading ? (
                     <div className="text-center text-zinc-500 animate-pulse py-10">Loading updates...</div>
                 ) : updates.length === 0 ? (

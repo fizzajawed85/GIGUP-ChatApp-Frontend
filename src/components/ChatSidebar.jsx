@@ -1,6 +1,7 @@
 // src/components/ChatSidebar.jsx
 import { useState } from "react";
 import { FaRobot } from "react-icons/fa";
+import { useSelector } from "react-redux";
 import { AiOutlineComment } from "react-icons/ai";
 import { TbCircleDot } from "react-icons/tb";
 import {
@@ -14,6 +15,11 @@ const ChatSidebar = () => {
   const { pathname } = useLocation();
   const [hovered, setHovered] = useState(null);
   const navigate = useNavigate();
+  const { selectedChat } = useSelector((state) => state.chat);
+  const { selectedGroup } = useSelector((state) => state.group);
+
+  // Hide bottom bar on mobile if a specific window is open
+  const isWindowOpen = !!(selectedChat || selectedGroup);
 
   const handleLogout = () => {
     localStorage.removeItem("auth");
@@ -133,7 +139,8 @@ const ChatSidebar = () => {
       </aside>
 
       {/* Mobile Bottom Bar — WhatsApp-style */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 flex md:hidden bg-white dark:bg-[#111827] border-t border-zinc-200 dark:border-zinc-700 safe-area-pb">
+      {!isWindowOpen && (
+        <nav className="fixed bottom-0 left-0 right-0 z-50 flex md:hidden bg-white dark:bg-[#111827] border-t border-zinc-200 dark:border-zinc-700 safe-area-pb">
         {topIcons.concat(bottomIcons).map((item, idx) => {
           const IconComp = item.icon;
           const active = isActive(item.link);
@@ -169,7 +176,8 @@ const ChatSidebar = () => {
           <MdLogout className={`w-6 h-6 ${theme === "light" ? "text-gray-500" : "text-gray-400"} hover:text-red-500`} />
           <span className="text-[10px] mt-1 font-medium text-gray-400 dark:text-gray-500">Logout</span>
         </button>
-      </nav>
+        </nav>
+      )}
     </>
   );
 };

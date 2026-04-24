@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 import ChatNavbar from './ChatNavbar';
 import ChatSidebar from './ChatSidebar';
 import { socket } from '../utils/socket';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateChatLatestMessage, updateChat } from '../redux/slices/chatSlice';
 import { CallingProvider } from '../context/CallingContext';
 import { NotificationProvider } from '../context/NotificationContext';
@@ -14,6 +14,9 @@ import GroupCallOverlay from './GroupCallOverlay';
 
 const MainLayout = () => {
     const dispatch = useDispatch();
+    const { selectedChat } = useSelector((state) => state.chat);
+    const { selectedGroup } = useSelector((state) => state.group);
+    const isWindowOpen = !!(selectedChat || selectedGroup);
 
     useEffect(() => {
         const auth = JSON.parse(localStorage.getItem("auth"));
@@ -57,7 +60,7 @@ const MainLayout = () => {
 
                     <div className="flex overflow-hidden min-h-0">
                         <ChatSidebar />
-                        <main className="flex-1 flex flex-col overflow-hidden bg-white dark:bg-[#111727] pb-16 md:pb-0">
+                        <main className={`flex-1 flex flex-col overflow-hidden bg-white dark:bg-[#111727] ${isWindowOpen ? "pb-0" : "pb-16"} md:pb-0`}>
                             <Outlet />
                         </main>
                     </div>
