@@ -98,7 +98,7 @@ const AIChatSidebar = () => {
                         Giga Synapse Error: {error}
                     </div>
                 )}
-                {loading && conversations.length === 0 ? (
+                {loading && (!conversations || conversations.length === 0) ? (
                     <div className="flex justify-center p-6">
                         <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-sky-500"></div>
                     </div>
@@ -107,12 +107,12 @@ const AIChatSidebar = () => {
                         <p className="text-[10px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-widest px-4 py-2 opacity-70">
                             Recent Synapses
                         </p>
-                        {conversations.length === 0 ? (
+                        {(!Array.isArray(conversations) || conversations.length === 0) ? (
                             <div className="px-4 py-10 text-center">
                                 <p className="text-sm text-gray-500 dark:text-gray-400">No history found</p>
                             </div>
                         ) : (
-                            conversations.map((conv) => (
+                            Array.isArray(conversations) && conversations.map((conv) => (
                                 <div
                                     key={conv._id}
                                     onClick={() => handleSelectConversation(conv)}

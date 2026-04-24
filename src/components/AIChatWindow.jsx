@@ -124,7 +124,7 @@ const AIChatWindow = () => {
                         Giga encountered a synapse error: {error}
                     </div>
                 )}
-                {messages.length === 0 ? (
+                {(!Array.isArray(messages) || messages.length === 0) ? (
                     <div className="h-full flex flex-col items-center justify-center text-center space-y-4 px-6 opacity-60">
                         <div className="w-20 h-20 rounded-full bg-sky-100 dark:bg-sky-900/20 flex items-center justify-center text-sky-500 mb-2 shadow-inner">
                             <RiRobot2Line className="text-5xl opacity-80" />
@@ -137,7 +137,7 @@ const AIChatWindow = () => {
                         </p>
                     </div>
                 ) : (
-                    messages.map((msg, idx) => (
+                    Array.isArray(messages) && messages.map((msg, idx) => (
                         <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} duration-300`}>
                             <div className={`max-w-[85%] sm:max-w-[70%] rounded-2xl px-4 py-2.5 shadow-sm relative ${msg.role === 'user'
                                 ? "bg-sky-500 text-white rounded-tr-none shadow-sky-200 dark:shadow-none"
