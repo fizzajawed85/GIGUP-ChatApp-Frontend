@@ -155,8 +155,8 @@ const ChatSidebar = () => {
                   <div className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 rounded-b-full bg-sky-500 shadow-[0_2px_10px_rgba(14,165,233,0.4)]" />
                 )}
                 <IconComp
-                  className={`w-5 h-5 transition-all duration-300
-                    ${active ? "text-sky-500 scale-125" : theme === "light" ? "text-gray-400" : "text-zinc-500"}
+                  className={`w-6 h-6 transition-all duration-300
+                    ${active ? "text-sky-500 scale-110" : theme === "light" ? "text-gray-500" : "text-zinc-400"}
                   `}
                 />
               </Link>

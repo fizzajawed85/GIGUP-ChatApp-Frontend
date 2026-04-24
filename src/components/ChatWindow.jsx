@@ -408,8 +408,8 @@ const ChatWindow = () => {
 
       {/* INPUT */}
       <div className="sticky bottom-0 z-20 h-16 px-4 flex items-center gap-3 border-t dark:border-zinc-700 bg-white dark:bg-[#0b1220] shrink-0 w-full">
-        <BsThreeDots className="text-xl hidden sm:block" />
-        <BsEmojiSmile className="text-xl hidden sm:block" />
+        <BsThreeDots className="text-xl hidden sm:block shrink-0" />
+        <BsEmojiSmile className="text-xl hidden sm:block shrink-0" />
 
         {/* Gallery Option */}
         <input
@@ -421,7 +421,7 @@ const ChatWindow = () => {
         />
         <button
           onClick={() => fileInputRef.current.click()}
-          className="hover:text-sky-500 transition-colors"
+          className="hover:text-sky-500 transition-colors shrink-0"
           title="Attach Image/Video"
         >
           <FiImage className="text-xl" />
