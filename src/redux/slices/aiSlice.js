@@ -38,13 +38,18 @@ const aiSlice = createSlice({
         loading: false,
         sending: false,
         error: null,
+        newChatActive: false,
     },
     reducers: {
         setSelectedConversation: (state, action) => {
             state.selectedConversation = action.payload;
+            if (action.payload) state.newChatActive = false;
         },
         clearAIMessages: (state) => {
             state.messages = [];
+        },
+        setNewChatActive: (state, action) => {
+            state.newChatActive = action.payload;
         },
     },
     extraReducers: (builder) => {
@@ -101,5 +106,5 @@ const aiSlice = createSlice({
     },
 });
 
-export const { setSelectedConversation, clearAIMessages } = aiSlice.actions;
+export const { setSelectedConversation, clearAIMessages, setNewChatActive } = aiSlice.actions;
 export default aiSlice.reducer;

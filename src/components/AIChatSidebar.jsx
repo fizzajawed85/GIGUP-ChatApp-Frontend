@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAIConversations, setSelectedConversation, clearAIMessages, fetchAIMessages, renameAIConversation } from "../redux/slices/aiSlice";
+import { fetchAIConversations, setSelectedConversation, clearAIMessages, fetchAIMessages, renameAIConversation, setNewChatActive } from "../redux/slices/aiSlice";
 import { FiPlus, FiMessageSquare, FiTrash2, FiMoreVertical, FiEdit3, FiCheck, FiX } from "react-icons/fi";
 import { RiRobot2Line } from "react-icons/ri";
 import { deleteAIConversation } from "../services/ai.services";
@@ -33,6 +33,7 @@ const AIChatSidebar = ({ onNewChat }) => {
     const handleNewChat = () => {
         dispatch(setSelectedConversation(null));
         dispatch(clearAIMessages());
+        dispatch(setNewChatActive(true));
         if (onNewChat) onNewChat();
     };
 

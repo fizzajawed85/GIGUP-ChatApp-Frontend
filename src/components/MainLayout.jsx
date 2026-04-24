@@ -16,8 +16,8 @@ const MainLayout = () => {
     const dispatch = useDispatch();
     const { selectedChat } = useSelector((state) => state.chat);
     const { selectedGroup } = useSelector((state) => state.group);
-    const { selectedConversation } = useSelector((state) => state.ai);
-    const isWindowOpen = !!(selectedChat || selectedGroup || selectedConversation);
+    const { selectedConversation, newChatActive } = useSelector((state) => state.ai);
+    const isWindowOpen = !!(selectedChat || selectedGroup || selectedConversation || newChatActive);
 
     useEffect(() => {
         const auth = JSON.parse(localStorage.getItem("auth"));
