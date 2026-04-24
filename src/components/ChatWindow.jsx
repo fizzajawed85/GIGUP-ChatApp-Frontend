@@ -304,7 +304,7 @@ const ChatWindow = () => {
   }
 
   return (
-    <div className="flex flex-col flex-1 min-w-0 h-full">
+    <div className="flex flex-col flex-1 min-w-0 h-full overflow-hidden">
       {/* HEADER */}
       <div className="h-16 px-4 flex items-center justify-between border-b dark:border-zinc-700 bg-white dark:bg-[#0b1220] shrink-0">
         <div className="flex items-center gap-2">

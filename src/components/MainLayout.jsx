@@ -16,7 +16,8 @@ const MainLayout = () => {
     const dispatch = useDispatch();
     const { selectedChat } = useSelector((state) => state.chat);
     const { selectedGroup } = useSelector((state) => state.group);
-    const isWindowOpen = !!(selectedChat || selectedGroup);
+    const { selectedConversation } = useSelector((state) => state.ai);
+    const isWindowOpen = !!(selectedChat || selectedGroup || selectedConversation);
 
     useEffect(() => {
         const auth = JSON.parse(localStorage.getItem("auth"));
@@ -54,7 +55,7 @@ const MainLayout = () => {
         <NotificationProvider>
             <CallingProvider>
                 <div className="h-[100dvh] w-full bg-white dark:bg-[#111727] flex flex-col overflow-hidden">
-                    <header className="z-50 border-b border-zinc-200 dark:border-zinc-700 bg-white dark:bg-[#111727]">
+                    <header className={`z-50 border-b border-zinc-200 dark:border-zinc-700 bg-white dark:bg-[#111727] ${isWindowOpen ? 'hidden md:block' : ''}`}>
                         <ChatNavbar />
                     </header>
 

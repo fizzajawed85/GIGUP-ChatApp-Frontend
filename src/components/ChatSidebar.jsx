@@ -140,8 +140,8 @@ const ChatSidebar = () => {
 
       {/* Mobile Bottom Bar — WhatsApp-style */}
       {!isWindowOpen && (
-        <nav className="fixed bottom-0 left-0 right-0 z-[60] flex md:hidden bg-white dark:bg-[#111827] border-t border-zinc-200 dark:border-zinc-700 safe-area-pb h-16 shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
-          {topIcons.slice(0, 5).map((item, idx) => {
+        <nav className="fixed bottom-0 left-0 right-0 z-[60] flex md:hidden bg-white dark:bg-[#111827] border-t border-zinc-200 dark:border-zinc-700 safe-area-pb h-14 shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
+          {topIcons.concat(bottomIcons).map((item, idx) => {
             const IconComp = item.icon;
             const active = isActive(item.link);
 
@@ -152,10 +152,10 @@ const ChatSidebar = () => {
                 className="flex flex-col items-center justify-center flex-1 relative transition-all active:scale-75"
               >
                 {active && (
-                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-10 h-1 rounded-b-full bg-sky-500 shadow-[0_2px_10px_rgba(14,165,233,0.4)]" />
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 rounded-b-full bg-sky-500 shadow-[0_2px_10px_rgba(14,165,233,0.4)]" />
                 )}
                 <IconComp
-                  className={`w-7 h-7 transition-all duration-300
+                  className={`w-5 h-5 transition-all duration-300
                     ${active ? "text-sky-500 scale-125" : theme === "light" ? "text-gray-400" : "text-zinc-500"}
                   `}
                 />
