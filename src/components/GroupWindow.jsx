@@ -365,8 +365,8 @@ const GroupWindow = () => {
 
             {/* Input Area Overhaul */}
             <div className="sticky bottom-0 z-20 h-16 px-2 sm:px-4 flex items-center gap-1.5 sm:gap-3 border-t dark:border-zinc-700 bg-white dark:bg-[#0b1220] shrink-0 w-full">
-                <BsThreeDots className="text-xl hidden sm:block" />
-                <BsEmojiSmile className="text-xl hidden sm:block" />
+                <BsThreeDots className="text-xl hidden sm:block shrink-0" />
+                <BsEmojiSmile className="text-xl hidden sm:block shrink-0" />
 
                 {/* Gallery Option */}
                 <input
@@ -378,7 +378,7 @@ const GroupWindow = () => {
                 />
                 <button
                     onClick={() => fileInputRef.current.click()}
-                    className="hover:text-sky-500 transition-colors"
+                    className="hover:text-sky-500 transition-colors shrink-0"
                     title="Attach Image/Video"
                 >
                     <FiImage className="text-xl" />
@@ -390,13 +390,13 @@ const GroupWindow = () => {
                         onChange={handleTyping}
                         onKeyDown={(e) => e.key === "Enter" && handleSend()}
                         placeholder="Type a message..."
-                        className="flex-1 min-w-0 px-4 py-2 rounded-full bg-[#f3f4f6] dark:bg-[#1f2937] outline-none text-sm text-gray-900 dark:text-white"
+                        className="flex-1 min-w-0 px-4 py-2 rounded-full bg-[#f3f4f6] dark:bg-[#1f2937] outline-none text-xs sm:text-sm text-gray-900 dark:text-white"
                     />
                 </div>
 
                 {/* Voice Recording UI */}
                 <div
-                    className="flex items-center select-none touch-none"
+                    className="flex items-center select-none touch-none shrink-0"
                     onMouseDown={!audioBlob && !isRecording && !isProcessing ? startRecording : undefined}
                     onMouseUp={stopRecording}
                     onMouseLeave={stopRecording}
@@ -407,7 +407,6 @@ const GroupWindow = () => {
                         <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20">
                             <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
                             <span className="text-xs font-mono text-red-600 dark:text-red-400 font-bold">{formattedTime}</span>
-                            <span className="text-[10px] text-red-600 dark:text-red-400 opacity-70">Release to send</span>
                         </div>
                     ) : isProcessing ? (
                         <div className="flex items-center gap-2 px-3 py-1.5 bg-gray-50 dark:bg-gray-800 rounded-full">
@@ -423,9 +422,6 @@ const GroupWindow = () => {
                             >
                                 <span className="text-xl">✕</span>
                             </button>
-                            <div className="px-3 py-1.5 text-xs text-sky-500 font-medium">
-                                Voice ready
-                            </div>
                         </div>
                     ) : (
                         <button
@@ -440,7 +436,7 @@ const GroupWindow = () => {
                 <button
                     onClick={audioBlob ? handleSendVoice : handleSend}
                     disabled={(!text.trim() && !selectedFile && !audioBlob) || isProcessing}
-                    className={`w-10 h-10 flex items-center justify-center rounded-full text-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors
+                    className={`w-10 h-10 flex items-center justify-center rounded-full text-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors shrink-0
                         bg-sky-400 dark:bg-sky-500 hover:bg-sky-500 dark:hover:bg-sky-600
                     `}
                     title={audioBlob ? "Send Voice Message" : "Send Message"}
