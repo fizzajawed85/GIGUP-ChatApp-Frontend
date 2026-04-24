@@ -39,18 +39,20 @@ const UpdatesTab = () => {
 
     return (
         <div className="flex h-full w-full overflow-hidden animate-in fade-in duration-500">
-            {/* LEFT SIDEBAR */}
-            <UpdatesSidebar
-                key={refreshKey}
-                onStatusSelect={handleStatusSelect}
-                onChannelSelect={handleChannelSelect}
-                onPostStatus={handlePostStatusClick}
-                onCreateChannel={() => setIsChannelModalOpen(true)}
-                activeChannel={selectedChannel}
-            />
+            {/* LEFT SIDEBAR - hidden on mobile if something is selected */}
+            <div className={`w-full md:w-[350px] h-full ${viewMode !== "EMPTY" ? "hidden md:flex" : "flex"}`}>
+                <UpdatesSidebar
+                    key={refreshKey}
+                    onStatusSelect={handleStatusSelect}
+                    onChannelSelect={handleChannelSelect}
+                    onPostStatus={handlePostStatusClick}
+                    onCreateChannel={() => setIsChannelModalOpen(true)}
+                    activeChannel={selectedChannel}
+                />
+            </div>
 
-            {/* MAIN CONTENT AREA (RIGHT PANE) */}
-            <main className="flex-1 flex flex-col min-w-0 h-full relative overflow-hidden bg-white dark:bg-[#0b141a]">
+            {/* MAIN CONTENT AREA (RIGHT PANE) - hidden on mobile if nothing is selected */}
+            <main className={`flex-1 flex flex-col min-w-0 h-full relative overflow-hidden bg-white dark:bg-[#0b141a] ${viewMode === "EMPTY" ? "hidden md:flex" : "flex"}`}>
                 {viewMode === "STATUS_CREATOR" && (
                     <StatusCreator
                         onCancel={() => setViewMode("EMPTY")}
@@ -66,7 +68,10 @@ const UpdatesTab = () => {
                 )}
 
                 {viewMode === "CHANNEL_WINDOW" && selectedChannel && (
-                    <ChannelWindow channel={selectedChannel} />
+                    <ChannelWindow
+                        channel={selectedChannel}
+                        onBack={() => setViewMode("EMPTY")}
+                    />
                 )}
 
                 {viewMode === "EMPTY" && (

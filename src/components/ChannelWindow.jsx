@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { FiSearch, FiMoreVertical, FiSend, FiImage } from "react-icons/fi";
+import { FiSearch, FiMoreVertical, FiSend, FiImage, FiArrowLeft } from "react-icons/fi";
 import { IoClose } from "react-icons/io5";
 import { getChannelUpdates, postChannelUpdate } from "../services/channel.services";
 import useTheme from "../hooks/useTheme";
 import { BASE_URL } from "../config";
 
-const ChannelWindow = ({ channel }) => {
+const ChannelWindow = ({ channel, onBack }) => {
     const { theme } = useTheme();
     const [updates, setUpdates] = useState([]);
     const [text, setText] = useState("");
@@ -82,7 +82,16 @@ const ChannelWindow = ({ channel }) => {
         <div className="flex flex-col flex-1 min-w-0 h-full bg-[#fdf7f0] dark:bg-[#0b141a]">
             {/* HEADER */}
             <div className="h-16 px-4 flex items-center justify-between border-b dark:border-zinc-700 bg-white dark:bg-[#0b1220] shrink-0">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
+                    {/* Back Button for Mobile */}
+                    <button
+                        onClick={onBack}
+                        className="md:hidden p-2 -ml-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors"
+                    >
+                        <FiArrowLeft className="text-xl text-gray-600 dark:text-gray-300" />
+                    </button>
+
+                    <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-sky-100 dark:bg-sky-900/30 flex items-center justify-center text-sky-600 dark:text-sky-400 font-bold text-lg border dark:border-sky-500/20 shadow-sm overflow-hidden">
                         {channel.avatar ? <img src={channel.avatar.startsWith("http") ? channel.avatar : `${BASE_URL}${channel.avatar}`} alt="" className="w-full h-full object-cover" /> : channel.name[0]}
                     </div>

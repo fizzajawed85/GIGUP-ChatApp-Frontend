@@ -57,7 +57,7 @@ const MainLayout = () => {
 
                     <div className="flex overflow-hidden min-h-0">
                         <ChatSidebar />
-                        <main className="flex-1 flex flex-col overflow-hidden bg-white dark:bg-[#111727]">
+                        <main className="flex-1 flex flex-col overflow-hidden bg-white dark:bg-[#111727] pb-16 md:pb-0">
                             <Outlet />
                         </main>
                     </div>

@@ -51,7 +51,7 @@ const UpdatesSidebar = ({ onStatusSelect, onChannelSelect, onPostStatus, onCreat
     };
 
     return (
-        <div className="w-[350px] flex flex-col h-full bg-white dark:bg-[#111b21] border-r dark:border-zinc-700/50">
+        <div className="w-full flex flex-col h-full bg-white dark:bg-[#111b21] border-r dark:border-zinc-700/50">
             {/* HEADER */}
             <div className="p-4 flex justify-between items-center">
                 <h1 className="text-xl font-bold text-gray-900 dark:text-zinc-100 italic">Updates</h1>

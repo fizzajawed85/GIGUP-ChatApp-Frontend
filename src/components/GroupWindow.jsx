@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchGroupMessages, addGroupMessage, markGroupMessageAsRead, markAllGroupMessagesAsRead } from "../redux/slices/groupMessageSlice";
 import { socket } from "../utils/socket";
 import { sendGroupMessage, leaveGroup, markMessageAsRead } from "../services/group.services";
-import { removeGroup, resetGroupUnreadCount } from "../redux/slices/groupSlice";
+import { removeGroup, resetGroupUnreadCount, setSelectedGroup } from "../redux/slices/groupSlice";
 import GroupMessageItem from "./GroupMessageItem";
 import useTheme from "../hooks/useTheme";
 import { CallingContext } from "../context/CallingContext";
@@ -14,7 +14,8 @@ import {
     FiSearch,
     FiMoreVertical,
     FiSend,
-    FiImage
+    FiImage,
+    FiArrowLeft
 } from "react-icons/fi";
 import { MdCall, MdVideocam, MdMic, MdExitToApp } from "react-icons/md";
 import { BsEmojiSmile, BsThreeDots } from "react-icons/bs";
@@ -250,7 +251,16 @@ const GroupWindow = () => {
         <div className="flex flex-col flex-1 min-w-0 h-full">
             {/* HEADER */}
             <div className="h-16 px-4 flex items-center justify-between border-b dark:border-zinc-700 bg-white dark:bg-[#0b1220] shrink-0">
-                <div className="flex items-center gap-3 flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                    {/* Back Button for Mobile */}
+                    <button
+                        onClick={() => dispatch(setSelectedGroup(null))}
+                        className="md:hidden p-2 -ml-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors"
+                    >
+                        <FiArrowLeft className="text-xl text-gray-600 dark:text-gray-300" />
+                    </button>
+
+                    <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-sky-100 dark:bg-sky-900/30 flex items-center justify-center text-sky-600 dark:text-sky-400 font-bold overflow-hidden shrink-0 border border-gray-200 dark:border-zinc-700 shadow-sm">
                         {selectedGroup.avatar ? (
                             <img
@@ -271,13 +281,20 @@ const GroupWindow = () => {
                         </p>
                     </div>
                 </div>
+                </div>
 
                 <div className="flex items-center gap-5 text-xl text-gray-600 dark:text-gray-300">
                     <FiSearch className="hover:text-sky-500 cursor-pointer transition-colors" />
-                    <button onClick={() => startGroupCall(selectedGroup._id, selectedGroup.name, 'audio')} className="hover:text-sky-500 transition-colors">
+                    <button
+                        onClick={() => callUser(selectedGroup?._id, 'audio', selectedGroup?.name)}
+                        className="hover:text-sky-500 transition-colors"
+                    >
                         <MdCall />
                     </button>
-                    <button onClick={() => startGroupCall(selectedGroup._id, selectedGroup.name, 'video')} className="hover:text-sky-500 transition-colors">
+                    <button
+                        onClick={() => callUser(selectedGroup?._id, 'video', selectedGroup?.name)}
+                        className="hover:text-sky-500 transition-colors"
+                    >
                         <MdVideocam />
                     </button>
                     <div className="relative">

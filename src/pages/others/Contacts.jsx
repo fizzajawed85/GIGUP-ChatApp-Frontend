@@ -159,8 +159,8 @@ const Contacts = () => {
                 </div>
             </div>
 
-            {/* PART 2 & 3: CALL HISTORY HUB (Audio & Video) */}
-            <div className="flex-1 flex flex-col md:flex-row overflow-hidden bg-white dark:bg-[#0b1220]">
+            {/* PART 2 & 3: CALL HISTORY HUB (Audio & Video) - hidden on mobile */}
+            <div className="hidden md:flex flex-1 flex-row overflow-hidden bg-white dark:bg-[#0b1220]">
                 {/* Audio History */}
                 <div className="flex-1 flex flex-col border-r dark:border-zinc-700 overflow-hidden">
                     <div className="p-6 border-b dark:border-zinc-700 flex items-center justify-between bg-zinc-50/30 dark:bg-transparent">

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchMessages, addMessage, updateMessage } from "../redux/slices/messageSlice";
 import { socket } from "../utils/socket";
 import { sendMessage, editMessage, markChatAsRead } from "../services/chat.services";
-import { resetChatUnreadCount } from "../redux/slices/chatSlice";
+import { resetChatUnreadCount, setSelectedChat } from "../redux/slices/chatSlice";
 import MessageItem from "./MessageItem";
 import useTheme from "../hooks/useTheme";
 import { CallingContext } from "../context/CallingContext";
@@ -14,7 +14,8 @@ import {
   FiSearch,
   FiMoreVertical,
   FiSend,
-  FiImage
+  FiImage,
+  FiArrowLeft
 } from "react-icons/fi";
 import { MdCall, MdVideocam, MdMic } from "react-icons/md";
 import { BsEmojiSmile, BsThreeDots } from "react-icons/bs";
@@ -306,7 +307,16 @@ const ChatWindow = () => {
     <div className="flex flex-col flex-1 min-w-0 h-full">
       {/* HEADER */}
       <div className="h-16 px-4 flex items-center justify-between border-b dark:border-zinc-700 bg-white dark:bg-[#0b1220] shrink-0">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
+          {/* Back Button for Mobile */}
+          <button
+            onClick={() => dispatch(setSelectedChat(null))}
+            className="md:hidden p-2 -ml-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors"
+          >
+            <FiArrowLeft className="text-xl text-gray-600 dark:text-gray-300" />
+          </button>
+
+          <div className="flex items-center gap-3">
           <div className="relative">
             <img
               src={otherUser?.avatar ? `${BASE_URL}${otherUser.avatar}` : "/avatar.png"}
@@ -322,6 +332,7 @@ const ChatWindow = () => {
             <p className={`text-[11px] ${otherUser?.isOnline || isTyping ? "text-green-500 font-medium" : "text-gray-500 dark:text-gray-400"}`}>
               {isTyping ? "typing..." : (otherUser?.isOnline ? "Online" : formatLastSeen(otherUser?.lastSeen))}
             </p>
+          </div>
           </div>
         </div>
 

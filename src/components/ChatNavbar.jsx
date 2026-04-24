@@ -43,14 +43,14 @@ const ChatNavbar = () => {
   };
 
   return (
-    <nav className="w-full flex items-center justify-between px-6 py-3 border-b border-zinc-400 dark:border-zinc-600 bg-white dark:bg-gradient-to-b from-[#111727] to-[#111727] relative">
+    <nav className="w-full flex items-center justify-between px-4 md:px-6 py-2 md:py-3 border-b border-zinc-400 dark:border-zinc-600 bg-white dark:bg-gradient-to-b from-[#111727] to-[#111727] relative">
 
       {/* LEFT: Logo */}
       <div className="flex items-center">
         <img
           src={theme === "light" ? logoLight : logoDark}
           alt="Gigup Logo"
-          className="w-36 h-auto cursor-pointer"
+          className="w-28 md:w-36 h-auto cursor-pointer"
           onClick={() => navigate("/chat")}
         />
       </div>

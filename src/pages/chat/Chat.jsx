@@ -1,16 +1,21 @@
-// src/pages/chat/Chat.jsx
-import React from "react";
+import { useSelector } from "react-redux";
 import ChatList from "../../components/ChatList";
 import ChatWindow from "../../components/ChatWindow";
 
 const Chat = () => {
-  return (
-    <div className="flex flex-1 overflow-hidden w-full">
-      {/*Chat List*/}
-      <ChatList />
+  const { selectedChat } = useSelector((state) => state.chat);
 
-      {/* Chat Window */}
-      <ChatWindow />
+  return (
+    <div className="flex flex-1 overflow-hidden w-full relative">
+      {/* Chat List - hidden on mobile if a chat is selected */}
+      <div className={`w-full md:w-[350px] h-full ${selectedChat ? "hidden md:flex" : "flex"}`}>
+        <ChatList />
+      </div>
+
+      {/* Chat Window - hidden on mobile if no chat is selected */}
+      <div className={`flex-1 h-full ${!selectedChat ? "hidden md:flex" : "flex"}`}>
+        <ChatWindow />
+      </div>
     </div>
   );
 };

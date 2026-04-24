@@ -42,7 +42,7 @@ const ChatList = () => {
   if (loading) return <div className="p-4">Loading chats...</div>;
 
   return (
-    <div className="w-[350px] h-full flex flex-col border-r border-zinc-200 dark:border-zinc-700 bg-white dark:bg-[#0b1220]">
+    <div className="w-full h-full flex flex-col border-r border-zinc-200 dark:border-zinc-700 bg-white dark:bg-[#0b1220]">
 
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b dark:border-zinc-700 shrink-0">

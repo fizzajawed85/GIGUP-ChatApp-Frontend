@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { sendAIMessage } from "../redux/slices/aiSlice";
+import { sendAIMessage, setSelectedConversation } from "../redux/slices/aiSlice";
 import { BsEmojiSmile, BsThreeDots } from "react-icons/bs";
-import { FiSearch, FiMoreVertical, FiSend, FiImage, FiLoader, FiX } from "react-icons/fi";
+import { FiSearch, FiMoreVertical, FiSend, FiImage, FiLoader, FiX, FiArrowLeft } from "react-icons/fi";
 import { MdCall, MdVideocam, MdMic } from "react-icons/md";
 import { RiRobot2Line } from "react-icons/ri";
 import VoiceMessagePlayer from "./VoiceMessagePlayer";
@@ -77,17 +77,27 @@ const AIChatWindow = () => {
         <div className="flex-1 flex flex-col h-full bg-white dark:bg-[#0b1220]">
             {/* Header */}
             <div className="h-16 px-4 border-b dark:border-zinc-700 flex items-center justify-between bg-white dark:bg-[#0b1220] shrink-0">
-                <div className="flex items-center gap-3">
-                    <div className="relative">
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-sky-400 to-indigo-500 flex items-center justify-center text-white shadow-lg animate-pulse">
-                            <RiRobot2Line className="text-2xl" />
+                <div className="flex items-center gap-2">
+                    {/* Back Button for Mobile */}
+                    <button
+                        onClick={() => dispatch(setSelectedConversation(null))}
+                        className="md:hidden p-2 -ml-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors"
+                    >
+                        <FiArrowLeft className="text-xl text-gray-600 dark:text-gray-300" />
+                    </button>
+
+                    <div className="flex items-center gap-3">
+                        <div className="relative">
+                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-sky-400 to-indigo-500 flex items-center justify-center text-white shadow-lg animate-pulse">
+                                <RiRobot2Line className="text-2xl" />
+                            </div>
+                            <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white dark:border-[#0b1220] rounded-full"></span>
                         </div>
-                        <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white dark:border-[#0b1220] rounded-full"></span>
-                    </div>
-                    <div>
-                        <h2 className="font-bold text-gray-900 dark:text-white">Giga</h2>
-                        <div className="flex items-center gap-1.5">
-                            <span className="text-[10px] text-zinc-500 dark:text-sky-400 uppercase tracking-widest font-bold">Pulse Core Active</span>
+                        <div>
+                            <h2 className="font-bold text-gray-900 dark:text-white">Giga</h2>
+                            <div className="flex items-center gap-1.5">
+                                <span className="text-[10px] text-zinc-500 dark:text-sky-400 uppercase tracking-widest font-bold">Pulse Core Active</span>
+                            </div>
                         </div>
                     </div>
                 </div>

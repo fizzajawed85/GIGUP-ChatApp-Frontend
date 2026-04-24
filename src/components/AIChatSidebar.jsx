@@ -79,7 +79,7 @@ const AIChatSidebar = () => {
     };
 
     return (
-        <div className="w-[350px] shrink-0 h-full flex flex-col border-r border-zinc-200 dark:border-zinc-700 bg-white dark:bg-[#0b1220] transition-all">
+        <div className="w-full shrink-0 h-full flex flex-col border-r border-zinc-200 dark:border-zinc-700 bg-white dark:bg-[#0b1220] transition-all">
             {/* Header / New Chat */}
             <div className="flex items-center justify-between px-4 py-3 border-b dark:border-zinc-700 shrink-0">
                 <h2 className="text-xl font-black text-sky-500 uppercase tracking-tighter">GIGA</h2>

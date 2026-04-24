@@ -1,15 +1,19 @@
-import React from "react";
+import { useSelector } from "react-redux";
 import AIChatSidebar from "../../components/AIChatSidebar";
 import AIChatWindow from "../../components/AIChatWindow";
 
 const AIChat = () => {
-    return (
-        <div className="flex h-[calc(100vh-64px)] overflow-hidden w-full">
-            {/* Sidebar (Chat History) */}
-            <AIChatSidebar />
+    const { selectedConversation } = useSelector((state) => state.ai);
 
-            {/* Chat Window */}
-            <div className="flex-1 min-w-0">
+    return (
+        <div className="flex h-full overflow-hidden w-full relative">
+            {/* Sidebar (Chat History) - hidden on mobile if a conversation is selected */}
+            <div className={`w-full md:w-[350px] h-full ${selectedConversation ? "hidden md:flex" : "flex"}`}>
+                <AIChatSidebar />
+            </div>
+
+            {/* Chat Window - hidden on mobile if no conversation is selected */}
+            <div className={`flex-1 min-w-0 h-full ${!selectedConversation ? "hidden md:flex" : "flex"}`}>
                 <AIChatWindow />
             </div>
         </div>
