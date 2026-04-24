@@ -166,7 +166,7 @@ const ChannelWindow = ({ channel, onBack }) => {
                         )}
 
                         <form onSubmit={handleSendUpdate} className="flex gap-2 items-center">
-                            <label className="p-2.5 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 transition-colors cursor-pointer">
+                            <label className="p-2 sm:p-2.5 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 transition-colors cursor-pointer shrink-0">
                                 <FiImage size={24} />
                                 <input type="file" className="hidden" accept="image/*,video/*" onChange={handleFileChange} />
                             </label>
@@ -174,13 +174,13 @@ const ChannelWindow = ({ channel, onBack }) => {
                                 type="text"
                                 value={text}
                                 onChange={(e) => setText(e.target.value)}
-                                placeholder="Post an update to followers..."
-                                className="flex-1 bg-zinc-50 dark:bg-zinc-900/50 border dark:border-zinc-700 rounded-xl px-4 py-2.5 outline-none focus:ring-1 focus:ring-sky-500 dark:text-white"
+                                placeholder="Post an update..."
+                                className="flex-1 min-w-0 bg-zinc-50 dark:bg-zinc-900/50 border dark:border-zinc-700 rounded-xl px-3 sm:px-4 py-2.5 outline-none focus:ring-1 focus:ring-sky-500 dark:text-white text-xs sm:text-sm"
                             />
                             <button
                                 type="submit"
                                 disabled={(!text.trim() && !selectedFile) || sending}
-                                className={`p-3 rounded-xl transition-all shadow-lg ${(!text.trim() && !selectedFile) || sending ? "bg-zinc-100 dark:bg-zinc-800 text-zinc-400" : "bg-sky-500 text-white shadow-sky-500/20"
+                                className={`p-3 rounded-xl transition-all shadow-lg shrink-0 ${(!text.trim() && !selectedFile) || sending ? "bg-zinc-100 dark:bg-zinc-800 text-zinc-400" : "bg-sky-500 text-white shadow-sky-500/20"
                                     }`}
                             >
                                 <FiSend />
