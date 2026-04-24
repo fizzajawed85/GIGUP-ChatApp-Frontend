@@ -29,7 +29,7 @@ const MessageItem = ({ message, isOwnMessage, onEdit, onDelete }) => {
 
       {/* MESSAGE BUBBLE */}
       <div
-        className={`relative px-3 py-1.5 max-w-[85%] sm:max-w-[70%] text-[14px] leading-relaxed transition-all ${isOwnMessage ? ownBubbleClass : otherBubbleClass
+        className={`relative px-3 py-1.5 max-w-[85%] sm:max-w-[70%] text-[14px] leading-relaxed ${isOwnMessage ? ownBubbleClass : otherBubbleClass
           } ${message.isDeleted ? "italic opacity-60 font-light" : ""}`}
       >
         {/* CONTENT */}

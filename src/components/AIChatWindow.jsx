@@ -138,7 +138,7 @@ const AIChatWindow = () => {
                     </div>
                 ) : (
                     messages.map((msg, idx) => (
-                        <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-in fade-in slide-in-from-bottom-2 duration-300`}>
+                        <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} duration-300`}>
                             <div className={`max-w-[85%] sm:max-w-[70%] rounded-2xl px-4 py-2.5 shadow-sm relative ${msg.role === 'user'
                                 ? "bg-sky-500 text-white rounded-tr-none shadow-sky-200 dark:shadow-none"
                                 : "bg-white dark:bg-[#1f2937] text-gray-900 dark:text-zinc-200 border border-zinc-100 dark:border-zinc-700/50 rounded-tl-none shadow-zinc-100 dark:shadow-none"
@@ -191,7 +191,7 @@ const AIChatWindow = () => {
 
             {/* PREVIEW AREA */}
             {previewUrl && (
-                <div className="px-4 py-2 bg-zinc-50 dark:bg-zinc-800/50 border-t dark:border-zinc-700 flex items-center justify-between animate-in slide-in-from-bottom-2 duration-200">
+                <div className="px-4 py-2 bg-zinc-50 dark:bg-zinc-800/50 border-t dark:border-zinc-700 flex items-center justify-between duration-200">
                     <div className="flex items-center gap-3 overflow-hidden">
                         <div className="w-12 h-12 rounded overflow-hidden bg-black/10 border dark:border-zinc-700">
                             {selectedFile?.type.startsWith("image") ? (

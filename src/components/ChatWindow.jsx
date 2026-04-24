@@ -364,7 +364,7 @@ const ChatWindow = () => {
 
       {/* EDITING INDICATOR */}
       {editingMessage && (
-        <div className="px-4 py-2 bg-zinc-100 dark:bg-[#1f2c33] border-t dark:border-zinc-700 flex items-center justify-between animate-in slide-in-from-bottom-2 duration-200">
+        <div className="px-4 py-2 bg-zinc-100 dark:bg-[#1f2c33] border-t dark:border-zinc-700 flex items-center justify-between duration-200">
           <div className="flex items-center gap-3 overflow-hidden">
             <div className="w-1 h-8 bg-sky-500 rounded-full shrink-0"></div>
             <div className="flex flex-col overflow-hidden">
@@ -383,7 +383,7 @@ const ChatWindow = () => {
 
       {/* FILE PREVIEW */}
       {previewUrl && (
-        <div className="px-4 py-2 bg-zinc-100 dark:bg-[#1f2c33] border-t dark:border-zinc-700 flex items-center justify-between animate-in slide-in-from-bottom-2 duration-200">
+        <div className="px-4 py-2 bg-zinc-100 dark:bg-[#1f2c33] border-t dark:border-zinc-700 flex items-center justify-between duration-200">
           <div className="flex items-center gap-3 overflow-hidden">
             <div className="w-12 h-12 rounded overflow-hidden bg-black/10">
               {selectedFile?.type.startsWith("image") ? (
