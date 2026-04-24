@@ -10,7 +10,7 @@ const Groups = () => {
             <div className={`w-full md:w-[350px] h-full ${selectedGroup ? "hidden md:flex" : "flex"}`}>
                 <GroupList />
             </div>
-            <div className={`flex-1 h-full ${!selectedGroup ? "hidden md:flex" : "flex"}`}>
+            <div className={`flex-1 w-full h-full ${!selectedGroup ? "hidden md:flex" : "flex"}`}>
                 <GroupWindow />
             </div>
         </div>

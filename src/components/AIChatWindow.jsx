@@ -76,7 +76,7 @@ const AIChatWindow = () => {
     return (
         <div className="flex-1 flex flex-col w-full h-full bg-white dark:bg-[#0b1220] overflow-hidden">
             {/* Header */}
-            <div className="h-16 px-4 border-b dark:border-zinc-700 flex items-center justify-between bg-white dark:bg-[#0b1220] shrink-0">
+            <div className="sticky top-0 z-20 h-16 px-4 border-b dark:border-zinc-700 flex items-center justify-between bg-white dark:bg-[#0b1220] shrink-0 w-full">
                 <div className="flex items-center gap-2">
                     {/* Back Button for Mobile */}
                     <button
@@ -215,7 +215,7 @@ const AIChatWindow = () => {
             )}
 
             {/* Input Area Overhaul */}
-            <div className="h-16 px-4 flex items-center gap-3 border-t dark:border-zinc-700 bg-white dark:bg-[#0b1220] shrink-0">
+            <div className="sticky bottom-0 z-20 h-16 px-4 flex items-center gap-3 border-t dark:border-zinc-700 bg-white dark:bg-[#0b1220] shrink-0 w-full">
                 <div className="flex items-center gap-2 sm:gap-4 text-zinc-400 text-xl font-light">
                     <BsThreeDots className="hidden sm:block hover:text-sky-500 cursor-pointer transition-colors" />
                     <BsEmojiSmile className="hidden sm:block hover:text-sky-500 cursor-pointer transition-colors" />

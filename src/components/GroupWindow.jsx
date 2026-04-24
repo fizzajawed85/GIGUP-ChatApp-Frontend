@@ -249,8 +249,8 @@ const GroupWindow = () => {
 
     return (
         <div className="flex flex-col flex-1 w-full h-full min-w-0 bg-white dark:bg-[#0b1220] overflow-hidden">
-            {/* HEADER */}
-            <div className="h-16 px-4 flex items-center justify-between border-b dark:border-zinc-700 bg-white dark:bg-[#0b1220] shrink-0">
+            {/* Header */}
+            <div className="sticky top-0 z-20 h-16 px-4 border-b dark:border-zinc-700 flex items-center justify-between bg-white dark:bg-[#0b1220] shrink-0 w-full">
                 <div className="flex items-center gap-2">
                     {/* Back Button for Mobile */}
                     <button
@@ -363,8 +363,8 @@ const GroupWindow = () => {
                 </div>
             )}
 
-            {/* INPUT */}
-            <div className="h-16 px-4 flex items-center gap-3 border-t dark:border-zinc-700 bg-white dark:bg-[#0b1220] shrink-0">
+            {/* Input Area Overhaul */}
+            <div className="sticky bottom-0 z-20 h-16 px-4 flex items-center gap-3 border-t dark:border-zinc-700 bg-white dark:bg-[#0b1220] shrink-0 w-full">
                 <BsThreeDots className="text-xl hidden sm:block" />
                 <BsEmojiSmile className="text-xl hidden sm:block" />
 

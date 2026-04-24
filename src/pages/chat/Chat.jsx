@@ -13,7 +13,7 @@ const Chat = () => {
       </div>
 
       {/* Chat Window - hidden on mobile if no chat is selected */}
-      <div className={`flex-1 h-full ${!selectedChat ? "hidden md:flex" : "flex"}`}>
+      <div className={`flex-1 w-full h-full ${!selectedChat ? "hidden md:flex" : "flex"}`}>
         <ChatWindow />
       </div>
     </div>

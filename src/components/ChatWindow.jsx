@@ -306,7 +306,7 @@ const ChatWindow = () => {
   return (
     <div className="flex flex-col flex-1 min-w-0 w-full h-full overflow-hidden">
       {/* HEADER */}
-      <div className="h-16 px-4 flex items-center justify-between border-b dark:border-zinc-700 bg-white dark:bg-[#0b1220] shrink-0">
+      <div className="sticky top-0 z-20 h-16 px-4 flex items-center justify-between border-b dark:border-zinc-700 bg-white dark:bg-[#0b1220] shrink-0 w-full">
         <div className="flex items-center gap-2">
           {/* Back Button for Mobile */}
           <button
@@ -407,7 +407,7 @@ const ChatWindow = () => {
       )}
 
       {/* INPUT */}
-      <div className="h-16 px-4 flex items-center gap-3 border-t dark:border-zinc-700 bg-white dark:bg-[#0b1220] shrink-0">
+      <div className="sticky bottom-0 z-20 h-16 px-4 flex items-center gap-3 border-t dark:border-zinc-700 bg-white dark:bg-[#0b1220] shrink-0 w-full">
         <BsThreeDots className="text-xl hidden sm:block" />
         <BsEmojiSmile className="text-xl hidden sm:block" />
 

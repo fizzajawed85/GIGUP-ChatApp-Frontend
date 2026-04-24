@@ -13,7 +13,7 @@ const AIChat = () => {
             </div>
 
             {/* Chat Window - hidden on mobile if no conversation is selected */}
-            <div className={`flex-1 min-w-0 h-full ${!selectedConversation ? "hidden md:flex" : "flex"}`}>
+            <div className={`flex-1 w-full h-full ${!selectedConversation ? "hidden md:flex" : "flex"}`}>
                 <AIChatWindow />
             </div>
         </div>
