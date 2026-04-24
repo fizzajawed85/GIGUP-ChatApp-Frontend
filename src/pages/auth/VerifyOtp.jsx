@@ -60,7 +60,6 @@ const VerifyOtp = () => {
   };
 
   return (
-  return (
     <div className="min-h-screen w-full flex flex-col md:flex-row bg-[#0b1220]">
       {/* LEFT SECTION - Branding (Hidden on mobile) */}
       <div className="hidden md:flex md:w-1/2 flex-col justify-center items-start bg-gradient-to-b from-black via-[#040914] to-[#0c1a30] text-[#fdf7f0] p-12 md:p-24 border-r border-white/5">
