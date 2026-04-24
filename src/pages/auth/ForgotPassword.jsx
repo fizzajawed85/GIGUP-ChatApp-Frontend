@@ -56,9 +56,31 @@ const ForgotPassword = () => {
           Enter your registered email and we’ll send you instructions to reset
           your password.
         </p>
-        <div className="mt-10 md:hidden flex flex-col items-center gap-2 animate-bounce opacity-60">
-           <span className="text-sm">Swipe to Reset</span>
-           <div className="w-6 h-6 border-r-2 border-b-2 border-white rotate-[-45deg]"></div>
+        
+        {/* Stylish Swipe Indicator - Mobile Only */}
+        <div className="mt-12 md:hidden flex flex-col items-center gap-4">
+          <div className="flex items-center gap-3 px-6 py-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-lg animate-pulse">
+            <span className="text-sm font-semibold tracking-wider uppercase text-white/90">Swipe to Reset</span>
+            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-sky-500 text-white shadow-[0_0_15px_rgba(14,165,233,0.5)]">
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth="3" 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+                className="w-4 h-4 animate-[bounce-x_1.5s_infinite]"
+              >
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </div>
+          </div>
+          <div className="flex gap-1.5">
+            <div className="w-2 h-2 rounded-full bg-sky-500"></div>
+            <div className="w-2 h-2 rounded-full bg-white/20"></div>
+          </div>
         </div>
       </div>
 
