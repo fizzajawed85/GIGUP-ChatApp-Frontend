@@ -127,6 +127,9 @@ const ChatNavbar = () => {
               <Link to="/profile" onClick={() => setIsDropdownOpen(false)} className="block px-5 py-2.5 hover:bg-sky-50 dark:hover:bg-sky-900/30 cursor-pointer text-gray-700 dark:text-gray-200 text-sm font-medium transition-colors">
                 Your Profile
               </Link>
+              <Link to="/ai-chat" onClick={() => setIsDropdownOpen(false)} className="block px-5 py-2.5 hover:bg-sky-50 dark:hover:bg-sky-900/30 cursor-pointer text-gray-700 dark:text-gray-200 text-sm font-medium transition-colors md:hidden">
+                AI Assistant
+              </Link>
               <Link to="/settings" onClick={() => setIsDropdownOpen(false)} className="block px-5 py-2.5 hover:bg-sky-50 dark:hover:bg-sky-900/30 cursor-pointer text-gray-700 dark:text-gray-200 text-sm font-medium transition-colors">
                 Settings
               </Link>

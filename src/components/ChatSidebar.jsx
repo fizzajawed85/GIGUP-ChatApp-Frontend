@@ -140,42 +140,28 @@ const ChatSidebar = () => {
 
       {/* Mobile Bottom Bar — WhatsApp-style */}
       {!isWindowOpen && (
-        <nav className="fixed bottom-0 left-0 right-0 z-50 flex md:hidden bg-white dark:bg-[#111827] border-t border-zinc-200 dark:border-zinc-700 safe-area-pb">
-        {topIcons.concat(bottomIcons).map((item, idx) => {
-          const IconComp = item.icon;
-          const active = isActive(item.link);
+        <nav className="fixed bottom-0 left-0 right-0 z-[60] flex md:hidden bg-white dark:bg-[#111827] border-t border-zinc-200 dark:border-zinc-700 safe-area-pb h-16 shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
+          {topIcons.slice(0, 5).map((item, idx) => {
+            const IconComp = item.icon;
+            const active = isActive(item.link);
 
-          return (
-            <Link
-              key={idx}
-              to={item.link}
-              className="flex flex-col items-center justify-center flex-1 py-2 relative transition-all active:scale-95"
-            >
-              {active && (
-                <span className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 rounded-full bg-sky-500" />
-              )}
-              <IconComp
-                className={`w-6 h-6 transition-all duration-200
-                  ${active ? "text-sky-500 scale-110" : theme === "light" ? "text-gray-500" : "text-gray-400"}
-                `}
-              />
-              <span className={`text-[10px] mt-1 font-medium transition-colors
-                ${active ? "text-sky-500" : "text-gray-400 dark:text-gray-500"}
-              `}>
-                {item.label}
-              </span>
-            </Link>
-          );
-        })}
-
-        {/* Logout */}
-        <button
-          onClick={handleLogout}
-          className="flex flex-col items-center justify-center flex-1 py-2 active:scale-95 transition-all"
-        >
-          <MdLogout className={`w-6 h-6 ${theme === "light" ? "text-gray-500" : "text-gray-400"} hover:text-red-500`} />
-          <span className="text-[10px] mt-1 font-medium text-gray-400 dark:text-gray-500">Logout</span>
-        </button>
+            return (
+              <Link
+                key={idx}
+                to={item.link}
+                className="flex flex-col items-center justify-center flex-1 relative transition-all active:scale-75"
+              >
+                {active && (
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-10 h-1 rounded-b-full bg-sky-500 shadow-[0_2px_10px_rgba(14,165,233,0.4)]" />
+                )}
+                <IconComp
+                  className={`w-7 h-7 transition-all duration-300
+                    ${active ? "text-sky-500 scale-125" : theme === "light" ? "text-gray-400" : "text-zinc-500"}
+                  `}
+                />
+              </Link>
+            );
+          })}
         </nav>
       )}
     </>
