@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { sendAIMessage, setSelectedConversation } from "../redux/slices/aiSlice";
 import { BsEmojiSmile, BsThreeDots } from "react-icons/bs";
-import { FiSearch, FiMoreVertical, FiSend, FiImage, FiLoader, FiX, FiArrowLeft } from "react-icons/fi";
+import { FiSearch, FiMoreVertical, FiSend, FiImage, FiLoader, FiX, FiArrowLeft, FiPlus } from "react-icons/fi";
 import { MdCall, MdVideocam, MdMic } from "react-icons/md";
 import { RiRobot2Line } from "react-icons/ri";
 import VoiceMessagePlayer from "./VoiceMessagePlayer";
