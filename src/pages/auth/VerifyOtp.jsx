@@ -39,13 +39,13 @@ const VerifyOtp = () => {
   };
 
   return (
-    <div className="min-h-screen flex overflow-hidden">
+    <div className="min-h-screen flex flex-col md:flex-row bg-[#080e1b]">
       {/* LEFT SECTION - hidden on mobile */}
-      <div className="hidden md:flex md:w-1/2 flex-col justify-start items-start bg-gradient-to-b from-[#000000] to-[#080e1b] text-[#fdf7f0] p-24">
+      <div className="hidden md:flex md:w-1/2 flex-col justify-center items-start bg-gradient-to-b from-[#000000] to-[#080e1b] text-[#fdf7f0] p-24">
         <img
           src="/images/logo9.png"
           alt="Gigup Logo"
-          className="mb-10 w-[350px] h-auto"
+          className="mb-10 w-[350px] h-auto mix-blend-lighten"
         />
         <h1 className="text-4xl font-extrabold mb-4 tracking-tight">
           Verify OTP
@@ -57,18 +57,18 @@ const VerifyOtp = () => {
       </div>
 
       {/* RIGHT SECTION */}
-      <div className="flex-1 md:w-1/2 flex justify-center items-center bg-gradient-to-b from-[#080e1b] to-[#111827] md:bg-none md:bg-cream dark:bg-[#111827] p-4 md:p-12 min-h-screen md:min-h-0">
-        <div className="w-full max-w-md bg-white/5 md:bg-white dark:bg-[#111827] rounded-3xl shadow-none md:shadow-2xl border-0 md:border border-gray-200 dark:border-gray-700 p-6 md:p-10 space-y-6">
+      <div className="flex-1 md:w-1/2 flex justify-center items-center bg-gradient-to-b from-[#080e1b] to-[#111827] p-4 md:p-12 min-h-screen md:min-h-0">
+        <div className="w-full max-w-md bg-white/5 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/10 p-6 md:p-10 space-y-5">
           {/* Mobile Logo */}
           <div className="flex justify-center mb-2 md:hidden">
-            <img src="/images/logo9.png" alt="Gigup" className="w-36 h-auto" />
+            <img src="/images/logo9.png" alt="Gigup" className="w-36 h-auto mix-blend-lighten" />
           </div>
 
-          <h2 className="text-2xl md:text-3xl font-bold text-white md:text-gray-900 dark:text-[#fdf7f0] text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-white text-center">
             OTP Verification
           </h2>
 
-          <p className="text-[#dcd8d8] md:text-gray-500 dark:text-[#dcd8d8] text-center text-sm">
+          <p className="text-[#dcd8d8] text-center text-sm opacity-80">
             Please enter the OTP we sent to your email.
           </p>
 
