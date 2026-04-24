@@ -370,22 +370,18 @@ const GroupWindow = () => {
 
             {/* EMOJI PICKER */}
             {showEmojiPicker && (
-                <div className="absolute bottom-16 left-2 sm:left-4 z-50 animate-in slide-in-from-bottom-2 duration-200">
-                    <div className="relative">
-                        <button 
-                            onClick={() => setShowEmojiPicker(false)}
-                            className="absolute -top-10 right-0 p-2 bg-white dark:bg-zinc-800 rounded-full shadow-lg border dark:border-zinc-700 text-zinc-500 hover:text-sky-500 transition-colors z-50"
-                        >
-                            ✕
-                        </button>
-                        <EmojiPicker
-                            onEmojiClick={onEmojiClick}
-                            autoFocusSearch={false}
-                            theme={localStorage.getItem("theme") === "dark" ? "dark" : "light"}
-                            width={300}
-                            height={400}
-                        />
-                    </div>
+                <div className="absolute bottom-16 left-2 sm:left-4 z-50 animate-in slide-in-from-bottom-2 duration-200 shadow-2xl rounded-2xl overflow-hidden">
+                    <EmojiPicker
+                        onEmojiClick={onEmojiClick}
+                        autoFocusSearch={false}
+                        theme={localStorage.getItem("theme") === "dark" ? "dark" : "light"}
+                        width={320}
+                        height={400}
+                        emojiStyle="native"
+                        previewConfig={{ showPreview: false }}
+                        skinTonesDisabled
+                        searchPlaceHolder="Search Emoji..."
+                    />
                 </div>
             )}
 
