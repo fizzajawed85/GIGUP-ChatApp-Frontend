@@ -27,8 +27,13 @@ const AIChat = () => {
                 {aiState ? <AIChatSidebar onNewChat={handleNewChatMobile} /> : <div className="p-4">Loading AI...</div>}
             </div>
 
-            {/* Chat Window */}
-            <div className={`flex-1 w-full h-full ${!showWindow ? "hidden md:flex" : "flex"}`}>
+            {/* Chat Window - Forced Full Screen on Mobile when active */}
+            <div className={`
+                ${showWindow ? "flex" : "hidden md:flex"}
+                flex-1 w-full h-full 
+                ${showWindow ? "fixed inset-0 z-[100] md:relative md:z-auto" : ""}
+                bg-white dark:bg-[#0b1220]
+            `}>
                 <AIChatWindow onBack={handleBack} />
             </div>
         </div>
