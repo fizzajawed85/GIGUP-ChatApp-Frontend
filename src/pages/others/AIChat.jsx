@@ -3,18 +3,19 @@ import AIChatSidebar from "../../components/AIChatSidebar";
 import AIChatWindow from "../../components/AIChatWindow";
 
 const AIChat = () => {
-    const { selectedConversation } = useSelector((state) => state.ai);
+    const aiState = useSelector((state) => state.ai);
+    const selectedConversation = aiState?.selectedConversation;
 
     return (
-        <div className="flex h-full overflow-hidden w-full relative">
-            {/* Sidebar (Chat History) - hidden on mobile if a conversation is selected */}
+        <div className="flex flex-1 h-full overflow-hidden w-full relative bg-white dark:bg-[#0b1220]">
+            {/* Sidebar (Chat History) */}
             <div className={`w-full md:w-[350px] h-full ${selectedConversation ? "hidden md:flex" : "flex"}`}>
-                <AIChatSidebar />
+                {aiState ? <AIChatSidebar /> : <div className="p-4">Loading AI...</div>}
             </div>
 
-            {/* Chat Window - hidden on mobile if no conversation is selected */}
+            {/* Chat Window */}
             <div className={`flex-1 w-full h-full ${!selectedConversation ? "hidden md:flex" : "flex"}`}>
-                <AIChatWindow />
+                {selectedConversation ? <AIChatWindow /> : null}
             </div>
         </div>
     );
