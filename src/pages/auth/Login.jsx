@@ -74,13 +74,13 @@ const Login = () => {
 
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-[#080e1b]">
+    <div className="min-h-screen flex flex-col md:flex-row bg-black">
       {/* LEFT SECTION - hidden on mobile */}
-      <div className="hidden md:flex md:w-1/2 flex-col justify-center items-start bg-gradient-to-b from-[#000000] to-[#080e1b] text-[#fdf7f0] p-24">
+      <div className="hidden md:flex md:w-1/2 flex-col justify-center items-start bg-black text-[#fdf7f0] p-24 border-r border-white/5">
         <img
           src="/images/logo9.png"
           alt="Gigup Logo"
-          className="mb-10 w-[350px] h-auto mix-blend-lighten"
+          className="mb-10 w-[350px] h-auto mix-blend-screen contrast-125"
         />
         <h1 className="text-4xl font-extrabold mb-4 tracking-tight">
           Connect Seamlessly
@@ -91,11 +91,11 @@ const Login = () => {
       </div>
 
       {/* RIGHT SECTION */}
-      <div className="flex-1 md:w-1/2 flex justify-center items-center bg-gradient-to-b from-[#080e1b] to-[#111827] p-4 md:p-12 min-h-screen md:min-h-0">
-        <div className="w-full max-w-md bg-white/5 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/10 p-6 md:p-10 space-y-5">
+      <div className="flex-1 md:w-1/2 flex justify-center items-center bg-black p-4 md:p-12 min-h-screen md:min-h-0">
+        <div className="w-full max-w-md bg-zinc-900/40 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/10 p-6 md:p-10 space-y-5">
           {/* Mobile Logo - shown only on mobile */}
           <div className="flex justify-center mb-2 md:hidden">
-            <img src="/images/logo9.png" alt="Gigup" className="w-36 h-auto mix-blend-lighten" />
+            <img src="/images/logo9.png" alt="Gigup" className="w-36 h-auto mix-blend-screen contrast-125" />
           </div>
 
           <h2 className="text-2xl md:text-3xl font-bold text-white text-center">
