@@ -19,6 +19,7 @@ import {
 } from "react-icons/fi";
 import { MdCall, MdVideocam, MdMic } from "react-icons/md";
 import { BsEmojiSmile, BsThreeDots } from "react-icons/bs";
+import EmojiPicker from "emoji-picker-react";
 
 const ChatWindow = () => {
   const dispatch = useDispatch();
@@ -33,6 +34,7 @@ const ChatWindow = () => {
   const [deletingMessage, setDeletingMessage] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   const { theme } = useTheme();
   const { callUser } = useContext(CallingContext);
@@ -57,13 +59,16 @@ const ChatWindow = () => {
     if (selectedChat) {
       const auth = JSON.parse(localStorage.getItem("auth"));
       const currentUserId = auth?.user?._id?.toString()?.toLowerCase();
-      const found = selectedChat.participants?.find((p) => {
-        const pId = (p._id || p).toString().toLowerCase();
-        return pId !== currentUserId;
-      }) || null;
-      setOtherUser(found);
+      const other = selectedChat.participants?.find((p) => {
+        return p._id?.toString()?.toLowerCase() !== currentUserId;
+      });
+      setOtherUser(other);
     }
   }, [selectedChat, userId]);
+
+  const onEmojiClick = (emojiObject) => {
+    setText((prev) => prev + emojiObject.emoji);
+  };
 
   const nicknameObj = selectedChat?.nicknames?.find(n => {
     const nUserId = n.user?._id ? n.user._id.toString() : n.user?.toString();
@@ -406,10 +411,37 @@ const ChatWindow = () => {
         </div>
       )}
 
+      {/* EMOJI PICKER */}
+      {showEmojiPicker && (
+        <div className="absolute bottom-16 left-2 sm:left-4 z-50 animate-in slide-in-from-bottom-2 duration-200">
+          <div className="relative">
+            <button 
+              onClick={() => setShowEmojiPicker(false)}
+              className="absolute -top-10 right-0 p-2 bg-white dark:bg-zinc-800 rounded-full shadow-lg border dark:border-zinc-700 text-zinc-500 hover:text-sky-500 transition-colors z-50"
+            >
+              ✕
+            </button>
+            <EmojiPicker
+              onEmojiClick={onEmojiClick}
+              autoFocusSearch={false}
+              theme={localStorage.getItem("theme") === "dark" ? "dark" : "light"}
+              width={300}
+              height={400}
+            />
+          </div>
+        </div>
+      )}
+
       {/* INPUT */}
       <div className="sticky bottom-0 z-20 h-16 px-2 sm:px-4 flex items-center gap-1.5 sm:gap-3 border-t dark:border-zinc-700 bg-white dark:bg-[#0b1220] shrink-0 w-full">
         <BsThreeDots className="text-xl hidden sm:block shrink-0" />
-        <BsEmojiSmile className="text-xl hidden sm:block shrink-0" />
+        <button
+          onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+          className={`hover:text-sky-500 transition-colors shrink-0 ${showEmojiPicker ? 'text-sky-500' : ''}`}
+          title="Emojis"
+        >
+          <BsEmojiSmile className="text-xl shrink-0" />
+        </button>
 
         {/* Gallery Option */}
         <input

@@ -27,6 +27,7 @@ const GroupWindow = () => {
     const fileInputRef = useRef(null);
 
     const [text, setText] = useState("");
+    const [showEmojiPicker, setShowEmojiPicker] = useState(false);
     const [isTyping, setIsTyping] = useState(false);
     const [typingUsers, setTypingUsers] = useState([]);
     const [showMenu, setShowMenu] = useState(false);
@@ -130,6 +131,10 @@ const GroupWindow = () => {
     useEffect(() => {
         bottomRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
+
+    const onEmojiClick = (emojiObject) => {
+        setText((prev) => prev + emojiObject.emoji);
+    };
 
     const handleTyping = (e) => {
         setText(e.target.value);
@@ -363,10 +368,37 @@ const GroupWindow = () => {
                 </div>
             )}
 
+            {/* EMOJI PICKER */}
+            {showEmojiPicker && (
+                <div className="absolute bottom-16 left-2 sm:left-4 z-50 animate-in slide-in-from-bottom-2 duration-200">
+                    <div className="relative">
+                        <button 
+                            onClick={() => setShowEmojiPicker(false)}
+                            className="absolute -top-10 right-0 p-2 bg-white dark:bg-zinc-800 rounded-full shadow-lg border dark:border-zinc-700 text-zinc-500 hover:text-sky-500 transition-colors z-50"
+                        >
+                            ✕
+                        </button>
+                        <EmojiPicker
+                            onEmojiClick={onEmojiClick}
+                            autoFocusSearch={false}
+                            theme={localStorage.getItem("theme") === "dark" ? "dark" : "light"}
+                            width={300}
+                            height={400}
+                        />
+                    </div>
+                </div>
+            )}
+
             {/* Input Area Overhaul */}
             <div className="sticky bottom-0 z-20 h-16 px-2 sm:px-4 flex items-center gap-1.5 sm:gap-3 border-t dark:border-zinc-700 bg-white dark:bg-[#0b1220] shrink-0 w-full">
                 <BsThreeDots className="text-xl hidden sm:block shrink-0" />
-                <BsEmojiSmile className="text-xl hidden sm:block shrink-0" />
+                <button
+                    onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                    className={`hover:text-sky-500 transition-colors shrink-0 ${showEmojiPicker ? 'text-sky-500' : ''}`}
+                    title="Emojis"
+                >
+                    <BsEmojiSmile className="text-xl shrink-0" />
+                </button>
 
                 {/* Gallery Option */}
                 <input
