@@ -43,7 +43,7 @@ const ForgotPassword = () => {
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
       {/* LEFT SECTION - hidden on mobile */}
-      <div className="hidden md:flex md:w-1/2 flex-col justify-start items-start bg-gradient-to-b from-black via-[#020617] to-[#1e40af] text-[#fdf7f0] p-12 md:p-24 border-r border-white/5">
+      <div className="hidden md:flex md:w-1/2 flex-col justify-start items-start bg-gradient-to-b from-black via-[#040914] to-[#0c1a30] text-[#fdf7f0] p-12 md:p-24 border-r border-white/5">
         <img
           src="/images/logo9.png"
           alt="Gigup Logo"
@@ -60,17 +60,20 @@ const ForgotPassword = () => {
 
       {/* RIGHT SECTION */}
       <div className="flex-1 md:w-1/2 flex justify-center items-center bg-[#0b1220] p-4 md:p-12 min-h-screen md:min-h-0">
-        <div className="w-full max-w-md bg-[#1e293b]/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-6 md:p-10 space-y-5">
+        <div className="w-full max-w-md bg-white/10 backdrop-blur-2xl rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.5)] border border-white/20 p-6 md:p-10 space-y-5 relative overflow-hidden">
+          {/* Subtle whitish shine overlay */}
+          <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none"></div>
+
           {/* Mobile Logo */}
-          <div className="flex justify-center mb-2 md:hidden">
+          <div className="flex justify-center mb-2 md:hidden relative z-10">
             <img src="/images/logo9.png" alt="Gigup" className="w-36 h-auto" />
           </div>
 
-          <h2 className="text-2xl md:text-3xl font-bold text-white text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-white text-center relative z-10">
             Forgot Password
           </h2>
 
-          <p className="text-[#dcd8d8] text-center text-sm opacity-80">
+          <p className="text-[#dcd8d8] text-center text-sm opacity-80 relative z-10">
             No worries, we’ll help you recover it.
           </p>
 
