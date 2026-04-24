@@ -225,17 +225,18 @@ const AIChatWindow = ({ onBack }) => {
 
             {/* EMOJI PICKER */}
             {showEmojiPicker && (
-                <div className="absolute bottom-16 left-2 sm:left-4 z-50 animate-in slide-in-from-bottom-2 duration-200 shadow-2xl rounded-2xl overflow-hidden">
+                <div className="absolute bottom-16 left-2 sm:left-4 z-50 animate-in slide-in-from-bottom-2 duration-200 shadow-2xl rounded-2xl overflow-hidden border dark:border-zinc-700">
                     <EmojiPicker
                         onEmojiClick={onEmojiClick}
                         autoFocusSearch={false}
                         theme={localStorage.getItem("theme") === "dark" ? "dark" : "light"}
                         width={320}
                         height={400}
-                        emojiStyle="native"
+                        emojiStyle="google"
                         previewConfig={{ showPreview: false }}
                         skinTonesDisabled
-                        searchPlaceHolder="Search Emoji..."
+                        categoriesDisabled={true}
+                        searchPlaceHolder="Search emoji"
                     />
                 </div>
             )}
