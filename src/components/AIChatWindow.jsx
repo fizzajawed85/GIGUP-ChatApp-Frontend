@@ -102,6 +102,16 @@ const AIChatWindow = () => {
                     </div>
                 </div>
                 <div className="flex items-center gap-3 text-zinc-400">
+                    <button
+                        onClick={() => {
+                            dispatch(setSelectedConversation(null));
+                            // Optional: clear local messages if needed, but selecting null handles the view
+                        }}
+                        className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full text-sky-500 transition-colors"
+                        title="New Chat"
+                    >
+                        <FiPlus className="text-xl" />
+                    </button>
                     <FiSearch className="hidden sm:block hover:text-sky-500 cursor-pointer transition-colors" />
                     <FiMoreVertical className="hover:text-sky-500 cursor-pointer transition-colors p-2" />
                 </div>
