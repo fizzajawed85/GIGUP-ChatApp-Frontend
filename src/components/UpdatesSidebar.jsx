@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { FaPlus } from "react-icons/fa";
 import { FiPlus } from "react-icons/fi";
-import useTheme from "../hooks/useTheme";
 import { getStatusFeed } from "../services/status.services";
 import { getChannels } from "../services/channel.services";
 import { BASE_URL } from "../config";
 
 const UpdatesSidebar = ({ onStatusSelect, onChannelSelect, onPostStatus, onCreateChannel, activeChannel }) => {
-    const { theme } = useTheme();
     const [statuses, setStatuses] = useState([]);
     const [channels, setChannels] = useState([]);
     const [loading, setLoading] = useState(true);

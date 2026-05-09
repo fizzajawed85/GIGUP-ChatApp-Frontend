@@ -24,12 +24,12 @@ const MainLayout = () => {
     useEffect(() => {
         const auth = JSON.parse(localStorage.getItem("auth"));
         const userId = auth?.user?._id;
+        const token = auth?.token;
 
-        if (userId) {
-            const normalizedUserId = userId.toString().toLowerCase();
-            socket.auth = { userId: normalizedUserId };
+        if (userId && token) {
+            socket.auth = { token };
             socket.connect();
-            socket.emit("addUser", normalizedUserId);
+            socket.emit("addUser");
 
             socket.on("receiveMessage", (msg) => {
                 dispatch(updateChatLatestMessage({ chatId: msg.chat, message: msg }));
@@ -45,13 +45,13 @@ const MainLayout = () => {
 
         return () => {
             if (userId) {
-                socket.emit("goOffline", userId);
+                socket.emit("goOffline");
                 socket.off("receiveMessage");
                 socket.off("chatUpdated");
                 socket.disconnect();
             }
         };
-    }, []);
+    }, [dispatch]);
 
     return (
         <NotificationProvider>

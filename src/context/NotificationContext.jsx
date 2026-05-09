@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useState, useEffect, useCallback } from "react";
 import { socket } from "../utils/socket";
 import { getNotifications, markAllRead, clearNotifications } from "../services/notificationService";
@@ -143,7 +144,7 @@ export const NotificationProvider = ({ children }) => {
             await markAllRead();
             setNotifications(prev => prev.map(n => ({ ...n, read: true })));
             setUnreadCount(0);
-        } catch (err) {
+        } catch {
             console.error("Sync Error: Failed to mark as read");
         }
     };
@@ -153,7 +154,7 @@ export const NotificationProvider = ({ children }) => {
             await clearNotifications();
             setNotifications([]);
             setUnreadCount(0);
-        } catch (err) {
+        } catch {
             console.error("Sync Error: Failed to clear notifications");
         }
     };

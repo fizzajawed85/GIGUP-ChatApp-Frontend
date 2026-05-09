@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchGroupMessages, addGroupMessage, markGroupMessageAsRead, markAllGroupMessagesAsRead } from "../redux/slices/groupMessageSlice";
+import { addGroupMessage, markGroupMessageAsRead, markAllGroupMessagesAsRead } from "../redux/slices/groupMessageSlice";
 import { socket } from "../utils/socket";
 import { sendGroupMessage, leaveGroup, markMessageAsRead } from "../services/group.services";
 import { removeGroup, resetGroupUnreadCount, setSelectedGroup } from "../redux/slices/groupSlice";
@@ -39,13 +39,11 @@ const GroupWindow = () => {
     const {
         isRecording,
         isProcessing,
-        recordingTime,
         audioBlob,
         startRecording,
         stopRecording,
-        cancelRecording,
         resetRecording,
-        formattedTime
+        formattedTime,
     } = useVoiceRecorder();
     const { selectedGroup } = useSelector((state) => state.group);
     const { messages } = useSelector((state) => state.groupMessage);
@@ -291,13 +289,13 @@ const GroupWindow = () => {
                 <div className="flex items-center gap-2 sm:gap-5 text-lg sm:text-xl text-gray-600 dark:text-gray-300">
                     <FiSearch className="hidden sm:block" />
                     <button
-                        onClick={() => callUser(selectedGroup?._id, 'audio', selectedGroup?.name)}
+                        onClick={() => startGroupCall(selectedGroup?._id, selectedGroup?.name, "audio")}
                         className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors"
                     >
                         <MdCall />
                     </button>
                     <button
-                        onClick={() => callUser(selectedGroup?._id, 'video', selectedGroup?.name)}
+                        onClick={() => startGroupCall(selectedGroup?._id, selectedGroup?.name, "video")}
                         className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors"
                     >
                         <MdVideocam />

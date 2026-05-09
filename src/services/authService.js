@@ -26,19 +26,10 @@ export const loginUser = async (data) => {
 };
 
 // SOCIAL LOGIN
-export const socialLogin = async (provider) => {
-  let socialData;
-
-  if (provider === "google") {
-    socialData = { provider: "google", socialId: "GOOGLE_ID_123", username: "GoogleUser", email: "googleuser@gmail.com" };
-  } else if (provider === "facebook") {
-    socialData = { provider: "facebook", socialId: "FB_ID_123", username: "FBUser", email: "fbuser@gmail.com" };
-  } else if (provider === "skype") {
-    socialData = { provider: "skype", socialId: "SKYPE_ID_123", username: "SkypeUser", email: "skypeuser@gmail.com" };
-  } else if (provider === "phone") {
-    socialData = { provider: "phone", socialId: "PHONE_ID_123", username: "PhoneUser", email: "phoneuser@gmail.com" };
+export const socialLogin = async (socialData) => {
+  if (!socialData?.provider || !socialData?.socialId || !socialData?.username || !socialData?.email) {
+    throw new Error("Valid social login payload is required");
   }
-
   const response = await axios.post(`${API_URL}/social-login`, socialData);
 
   // ✅ SAVE AUTH DATA CORRECTLY

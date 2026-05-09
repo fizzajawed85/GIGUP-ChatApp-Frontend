@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState, useContext } from "react";
+import { useEffect, useRef, useState, useContext, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchMessages, addMessage, updateMessage } from "../redux/slices/messageSlice";
 import { socket } from "../utils/socket";
-import { sendMessage, editMessage, markChatAsRead } from "../services/chat.services";
+import { sendMessage, editMessage, deleteMessage, markChatAsRead } from "../services/chat.services";
 import { resetChatUnreadCount, setSelectedChat } from "../redux/slices/chatSlice";
 import MessageItem from "./MessageItem";
 import useTheme from "../hooks/useTheme";
@@ -29,7 +29,6 @@ const ChatWindow = () => {
 
   const [text, setText] = useState("");
   const [isTyping, setIsTyping] = useState(false);
-  const [otherUser, setOtherUser] = useState(null);
   const [editingMessage, setEditingMessage] = useState(null);
   const [deletingMessage, setDeletingMessage] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -41,11 +40,9 @@ const ChatWindow = () => {
   const {
     isRecording,
     isProcessing,
-    recordingTime,
     audioBlob,
     startRecording,
     stopRecording,
-    cancelRecording,
     resetRecording,
     formattedTime
   } = useVoiceRecorder();
@@ -55,15 +52,9 @@ const ChatWindow = () => {
   const auth = JSON.parse(localStorage.getItem("auth") || "{}");
   const userId = auth?.user?._id?.toString()?.toLowerCase();
 
-  useEffect(() => {
-    if (selectedChat) {
-      const auth = JSON.parse(localStorage.getItem("auth"));
-      const currentUserId = auth?.user?._id?.toString()?.toLowerCase();
-      const other = selectedChat.participants?.find((p) => {
-        return p._id?.toString()?.toLowerCase() !== currentUserId;
-      });
-      setOtherUser(other);
-    }
+  const otherUser = useMemo(() => {
+    if (!selectedChat) return null;
+    return selectedChat.participants?.find((p) => p._id?.toString()?.toLowerCase() !== userId) || null;
   }, [selectedChat, userId]);
 
   const onEmojiClick = (emojiObject) => {
@@ -122,18 +113,7 @@ const ChatWindow = () => {
     socket.on("messageUpdated", (updatedMsg) => {
       dispatch(updateMessage(updatedMsg));
     });
-    socket.on("messagesSeen", ({ chatId }) => {
-      // No need to re-fetch all messages, just handle ticks via messageUpdated
-    });
-
-    socket.on("statusChange", ({ userId: changedUserId, isOnline, lastSeen }) => {
-      setOtherUser(prev => {
-        if (prev?._id === changedUserId) {
-          return { ...prev, isOnline, lastSeen };
-        }
-        return prev;
-      });
-    });
+    socket.on("messagesSeen", () => {});
 
     socket.on("userTyping", ({ userId: typingUserId }) => {
       if (typingUserId === otherUser?._id) {
@@ -148,7 +128,6 @@ const ChatWindow = () => {
     return () => {
       socket.off("receiveMessage", handleReceive);
       socket.off("messageUpdated");
-      socket.off("statusChange");
       socket.off("messagesSeen");
       socket.off("userTyping");
       socket.off("userStopTyping");

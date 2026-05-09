@@ -5,7 +5,6 @@ import toast from "react-hot-toast";
 const AddContactModal = ({ onClose, onChatCreated }) => {
   const [email, setEmail] = useState("");
   const [nickname, setNickname] = useState("");
-  const [username, setUsername] = useState("");
   const [message, setMessage] = useState("");
 
   const handleInvite = async () => {

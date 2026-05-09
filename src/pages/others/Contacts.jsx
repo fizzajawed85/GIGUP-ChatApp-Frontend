@@ -16,7 +16,6 @@ const Contacts = () => {
     const [calls, setCalls] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -29,8 +28,8 @@ const Contacts = () => {
                 ]);
                 setUsers(usersData);
                 setCalls(callsData);
-            } catch (err) {
-                setError("GIGUP Sync Error: Failed to load data");
+            } catch {
+                console.error("GIGUP Sync Error: Failed to load data");
             } finally {
                 setLoading(false);
             }

@@ -17,7 +17,6 @@ const GroupCallOverlay = () => {
         callAccepted,
         isCalling,
         leaveCall,
-        stream,
         myVideo,
         groupPeers,
         isGroupCall

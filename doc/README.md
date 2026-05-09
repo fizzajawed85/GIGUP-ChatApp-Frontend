@@ -6,21 +6,21 @@ Welcome to the internal documentation for **GIGUP**, a premium, next-generation 
 
 Explore the technical architecture and implementation details for each feature:
 
-1.  **[Authentication System](file:///d:/Jawan_Pakistan/Module_B/Assignments/Projects/Chat_App/doc/Authentication.md)**
+1.  **[Authentication System](./Authentication.md)**
     *   JWT-based security, Registration, Login, and OTP Recovery.
-2.  **[Private Messaging](file:///d:/Jawan_Pakistan/Module_B/Assignments/Projects/Chat_App/doc/PrivateMessaging.md)**
+2.  **[Private Messaging](./PrivateMessaging.md)**
     *   Real-time 1-on-1 chats, Media sharing, and Voice Messages.
-3.  **[Group Chat](file:///d:/Jawan_Pakistan/Module_B/Assignments/Projects/Chat_App/doc/GroupChat.md)**
+3.  **[Group Chat](./GroupChat.md)**
     *   Group rooms, Admin management, and Scalable broadcasting.
-4.  **[Giga AI Assistant](file:///d:/Jawan_Pakistan/Module_B/Assignments/Projects/Chat_App/doc/GigaAI.md)**
+4.  **[Giga AI Assistant](./GigaAI.md)**
     *   Multimodal AI (Gemini 2.5 Flash), Vision analysis, and Conversational memory.
-5.  **[Calling System](file:///d:/Jawan_Pakistan/Module_B/Assignments/Projects/Chat_App/doc/CallingSystem.md)**
+5.  **[Calling System](./CallingSystem.md)**
     *   WebRTC Audio/Video calls (1-on-1 & Group) and Signaling logic.
-6.  **[Notification System](file:///d:/Jawan_Pakistan/Module_B/Assignments/Projects/Chat_App/doc/NotificationsSystem.md)**
+6.  **[Notification System](./NotificationsSystem.md)**
     *   Live Signals, Persistent event storage, and Real-time syncing.
-7.  **[Updates & Moments](file:///d:/Jawan_Pakistan/Module_B/Assignments/Projects/Chat_App/doc/UpdatesAndStatus.md)**
+7.  **[Updates & Moments](./UpdatesAndStatus.md)**
     *   Ephemeral updates (Status), Text & Media sharing.
-8.  **[User Profile & Settings](file:///d:/Jawan_Pakistan/Module_B/Assignments/Projects/Chat_App/doc/UserProfileAndSettings.md)**
+8.  **[User Profile & Settings](./UserProfileAndSettings.md)**
     *   Identity management, Avatar uploads, and Theme control.
 
 ---

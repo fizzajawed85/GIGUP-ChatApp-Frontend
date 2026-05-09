@@ -22,6 +22,7 @@ export const CallingProvider = ({ children }) => {
     const [isGroupCall, setIsGroupCall] = useState(false);
     const [groupPeers, setGroupPeers] = useState([]); // Array of { peerId, peer, stream }
     const groupPeersRef = useRef([]); // Ref to keep track of peers for socket events
+    const leaveCallRef = useRef(() => {});
 
     const auth = JSON.parse(localStorage.getItem('auth'));
     const currentUserId = auth?.user?._id;
@@ -36,13 +37,13 @@ export const CallingProvider = ({ children }) => {
 
         socket.on('callEnded', () => {
             console.log(`[CallingContext] >>> Socket: callEnded received`);
-            leaveCall("callEnded socket event");
+            leaveCallRef.current("callEnded socket event");
         });
 
         socket.on('callDeclined', () => {
             console.log(`[CallingContext] >>> Socket: callDeclined received`);
             alert("Call declined");
-            leaveCall("callDeclined socket event");
+            leaveCallRef.current("callDeclined socket event");
         });
 
         socket.on('incomingGroupCall', ({ groupId, groupName, callerName, type }) => {
@@ -58,13 +59,13 @@ export const CallingProvider = ({ children }) => {
 
         socket.on('groupCallEnded', () => {
             console.log(`[CallingContext] >>> Socket: groupCallEnded received`);
-            leaveCall("groupCallEnded socket event");
+            leaveCallRef.current("groupCallEnded socket event");
         });
 
         socket.on('callError', ({ message }) => {
             console.error(`[CallingContext] >>> Socket ERROR: ${message}`);
             alert(message);
-            leaveCall("signaling error");
+            leaveCallRef.current("signaling error");
         });
 
         return () => {
@@ -80,7 +81,7 @@ export const CallingProvider = ({ children }) => {
     useEffect(() => {
         if (!stream) return;
 
-        const handleJoined = ({ userId, username, socketId }) => {
+        const handleJoined = ({ userId, username }) => {
             console.log(`[GroupCall] User ${username} joined. Initiating peer connection...`);
             const peer = createPeer(userId, socket.id, stream);
             groupPeersRef.current.push({ peerId: userId, peer });
@@ -115,10 +116,10 @@ export const CallingProvider = ({ children }) => {
             socket.off('groupSignalRelay', handleRelay);
             socket.off('userLeftGroupCall', handleLeft);
         };
-    }, [stream]);
+    }, [stream, addPeer, createPeer]);
 
     // --- PEER HELPERS ---
-    const createPeer = (userToSignal, callerId, stream) => {
+    const createPeer = useCallback((userToSignal, callerId, stream) => {
         const peer = new Peer({
             initiator: true,
             trickle: false,
@@ -134,9 +135,9 @@ export const CallingProvider = ({ children }) => {
         });
 
         return peer;
-    };
+    }, [currentUserId]);
 
-    const addPeer = (incomingSignal, callerId, stream) => {
+    const addPeer = useCallback((incomingSignal, callerId, stream) => {
         const peer = new Peer({
             initiator: false,
             trickle: false,
@@ -153,7 +154,7 @@ export const CallingProvider = ({ children }) => {
 
         peer.signal(incomingSignal);
         return peer;
-    };
+    }, [currentUserId]);
 
     const updateGroupPeers = (userId, remoteStream) => {
         setGroupPeers(prev => {
@@ -366,6 +367,8 @@ export const CallingProvider = ({ children }) => {
         socket.off('callAccepted');
         socket.off('callDeclined');
     };
+
+    leaveCallRef.current = leaveCall;
 
     const declineCall = () => {
         if (call.from) socket.emit('declineCall', { to: call.from });

@@ -4,7 +4,7 @@ import { sendAIMessage, setSelectedConversation } from "../redux/slices/aiSlice"
 import { BsEmojiSmile, BsThreeDots } from "react-icons/bs";
 import EmojiPicker from "emoji-picker-react";
 import { FiSearch, FiMoreVertical, FiSend, FiImage, FiLoader, FiX, FiArrowLeft, FiPlus } from "react-icons/fi";
-import { MdCall, MdVideocam, MdMic } from "react-icons/md";
+import { MdMic } from "react-icons/md";
 import { RiRobot2Line } from "react-icons/ri";
 import VoiceMessagePlayer from "./VoiceMessagePlayer";
 import useVoiceRecorder from "../hooks/useVoiceRecorder";
@@ -25,11 +25,9 @@ const AIChatWindow = ({ onBack }) => {
     const {
         isRecording,
         isProcessing,
-        recordingTime,
         audioBlob,
         startRecording,
         stopRecording,
-        cancelRecording,
         resetRecording,
         formattedTime
     } = useVoiceRecorder();

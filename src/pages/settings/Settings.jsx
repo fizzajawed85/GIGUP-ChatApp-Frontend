@@ -10,13 +10,30 @@ import {
     FiBell,
     FiHelpCircle,
     FiMoon,
-    FiSun,
     FiEdit3,
     FiDatabase
 } from "react-icons/fi";
 import { BsArrowLeft } from "react-icons/bs";
 
 import { BASE_URL } from "../../config";
+
+const SettingItem = ({ icon, title, subtitle, onClick, textColor = "" }) => (
+    <button
+        onClick={onClick}
+        className="w-full flex items-center justify-between p-4 hover:bg-zinc-100 dark:hover:bg-white/5 transition-all group"
+    >
+        <div className="flex items-center gap-4">
+            <div className="p-2.5 rounded-xl bg-sky-50 dark:bg-sky-500/10 text-sky-500 shadow-sm border border-sky-100 dark:border-sky-500/20">
+                {React.createElement(icon, { className: "text-xl" })}
+            </div>
+            <div className="text-left overflow-hidden">
+                <h4 className={`text-sm font-bold ${textColor || "text-gray-900 dark:text-zinc-100"}`}>{title}</h4>
+                {subtitle && <p className="text-[11px] font-medium text-zinc-400 dark:text-zinc-500 truncate">{subtitle}</p>}
+            </div>
+        </div>
+        <FiChevronRight className="text-zinc-300 dark:text-zinc-600 transition-transform group-hover:translate-x-1" />
+    </button>
+);
 
 const Settings = () => {
     const { theme, toggleTheme } = useTheme();
@@ -25,24 +42,6 @@ const Settings = () => {
     const logoDark = "./images/logo1.png";
     const auth = JSON.parse(localStorage.getItem("auth"));
     const user = auth?.user;
-
-    const SettingItem = ({ icon: Icon, title, subtitle, onClick, textColor = "" }) => (
-        <button
-            onClick={onClick}
-            className="w-full flex items-center justify-between p-4 hover:bg-zinc-100 dark:hover:bg-white/5 transition-all group"
-        >
-            <div className="flex items-center gap-4">
-                <div className="p-2.5 rounded-xl bg-sky-50 dark:bg-sky-500/10 text-sky-500 shadow-sm border border-sky-100 dark:border-sky-500/20">
-                    <Icon className="text-xl" />
-                </div>
-                <div className="text-left overflow-hidden">
-                    <h4 className={`text-sm font-bold ${textColor || "text-gray-900 dark:text-zinc-100"}`}>{title}</h4>
-                    {subtitle && <p className="text-[11px] font-medium text-zinc-400 dark:text-zinc-500 truncate">{subtitle}</p>}
-                </div>
-            </div>
-            <FiChevronRight className="text-zinc-300 dark:text-zinc-600 transition-transform group-hover:translate-x-1" />
-        </button>
-    );
 
     return (
         <div className="flex flex-col h-full w-full bg-white dark:bg-[#0b1220] overflow-hidden">

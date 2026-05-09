@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { FaGoogle, FaFacebookF, FaSkype, FaPhoneAlt } from "react-icons/fa";
-import { loginUser, socialLogin } from "../../services/authService";
+import { loginUser } from "../../services/authService";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -42,7 +42,7 @@ const Login = () => {
     }
   };
 
-  const handleSocialLogin = async (provider) => {
+  const handleSocialLogin = async () => {
     toast("Coming Soon! Social login will be available in the next update.", {
       icon: '⏳',
     });

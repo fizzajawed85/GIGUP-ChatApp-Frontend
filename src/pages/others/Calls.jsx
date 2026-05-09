@@ -34,7 +34,7 @@ const Calls = () => {
         try {
             const data = await getCallHistory();
             setCalls(data);
-        } catch (err) {
+        } catch {
             console.error("GIGUP Sync Error: Failed to load calls");
         } finally {
             setLoading(false);

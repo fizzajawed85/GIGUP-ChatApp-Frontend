@@ -9,34 +9,9 @@ const StatusViewer = ({ statuses = [], onClose }) => {
 
     const currentStatus = statuses[currentIndex];
 
-    useEffect(() => {
-        if (!currentStatus) return;
-
-        // Mark as viewed
-        markStatusViewed(currentStatus._id).catch(err => console.error("Failed to mark seen:", err));
-
-        setProgress(0);
-
-        // Dynamic duration: 5s for text/image, 30s for videos
-        const duration = currentStatus.type === "video" ? 30000 : 5000;
-        const intervalTime = duration / 100;
-
-        const timer = setInterval(() => {
-            setProgress((prev) => {
-                if (prev >= 100) {
-                    clearInterval(timer);
-                    handleNext();
-                    return 100;
-                }
-                return prev + 1;
-            });
-        }, intervalTime);
-
-        return () => clearInterval(timer);
-    }, [currentIndex, statuses]);
-
     const handleNext = () => {
         if (currentIndex < statuses.length - 1) {
+            setProgress(0);
             setCurrentIndex(prev => prev + 1);
         } else {
             onClose();
@@ -45,9 +20,43 @@ const StatusViewer = ({ statuses = [], onClose }) => {
 
     const handlePrev = () => {
         if (currentIndex > 0) {
+            setProgress(0);
             setCurrentIndex(prev => prev - 1);
         }
     };
+
+    useEffect(() => {
+        if (!currentStatus) return;
+
+        // Mark as viewed
+        markStatusViewed(currentStatus._id).catch(err => console.error("Failed to mark seen:", err));
+
+        // Dynamic duration: 5s for text/image, 30s for videos
+        const duration = currentStatus.type === "video" ? 30000 : 5000;
+        const intervalTime = duration / 100;
+
+        const goNext = () => {
+            if (currentIndex < statuses.length - 1) {
+                setProgress(0);
+                setCurrentIndex(prev => prev + 1);
+            } else {
+                onClose();
+            }
+        };
+
+        const timer = setInterval(() => {
+            setProgress((prev) => {
+                if (prev >= 100) {
+                    clearInterval(timer);
+                    goNext();
+                    return 100;
+                }
+                return prev + 1;
+            });
+        }, intervalTime);
+
+        return () => clearInterval(timer);
+    }, [currentIndex, currentStatus, onClose, statuses.length]);
 
     if (!currentStatus) return null;
 

@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { FiPlay, FiPause } from 'react-icons/fi';
-import { BsFillMicFill } from 'react-icons/bs';
 
 const VoiceMessagePlayer = ({ audioUrl, duration, isOwnMessage }) => {
     const [isPlaying, setIsPlaying] = useState(false);
@@ -62,13 +61,6 @@ const VoiceMessagePlayer = ({ audioUrl, duration, isOwnMessage }) => {
         const x = e.clientX - rect.left;
         const percentage = x / rect.width;
         audio.currentTime = percentage * audioDuration;
-    };
-
-    const formatTime = (seconds) => {
-        if (!seconds || isNaN(seconds)) return '0:00';
-        const mins = Math.floor(seconds / 60);
-        const secs = Math.floor(seconds % 60);
-        return `${mins}:${secs.toString().padStart(2, '0')}`;
     };
 
     const progress = audioDuration > 0 ? (currentTime / audioDuration) * 100 : 0;

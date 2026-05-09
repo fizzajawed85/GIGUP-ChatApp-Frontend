@@ -3,15 +3,10 @@ import { BsCheck, BsCheckAll, BsThreeDotsVertical } from "react-icons/bs";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import VoiceMessagePlayer from "./VoiceMessagePlayer";
 import useTheme from "../hooks/useTheme";
-import { deleteMessage, editMessage } from "../services/chat.services";
-import { useDispatch } from "react-redux";
-import { updateMessage } from "../redux/slices/messageSlice";
-import { socket } from "../utils/socket";
 import { BASE_URL } from "../config";
 
 const MessageItem = ({ message, isOwnMessage, onEdit, onDelete }) => {
   const { theme } = useTheme();
-  const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
 
   const ownBubbleClass = `

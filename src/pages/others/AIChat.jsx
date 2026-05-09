@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setNewChatActive } from "../../redux/slices/aiSlice";
 import AIChatSidebar from "../../components/AIChatSidebar";
